@@ -6,7 +6,6 @@
 import unittest
 from click.testing import CliRunner
 
-from zemfrog import zemfrog
 from zemfrog import cli
 
 
