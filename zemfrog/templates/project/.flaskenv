@@ -1,0 +1,1 @@
+ZEMFROG_ENV=development
