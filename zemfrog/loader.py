@@ -38,6 +38,7 @@ def load_commands(app: Flask):
 def load_blueprints(app: Flask):
     blueprints = app.config.get("BLUEPRINTS", [])
     for bp in blueprints:
+        bp = bp + ".routes"
         bp = import_module(bp)
         bp = getattr(bp, "blueprint")
         app.register_blueprint(bp)

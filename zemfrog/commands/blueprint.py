@@ -1,5 +1,7 @@
 import click
 
+from ..generator import g_blueprint
+
 @click.group("blueprint")
 def group():
     """
@@ -12,5 +14,7 @@ def new(name):
     """
     Create blueprint ler.
     """
+
+    g_blueprint(name)
 
 command = group

@@ -31,7 +31,7 @@ def g_blueprint(name):
         py_t = string.Template(old_data)
         new_data = py_t.safe_substitute(name=name)
 
-    with open(filename.lower(), "w") as fp:
+    with open(filename, "w") as fp:
         fp.write(new_data)
 
     print("(done)")
