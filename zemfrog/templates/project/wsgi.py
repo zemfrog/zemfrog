@@ -2,8 +2,6 @@ from flask import Flask
 from zemfrog import loader
 from celery import Celery
 
-import models
-
 def make_celery(app):
     celery = Celery(
         app.import_name,
@@ -25,6 +23,7 @@ app = Flask(__name__)
 with app.app_context():
     loader.load_config(app)
     loader.load_extensions(app)
+    loader.load_models(app)
     loader.load_blueprints(app)
     loader.load_commands(app)
     loader.load_services(app)

@@ -13,5 +13,4 @@ def new(name):
     Create api ler.
     """
 
-
-
+command = group

@@ -3,9 +3,16 @@ class Development(object):
     SQLALCHEMY_DATABASE_URI = "sqlite:///db.sqlite"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = True
-    EXTENSIONS = ["sqlalchemy", "migrate"]
-    COMMANDS = []
+    EXTENSIONS = [
+        "extensions.sqlalchemy",
+        "extensions.migrate"
+    ]
+    COMMANDS = [
+        "zemfrog.commands.api",
+        "zemfrog.commands.blueprint"
+    ]
     BLUEPRINTS = []
+    CREATE_DB = True
     CELERY_RESULT_BACKEND = None
     CELERY_BROKER_URL = None
 
