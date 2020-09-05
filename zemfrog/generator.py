@@ -1,3 +1,4 @@
+from importlib import import_module
 import os
 import string
 
@@ -36,18 +37,24 @@ def g_blueprint(name):
 
     print("(done)")
 
-def g_schema(name):
+def g_schema(name, src):
     print("Creating model schema %r... " % name, end="")
     copy_template("schema", "schema")
     old_filename = os.path.join("schema", "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()
         py_t = string.Template(old_data)
-        new_data = py_t.safe_substitute(name=name)
+        new_data = py_t.safe_substitute(name=name, src_model=src)
 
     os.remove(old_filename)
-    new_filename = os.path.join("api", name.lower() + ".py")
-    with open(new_filename, "w") as fp:
+    srcfile = import_module(src).__file__.replace("models" + os.sep, "schema" + os.sep)
+    dirname = os.path.dirname(srcfile).replace("models" + os.sep, "schema" + os.sep)
+    try:
+        os.makedirs(dirname)
+    except FileExistsError:
+        pass
+
+    with open(srcfile, "w") as fp:
         fp.write(new_data)
 
     print("(done)")

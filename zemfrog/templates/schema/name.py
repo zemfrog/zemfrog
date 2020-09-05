@@ -1,6 +1,6 @@
 from flask_marshmallow.sqla import SQLAlchemyAutoSchema
-import models
+from ${src_model} import ${name}
 
 class ${name}Schema(SQLAlchemyAutoSchema):
     class Meta:
-        model = models.${name}
+        model = ${name}

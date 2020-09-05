@@ -6,7 +6,7 @@ class Resource(MethodView):
     lowercase = True
 
 class Api(Blueprint):
-    def __init__(self, **kwds) -> None:
+    def __init__(self, **kwds):
         kwds.setdefault("name", "api")
         kwds.setdefault("url_prefix", "/api")
 
@@ -18,6 +18,7 @@ class Api(Blueprint):
             url = name
             if resource.lowercase:
                 url = url.lower()
+                name = name.lower()
 
         url = "/" + url.lstrip("/")
         self.add_url_rule(url, view_func=resource.as_view(name))

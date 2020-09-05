@@ -12,6 +12,7 @@ class Development(object):
         "zemfrog.commands.blueprint"
     ]
     BLUEPRINTS = []
+    APIS = []
     CREATE_DB = True
     CELERY_RESULT_BACKEND = None
     CELERY_BROKER_URL = None
