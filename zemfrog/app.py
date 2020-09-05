@@ -26,6 +26,7 @@ def create_app(name):
         loader.load_extensions(app)
         loader.load_models(app)
         loader.load_blueprints(app)
+        loader.load_apis(app)
         loader.load_commands(app)
         loader.load_services(app)
         loader.load_schemas(app)
