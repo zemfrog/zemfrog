@@ -7,9 +7,9 @@ class Resource(MethodView):
 
 class Api(Blueprint):
     def add_resource(self, resource: Resource):
-        assert isinstance(resource, Resource)
+        assert issubclass(resource, Resource)
         url = resource.url_route
-        name = type(resource).__name__
+        name = resource.__name__
         if not url:
             url = name
             if resource.lowercase:
