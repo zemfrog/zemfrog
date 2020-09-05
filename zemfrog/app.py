@@ -2,7 +2,7 @@ from flask import Flask
 from . import loader
 from celery import Celery
 
-def make_celery(app):
+def make_celery(app: Flask):
     celery = Celery(
         app.import_name,
         backend=app.config['CELERY_RESULT_BACKEND'],
@@ -30,3 +30,5 @@ def create_app(name):
         loader.load_commands(app)
         loader.load_services(app)
         loader.load_schemas(app)
+
+    return app

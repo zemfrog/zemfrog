@@ -6,10 +6,6 @@ class Resource(MethodView):
     lowercase = True
 
 class Api(Blueprint):
-    def __init__(self, **kwds):
-        kwds.setdefault("name", "api")
-        kwds.setdefault("url_prefix", "/api")
-
     def add_resource(self, resource: Resource):
         assert isinstance(resource, Resource)
         url = resource.url_route
