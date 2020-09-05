@@ -15,9 +15,9 @@ zemfrog
 
 
 
-
-API Backend Builder
-
+Zemfrog is a simple framework for building web or APIs with flask. 
+Which focuses on an application structure that can be managed easily.
+We believe zemforg can speed up your work with flask and please help us develop this framework!
 
 * Free software: MIT license
 * Documentation: https://zemfrog.readthedocs.io.
