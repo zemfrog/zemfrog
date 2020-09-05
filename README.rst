@@ -6,8 +6,8 @@ zemfrog
 .. image:: https://img.shields.io/pypi/v/zemfrog.svg
         :target: https://pypi.python.org/pypi/zemfrog
 
-.. image:: https://img.shields.io/travis/aprilahijriyan/zemfrog.svg
-        :target: https://travis-ci.com/aprilahijriyan/zemfrog
+.. image:: https://img.shields.io/travis/zemfrog/zemfrog.svg
+        :target: https://travis-ci.com/zemfrog/zemfrog
 
 .. image:: https://readthedocs.org/projects/zemfrog/badge/?version=latest
         :target: https://zemfrog.readthedocs.io/en/latest/?badge=latest
