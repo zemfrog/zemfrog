@@ -29,9 +29,9 @@ Features
 * Solid application structure.
 * Automation creates APIs based on tables in the database.
 * Automation creates schema models for your ORM.
-* It's easy to add your commands.
+* Easy to add your commands.
 * Easy to add extensions.
-* Easy to add task queue to celery!
+* Easy to add task queue to celery.
 
 
 Credits
