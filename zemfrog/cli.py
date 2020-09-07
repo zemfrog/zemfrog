@@ -1,5 +1,4 @@
 import click
-import os
 
 from .generator import g_project
 
@@ -16,5 +15,4 @@ def create(name):
     Create a project.
     """
 
-    print("creating %r project..." % name)
     g_project(name)

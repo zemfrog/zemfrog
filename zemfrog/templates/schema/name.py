@@ -1,6 +1,7 @@
-from flask_marshmallow.sqla import SQLAlchemyAutoSchema
+from extensions.marshmallow import ma
 from ${src_model} import ${name}
 
-class ${name}Schema(SQLAlchemyAutoSchema):
+class ${name}Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = ${name}
+        load_instance = True

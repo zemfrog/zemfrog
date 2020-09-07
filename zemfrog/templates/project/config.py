@@ -5,6 +5,7 @@ class Development(object):
     DEBUG = True
     EXTENSIONS = [
         "extensions.sqlalchemy",
+        "extensions.marshmallow",
         "extensions.migrate"
     ]
     COMMANDS = [

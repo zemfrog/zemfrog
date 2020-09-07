@@ -1,29 +1,12 @@
 import os
 from flask import Flask
-from os import getenv, listdir
+from os import getenv
 from glob import glob
 from importlib import import_module
-from flask_sqlalchemy import Model
 
 from .generator import g_schema
 from .exception import ZemfrogEnvironment
-from .helper import import_attr
-
-_YOUR_MODELS = {}
-
-def _search_model(name):
-    for mod in _YOUR_MODELS:
-        childs = dir(mod)
-        for c in childs:
-            c = getattr(mod, c)
-            try:
-                if issubclass(c, Model):
-                    tbl_name = c.__name__
-                    if tbl_name == name:
-                        src = _YOUR_MODELS.get(mod)
-                        return src
-            except TypeError:
-                pass
+from .helper import import_attr, search_model
 
 def load_config(app: Flask):
     env = getenv("ZEMFROG_ENV")
@@ -40,6 +23,7 @@ def load_extensions(app: Flask):
         init_func(app)
 
 def load_models(app: Flask):
+    app.models = {}
     true = app.config.get("CREATE_DB")
     if true:
         models = [x.rsplit(".", 1)[0].replace(os.sep, ".") for x in glob("models/**/*.py", recursive=True)]
@@ -47,7 +31,7 @@ def load_models(app: Flask):
             if "__init__" in m:
                 m = m.replace(".__init__", "")
             mod = import_module(m)
-            _YOUR_MODELS[mod] = m
+            app.models[mod] = m
 
         app.extensions["sqlalchemy"].db.create_all()
 
@@ -85,7 +69,5 @@ def load_schemas(app: Flask):
     for t in tables:
         t = t.split("_")
         t = "".join([x.capitalize() for x in t])
-        src = _search_model(t)
+        src = search_model(t)
         g_schema(t, src)
-
-    _YOUR_MODELS.clear()
