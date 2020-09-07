@@ -32,7 +32,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="API Backend Builder",
+    description="Zemfrog is a simple framework for building web or APIs with flask.",
     entry_points={
         'console_scripts': [
             'zemfrog=zemfrog.cli:main',
@@ -49,6 +49,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/zemfrog/zemfrog',
-    version='1.0.0',
+    version='1.0.1',
     zip_safe=False,
 )
