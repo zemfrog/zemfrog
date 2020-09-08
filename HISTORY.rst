@@ -25,3 +25,8 @@ Lots of things have been fixed, including:
 ------------------
 
 * re-upload
+
+1.0.4 (2020-09-09)
+------------------
+
+* fix manifest file

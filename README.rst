@@ -23,6 +23,12 @@ We believe zemforg can speed up your work with flask and please help us develop 
 * Documentation: https://zemfrog.readthedocs.io.
 
 
+Notes
+-----
+
+It should be noted. currently, the zemfrog project is still under development. So we are not responsible for the instability of zemfrog features.
+
+
 Features
 --------
 
