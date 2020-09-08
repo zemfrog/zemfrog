@@ -20,3 +20,8 @@ Lots of things have been fixed, including:
 ------------------
 
 * Update API structure
+
+1.0.3 (2020-09-08)
+------------------
+
+* re-upload
