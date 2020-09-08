@@ -15,3 +15,8 @@ Lots of things have been fixed, including:
 * Automation create (CRUD) API
 * Update template API
 * Update zemfrog release information.
+
+1.0.2 (2020-09-08)
+------------------
+
+* Update API structure
