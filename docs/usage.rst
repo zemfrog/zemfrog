@@ -17,6 +17,7 @@ Jalan dan coba jika ini bekerja!::
 Blueprints
 ^^^^^^^^^^
 
+::
     $ flask blueprint new account
 
 Sekarang anda dapat menambahkan blueprint ke aplikasi flask mu, bagaimana??
