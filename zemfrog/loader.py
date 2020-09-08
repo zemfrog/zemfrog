@@ -4,6 +4,8 @@ from os import getenv
 from glob import glob
 from importlib import import_module
 
+from flask.blueprints import Blueprint
+
 from .generator import g_schema
 from .exception import ZemfrogEnvironment
 from .helper import import_attr, search_model
@@ -51,10 +53,17 @@ def load_blueprints(app: Flask):
 
 def load_apis(app: Flask):
     apis = app.config.get("APIS", [])
-    api = import_attr("api.api")
+    api: Blueprint = import_attr("api.api")
     for res in apis:
-        res = import_attr(res) 
-        api.add_resource(res)
+        res = import_module(res)
+        endpoint = res.endpoint
+        url_prefix = res.url_prefix
+        routes = res.routes
+        for detail in routes:
+            route, view, methods = detail
+            url = url_prefix + route
+            e = endpoint + "_" + view.__name__
+            api.add_url_rule(url, e, view_func=view, methods=methods)
 
     app.register_blueprint(api)
 

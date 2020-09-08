@@ -16,7 +16,7 @@ def g_api(name):
     with open(old_filename) as fp:
         old_data = fp.read()
         py_t = string.Template(old_data)
-        new_data = py_t.safe_substitute(name=name)
+        new_data = py_t.safe_substitute(name=name, url_prefix=name.lower())
 
     os.remove(old_filename)
     new_filename = os.path.join("api", name.lower() + ".py")
@@ -38,7 +38,7 @@ def g_api_crud(name):
     with open(old_filename) as fp:
         old_data = fp.read()
         py_t = string.Template(old_data)
-        new_data = py_t.safe_substitute(name=name, src_model=src_model, src_schema=src_schema)
+        new_data = py_t.safe_substitute(name=name, url_prefix=name.lower(), src_model=src_model, src_schema=src_schema)
 
     os.remove(old_filename)
     new_filename = os.path.join("api", name.lower() + ".py")
