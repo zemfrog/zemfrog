@@ -35,3 +35,4 @@ Lots of things have been fixed, including:
 ------------------
 
 * add command boilerplate
+* add schema command

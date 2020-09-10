@@ -29,6 +29,5 @@ def create_app(name):
         loader.load_apis(app)
         loader.load_commands(app)
         loader.load_services(app)
-        loader.load_schemas(app)
 
     return app
