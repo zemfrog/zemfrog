@@ -30,3 +30,9 @@ Lots of things have been fixed, including:
 ------------------
 
 * fix manifest file
+
+1.0.5 (2020-09-10)
+------------------
+
+* add command boilerplate
+* add schema command
