@@ -11,7 +11,8 @@ class Development(object):
     COMMANDS = [
         "zemfrog.commands.api",
         "zemfrog.commands.blueprint",
-        "zemfrog.commands.schema"
+        "zemfrog.commands.schema",
+        "zemfrog.commands.command"
     ]
     BLUEPRINTS = []
     APIS = []

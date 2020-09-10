@@ -82,3 +82,19 @@ def g_schema(name, src):
         fp.write(new_data)
 
     print("(done)")
+
+def g_command(name):
+    print("Creating command %r..." % name, end='')
+    copy_template("command", "commands")
+    old_filename = os.path.join("commands", "name.py")
+    with open(old_filename) as fp:
+        old_data = fp.read()
+        py_t = string.Template(old_data)
+        new_data = py_t.safe_substitute(name=name)
+
+    os.remove(old_filename)
+    new_filename = os.path.join("commands", name.lower() + ".py")
+    with open(new_filename, "w") as fp:
+        fp.write(new_data)
+
+    print("(done)")
