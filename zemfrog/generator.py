@@ -1,7 +1,7 @@
 from importlib import import_module
 import os
 import string
-from flask import current_app
+from jinja2 import Template
 
 from .helper import copy_template, search_model
 
@@ -27,11 +27,7 @@ def g_api(name):
 
 def g_api_crud(name):
     src_model = search_model(name)
-    if not src_model:
-        print("Model not found %r" % name)
-        return
-
-    src_schema = src_model.replace("models", "schema")
+    src_schema = src_model.replace("models", "schema", 1)
     print("Creating rest api (crud) %r... " % name, end="")
     copy_template("crud", "api")
     old_filename = os.path.join("api", "name.py")
@@ -61,14 +57,14 @@ def g_blueprint(name):
 
     print("(done)")
 
-def g_schema(name, src):
-    print("Creating model schema %r... " % name, end="")
+def g_schema(src, models):
+    print("Creating schema for %r... " % src, end="")
     copy_template("schema", "schema")
     old_filename = os.path.join("schema", "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()
-        py_t = string.Template(old_data)
-        new_data = py_t.safe_substitute(name=name, src_model=src)
+        t = Template(old_data)
+        new_data = t.render(model_list=models, src_model=src)
 
     os.remove(old_filename)
     srcfile = import_module(src).__file__.replace("models" + os.sep, "schema" + os.sep)

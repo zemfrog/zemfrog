@@ -6,3 +6,6 @@ class ZemfrogTemplateNotFound(ZemfrogException):
 
 class ZemfrogEnvironment(ZemfrogException):
     pass
+
+class ZemfrogModelNotFound(ZemfrogException):
+    pass

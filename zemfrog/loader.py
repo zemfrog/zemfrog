@@ -8,9 +8,14 @@ from flask.blueprints import Blueprint
 
 from .generator import g_schema
 from .exception import ZemfrogEnvironment
-from .helper import import_attr, search_model
+from .helper import get_models, import_attr, search_model
 
 def load_config(app: Flask):
+    """
+    Memuat konfigurasi untuk aplikasi zemfrog kamu dari environment
+    ``ZEMFROG_ENV``, rubah environment aplikasi mu di file ``.flaskenv``.
+    """
+
     env = getenv("ZEMFROG_ENV")
     if not env:
         raise ZemfrogEnvironment("environment not found")
@@ -18,6 +23,15 @@ def load_config(app: Flask):
     app.config.from_object("config." + env.capitalize())
 
 def load_extensions(app: Flask):
+    """
+    Semua ekstensi flask kamu berada di folder ``extensions`` 
+    dan itu akan secara otomatis dimuat semua oleh zemfrog.
+
+    .. note::
+        Ekstensi haru mempunyai method ``init_app`` pada modul kamu.
+        Untuk contoh kamu bisa liat salah satu modul di folder ``ekstensions``.
+    """
+
     extensions = app.config.get("EXTENSIONS", [])
     for ext in extensions:
         ext = import_module(ext)
@@ -25,6 +39,17 @@ def load_extensions(app: Flask):
         init_func(app)
 
 def load_models(app: Flask):
+    """
+    Semua model ORM sqlalchemy kamu berada di folder ``models`` 
+    dan itu akan secara otomatis dimuat semua oleh zemfrog.
+
+    .. note::
+        Secara bawaan semua model yg ada di folder ``models`` 
+        akan dibuat semua ke bentuk table di database.
+        Kamu bisa menonaktifkan pembuatan table dengan mengatur nilai ``False`` 
+        pada konfigurasi ``CREATE_DB``.
+    """
+
     app.models = {}
     true = app.config.get("CREATE_DB")
     if true:
@@ -33,11 +58,19 @@ def load_models(app: Flask):
             if "__init__" in m:
                 m = m.replace(".__init__", "")
             mod = import_module(m)
-            app.models[mod] = m
+            app.models[m] = get_models(mod)
 
         app.extensions["sqlalchemy"].db.create_all()
 
 def load_commands(app: Flask):
+    """
+    Di zemfrog, kamu dapat membuat command kamu sendiri dan mendaftarkanya pada command ``flask``.
+
+    .. note::
+        Kamu dapat membuat ``boilerplate command`` dengan menggunakan command ``flask command new``.
+        Dan jangan lupa untuk mendaftarkan nya ke konfigurasi ``COMMANDS``.
+    """
+
     commands = app.config.get("COMMANDS", [])
     for cmd in commands:
         cmd = cmd + ".command"
@@ -73,10 +106,5 @@ def load_services(app: Flask):
         import_module(sv)
 
 def load_schemas(app: Flask):
-    sql = app.extensions["sqlalchemy"]
-    tables = sql.db.metadata.tables.keys()
-    for t in tables:
-        t = t.split("_")
-        t = "".join([x.capitalize() for x in t])
-        src = search_model(t)
-        g_schema(t, src)
+    for src, models in app.models.items():
+        g_schema(src, models)
