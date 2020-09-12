@@ -2,9 +2,9 @@
 zemfrog
 =======
 
-.. image:: ./logo.png
+.. image:: https://github.com/zemfrog/zemfrog/blob/master/docs/_static/logo.png
     :target: https://zemfrog.readthedocs.io
-    :alt: zemfrog Logo
+    :alt: zemfrog logo
 
 .. image:: https://img.shields.io/pypi/v/zemfrog.svg
         :target: https://pypi.python.org/pypi/zemfrog
@@ -18,9 +18,9 @@ zemfrog
 
 
 
-Zemfrog is a simple framework for building web or APIs with flask. 
-Which focuses on an application structure that can be managed easily.
-We believe zemforg can speed up your work with flask and please help us develop this framework!
+Zemfrog is a boilerplate for flask.
+Which focuses on building API structures that are easy to customize, flexible and manageable!
+We believe zemfrog can speed up your work with flask and please help us develop this boilerplate!
 
 * Free software: MIT license
 * Documentation: https://zemfrog.readthedocs.io.
