@@ -3,8 +3,8 @@ zemfrog
 =======
 
 .. image:: https://github.com/zemfrog/zemfrog/blob/master/docs/_static/logo.png
-    :target: https://zemfrog.readthedocs.io
-    :alt: zemfrog logo
+        :target: https://zemfrog.readthedocs.io
+        :alt: zemfrog logo
 
 .. image:: https://img.shields.io/pypi/v/zemfrog.svg
         :target: https://pypi.python.org/pypi/zemfrog
