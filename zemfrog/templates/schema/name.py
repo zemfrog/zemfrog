@@ -1,7 +1,9 @@
 from extensions.marshmallow import ma
-from ${src_model} import ${name}
+from {{src_model}} import {{ model_list|join(', ') }}
 
-class ${name}Schema(ma.SQLAlchemyAutoSchema):
+{% for name in model_list %}
+class {{name}}Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = ${name}
+        model = {{name}}
         load_instance = True
+{% endfor %}
