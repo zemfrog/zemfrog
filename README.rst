@@ -2,7 +2,7 @@
 zemfrog
 =======
 
-.. image:: https://github.com/zemfrog/zemfrog/blob/master/docs/_static/logo.png
+.. image:: https://raw.githubusercontent.com/zemfrog/zemfrog/master/docs/_static/logo.png
         :target: https://zemfrog.readthedocs.io
         :alt: zemfrog logo
 
