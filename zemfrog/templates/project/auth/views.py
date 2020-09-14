@@ -49,7 +49,7 @@ def register():
                 )
                 link_confirm = url_for(".confirm_account", token=token)
                 msg = get_mail_template("register.html", link_confirm=link_confirm)
-                send_email.delay(msg)
+                send_email.delay("Pendaftaran", html=msg)
                 reason = "Sukses daftar"
                 status_code = 200
             else:
@@ -109,7 +109,7 @@ def request_password_reset():
             msg = get_mail_template(
                 "request_password_reset.html", link_reset=link_reset
             )
-            send_email.delay(msg)
+            send_email.delay("Forgot password", html=msg)
     else:
         reason = "Email dibutuhkan."
         status_code = 401
