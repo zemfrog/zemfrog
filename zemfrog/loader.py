@@ -4,6 +4,7 @@ from os import getenv
 from glob import glob
 from importlib import import_module
 
+from flask.cli import load_dotenv
 from flask.blueprints import Blueprint
 
 from .generator import g_schema
@@ -17,6 +18,7 @@ def load_config(app: Flask):
     ``ZEMFROG_ENV``, rubah environment aplikasi mu di file ``.flaskenv``.
     """
 
+    load_dotenv()
     env = getenv("ZEMFROG_ENV")
     if not env:
         raise ZemfrogEnvironment("environment not found")
