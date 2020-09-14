@@ -1,1 +1,0 @@
-from flask_jwt_extended.

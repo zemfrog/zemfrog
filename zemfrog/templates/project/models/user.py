@@ -15,7 +15,7 @@ class User(db.Model):
     register_at = Column(DateTime)
     confirmed = Column(Boolean)
     confirmed_at = Column(DateTime)
-    logs = relationship("Logs")
+    logs = relationship("Log")
     roles = relationship("Role")
 
 
@@ -29,7 +29,7 @@ class Role(db.Model):
     name = Column(String, nullable=False)
 
 
-class Logs(db.Model):
+class Log(db.Model):
     """
     Log aktivitas user.
     """

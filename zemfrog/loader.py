@@ -10,6 +10,7 @@ from .generator import g_schema
 from .exception import ZemfrogEnvironment
 from .helper import get_models, import_attr, search_model
 
+
 def load_config(app: Flask):
     """
     Memuat konfigurasi untuk aplikasi zemfrog kamu dari environment
@@ -22,13 +23,14 @@ def load_config(app: Flask):
 
     app.config.from_object("config." + env.capitalize())
 
+
 def load_extensions(app: Flask):
     """
-    Semua ekstensi flask kamu berada di folder ``extensions`` 
+    Semua ekstensi flask kamu berada di folder ``extensions``
     dan itu akan secara otomatis dimuat semua oleh zemfrog.
 
     .. note::
-        Ekstensi haru mempunyai method ``init_app`` pada modul kamu.
+        Ekstensi harus mempunyai method ``init_app`` pada modul kamu.
         Untuk contoh kamu bisa liat salah satu modul di folder ``ekstensions``.
     """
 
@@ -38,22 +40,26 @@ def load_extensions(app: Flask):
         init_func = getattr(ext, "init_app")
         init_func(app)
 
+
 def load_models(app: Flask):
     """
-    Semua model ORM sqlalchemy kamu berada di folder ``models`` 
+    Semua model ORM sqlalchemy kamu berada di folder ``models``
     dan itu akan secara otomatis dimuat semua oleh zemfrog.
 
     .. note::
-        Secara bawaan semua model yg ada di folder ``models`` 
+        Secara bawaan semua model yg ada di folder ``models``
         akan dibuat semua ke bentuk table di database.
-        Kamu bisa menonaktifkan pembuatan table dengan mengatur nilai ``False`` 
+        Kamu bisa menonaktifkan pembuatan table dengan mengatur nilai ``False``
         pada konfigurasi ``CREATE_DB``.
     """
 
     app.models = {}
     true = app.config.get("CREATE_DB")
     if true:
-        models = [x.rsplit(".", 1)[0].replace(os.sep, ".") for x in glob("models/**/*.py", recursive=True)]
+        models = [
+            x.rsplit(".", 1)[0].replace(os.sep, ".")
+            for x in glob("models/**/*.py", recursive=True)
+        ]
         for m in models:
             if "__init__" in m:
                 m = m.replace(".__init__", "")
@@ -61,6 +67,7 @@ def load_models(app: Flask):
             app.models[m] = get_models(mod)
 
         app.extensions["sqlalchemy"].db.create_all()
+
 
 def load_commands(app: Flask):
     """
@@ -77,12 +84,19 @@ def load_commands(app: Flask):
         cmd = import_attr(cmd)
         app.cli.add_command(cmd)
 
+
 def load_blueprints(app: Flask):
     blueprints = app.config.get("BLUEPRINTS", [])
-    for bp in blueprints:
-        bp = bp + ".routes.blueprint"
-        bp = import_attr(bp)
+    for name in blueprints:
+        bp = name + ".routes.blueprint"
+        bp: Blueprint = import_attr(bp)
+        routes = name + ".urls.routes"
+        routes = import_attr(routes)
+        for url, view, methods in routes:
+            bp.add_url_rule(url, view_func=view, methods=methods)
+
         app.register_blueprint(bp)
+
 
 def load_apis(app: Flask):
     apis = app.config.get("APIS", [])
@@ -100,10 +114,12 @@ def load_apis(app: Flask):
 
     app.register_blueprint(api)
 
+
 def load_services(app: Flask):
     services = app.config.get("SERVICES", [])
     for sv in services:
         import_module(sv)
+
 
 def load_schemas(app: Flask):
     for src, models in app.models.items():
