@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from flask import request, url_for
 from flask_jwt_extended import create_access_token, decode_token
-from jwt import DecodeError
+from jwt import DecodeError, ExpiredSignatureError
 from werkzeug.security import generate_password_hash, check_password_hash
 from zemfrog.decorators import json_renderer, is_json_request
 from zemfrog.helper import db_add, db_update, db_commit, get_mail_template
@@ -18,7 +18,7 @@ def login():
     passw = request.json.get("password")
     user = User.query.filter_by(email=email).first()
 
-    if user and check_password_hash(user.password, passw):
+    if user and user.confirmed and check_password_hash(user.password, passw):
         login_at = datetime.utcnow()
         log = Log(login_at=login_at)
         user.logs.append(log)
@@ -40,16 +40,21 @@ def register():
         if not user:
             if username and passw:
                 passw = generate_password_hash(passw)
-                user = User(name=username, email=email, password=passw)
+                user = User(
+                    name=username,
+                    email=email,
+                    password=passw,
+                    register_at=datetime.utcnow(),
+                )
                 db_add(db, user)
                 token = create_access_token(
                     email,
-                    expires_delta=timedelta(hours=2),
+                    expires_delta=False,
                     user_claims={"token_registration": True},
                 )
                 link_confirm = url_for(".confirm_account", token=token)
                 msg = get_mail_template("register.html", link_confirm=link_confirm)
-                send_email.delay("Pendaftaran", html=msg)
+                send_email.delay("Pendaftaran", html=msg, recipients=[email])
                 reason = "Sukses daftar"
                 status_code = 200
             else:
@@ -75,11 +80,16 @@ def confirm_account(token):
             raise DecodeError
 
         user = User.query.filter_by(email=email).first()
-        if not user:
-            raise DecodeError
+        if user:
+            if not user.confirmed:
+                reason = "Terkonfirmasi."
+                status_code = 200
+                db_update(db, user, confirmed=True, confirmed_at=datetime.utcnow())
+            else:
+                raise DecodeError
+
         else:
-            reason = "Terkonfirmasi."
-            status_code = 200
+            raise DecodeError
 
     except DecodeError:
         reason = "Invalid token."
@@ -109,7 +119,7 @@ def request_password_reset():
             msg = get_mail_template(
                 "request_password_reset.html", link_reset=link_reset
             )
-            send_email.delay("Forgot password", html=msg)
+            send_email.delay("Forgot password", html=msg, recipients=[email])
     else:
         reason = "Email dibutuhkan."
         status_code = 401
@@ -140,5 +150,9 @@ def password_reset(token):
     except DecodeError:
         reason = "Invalid token."
         status_code = 401
+
+    except ExpiredSignatureError:
+        reason = "Token kadaluwarsa."
+        status_code = 403
 
     return {"reason": reason, "status_code": status_code}
