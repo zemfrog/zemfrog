@@ -1,8 +1,12 @@
 flask
 flask-sqlalchemy
 flask-migrate
+flask-jwt-extended
+flask-mail
 flask-marshmallow
+flask-shell-ipython
 marshmallow-sqlalchemy
 python-dotenv
 celery
-sqlacodegen
+redis
+gunicorn

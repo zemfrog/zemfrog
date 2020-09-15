@@ -18,7 +18,7 @@ zemfrog
 
 
 
-Zemfrog is a boilerplate for flask.
+Zemfrog is a powerful boilerplate for flask.
 Which focuses on building API structures that are easy to customize, flexible and manageable!
 We believe zemfrog can speed up your work with flask and please help us develop this boilerplate!
 
