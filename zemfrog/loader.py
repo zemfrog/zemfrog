@@ -28,12 +28,7 @@ def load_config(app: Flask):
 
 def load_extensions(app: Flask):
     """
-    Semua ekstensi flask kamu berada di folder ``extensions``
-    dan itu akan secara otomatis dimuat semua oleh zemfrog.
-
-    .. note::
-        Ekstensi harus mempunyai method ``init_app`` pada modul kamu.
-        Untuk contoh kamu bisa liat salah satu modul di folder ``ekstensions``.
+    Fungsi untuk memuat semua ekstensi flask kamu.
     """
 
     extensions = app.config.get("EXTENSIONS", [])
@@ -45,14 +40,7 @@ def load_extensions(app: Flask):
 
 def load_models(app: Flask):
     """
-    Semua model ORM sqlalchemy kamu berada di folder ``models``
-    dan itu akan secara otomatis dimuat semua oleh zemfrog.
-
-    .. note::
-        Secara bawaan semua model yg ada di folder ``models``
-        akan dibuat semua ke bentuk table di database.
-        Kamu bisa menonaktifkan pembuatan table dengan mengatur nilai ``False``
-        pada konfigurasi ``CREATE_DB``.
+    Fungsi untuk memuat semua model ORM kamu.
     """
 
     app.models = {}
@@ -73,11 +61,7 @@ def load_models(app: Flask):
 
 def load_commands(app: Flask):
     """
-    Di zemfrog, kamu dapat membuat command kamu sendiri dan mendaftarkanya pada command ``flask``.
-
-    .. note::
-        Kamu dapat membuat ``boilerplate command`` dengan menggunakan command ``flask command new``.
-        Dan jangan lupa untuk mendaftarkan nya ke konfigurasi ``COMMANDS``.
+    Fungsi untuk memuat semua command kamu dan mendaftarkan ke command ``flask``.
     """
 
     commands = app.config.get("COMMANDS", [])
@@ -88,6 +72,10 @@ def load_commands(app: Flask):
 
 
 def load_blueprints(app: Flask):
+    """
+    Fungsi untuk memuat semua blueprint flask yang sudah terdaftar di config ``BLUEPRINTS`` pada config.py
+    """
+
     blueprints = app.config.get("BLUEPRINTS", [])
     for name in blueprints:
         bp = name + ".routes.blueprint"
@@ -101,6 +89,10 @@ def load_blueprints(app: Flask):
 
 
 def load_apis(app: Flask):
+    """
+    Fungsi untuk memuat semua resource API kamu ke flask.
+    """
+
     apis = app.config.get("APIS", [])
     api: Blueprint = import_attr("api.api")
     for res in apis:
@@ -118,11 +110,19 @@ def load_apis(app: Flask):
 
 
 def load_services(app: Flask):
+    """
+    Fungsi untuk memuat semua background task celery.
+    """
+
     services = app.config.get("SERVICES", [])
     for sv in services:
         import_module(sv)
 
 
 def load_schemas(app: Flask):
+    """
+    Fungsi untuk membuat model schema menggunakan marshmallow secara otomatis.
+    """
+
     for src, models in app.models.items():
         g_schema(src, models)

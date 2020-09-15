@@ -2,11 +2,13 @@ import click
 
 from .generator import g_project
 
+
 @click.group()
 def main():
     """
-    Zemfrog command line 
+    Zemfrog CLI
     """
+
 
 @main.command("create")
 @click.argument("name")

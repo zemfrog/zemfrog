@@ -5,11 +5,21 @@ from jinja2 import Template
 
 from .helper import copy_template, search_model
 
+
 def g_project(name):
+    """
+    Fungsi untuk membuat project.
+    """
+
     print("Creating %r project..." % name)
     copy_template("project", name)
 
+
 def g_api(name):
+    """
+    Fungsi untuk membuat API.
+    """
+
     print("Creating rest api %r... " % name, end="")
     copy_template("api", "api")
     old_filename = os.path.join("api", "name.py")
@@ -25,7 +35,12 @@ def g_api(name):
 
     print("(done)")
 
+
 def g_api_crud(name):
+    """
+    Fungsi untuk membuat REST API.
+    """
+
     src_model = search_model(name)
     src_schema = src_model.replace("models", "schema", 1)
     print("Creating rest api (crud) %r... " % name, end="")
@@ -34,7 +49,12 @@ def g_api_crud(name):
     with open(old_filename) as fp:
         old_data = fp.read()
         py_t = string.Template(old_data)
-        new_data = py_t.safe_substitute(name=name, url_prefix=name.lower(), src_model=src_model, src_schema=src_schema)
+        new_data = py_t.safe_substitute(
+            name=name,
+            url_prefix=name.lower(),
+            src_model=src_model,
+            src_schema=src_schema,
+        )
 
     os.remove(old_filename)
     new_filename = os.path.join("api", name.lower() + ".py")
@@ -43,7 +63,12 @@ def g_api_crud(name):
 
     print("(done)")
 
+
 def g_blueprint(name):
+    """
+    Fungsi untuk membuat blueprint boilerplate.
+    """
+
     print("Creating blueprint %r... " % name, end="")
     copy_template("blueprint", name.lower())
     filename = os.path.join(name.lower(), "routes.py")
@@ -57,7 +82,12 @@ def g_blueprint(name):
 
     print("(done)")
 
+
 def g_schema(src, models):
+    """
+    Fungsi untuk membuat model schema.
+    """
+
     print("Creating schema for %r... " % src, end="")
     copy_template("schema", "schema")
     old_filename = os.path.join("schema", "name.py")
@@ -79,8 +109,13 @@ def g_schema(src, models):
 
     print("(done)")
 
+
 def g_command(name):
-    print("Creating command %r..." % name, end='')
+    """
+    Fungsi untuk membuat command boilerplate.
+    """
+
+    print("Creating command %r..." % name, end="")
     copy_template("command", "commands")
     old_filename = os.path.join("commands", "name.py")
     with open(old_filename) as fp:
