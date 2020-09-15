@@ -8,7 +8,7 @@ Welcome to zemfrog's documentation!
    readme
    installation
    usage
-   modules
+   zemfrog
    contributing
    authors
    history
