@@ -25,8 +25,8 @@ class Development(object):
     BLUEPRINTS = ["auth"]
     APIS = []
     CREATE_DB = True
-    CELERY_RESULT_BACKEND = None
-    CELERY_BROKER_URL = None
+    CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
+    CELERY_BROKER_URL = CELERY_RESULT_BACKEND
 
 
 class Production(Development):
