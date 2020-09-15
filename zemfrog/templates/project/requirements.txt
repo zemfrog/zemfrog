@@ -8,4 +8,5 @@ flask-shell-ipython
 marshmallow-sqlalchemy
 python-dotenv
 celery
+redis
 gunicorn
