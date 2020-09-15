@@ -10,8 +10,6 @@ History
 1.0.1 (2020-09-07)
 ------------------
 
-Lots of things have been fixed, including:
-
 * Automation create (CRUD) API
 * Update template API
 * Update zemfrog release information.
@@ -36,3 +34,11 @@ Lots of things have been fixed, including:
 
 * add command boilerplate
 * add schema command
+
+1.0.6 (2020-09-15)
+------------------
+
+* add jwt authentication
+* refactor blueprint boilerplate
+* add send async email
+* fix celery
