@@ -9,7 +9,7 @@ from flask.blueprints import Blueprint
 
 from .generator import g_schema
 from .exception import ZemfrogEnvironment
-from .helper import get_models, import_attr, search_model
+from .helper import get_models, import_attr
 
 
 def load_config(app: Flask):
