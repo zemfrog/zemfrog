@@ -63,12 +63,12 @@ Daftarkan fungsi view ke blueprint.
         ('/logout', views.logout, ['POST'])
     ]
 
-Sekarang anda dapat menambahkan blueprint ke aplikasi flask kamu, bagaimana??
+Sekarang kamu dapat menambahkan blueprint ke aplikasi flask kamu, bagaimana??
 Masukin nama blueprint kamu ke config ``BLUEPRINTS``, e.g.::
 
     BLUEPRINTS = ['account']
 
-Dan, sekarang anda bisa melihat blueprint ``account`` telah terdaftar di aplikasi flask::
+Dan, sekarang kamu bisa melihat blueprint ``account`` telah terdaftar di aplikasi flask::
 
     $ flask routes
 
@@ -76,7 +76,7 @@ Dan, sekarang anda bisa melihat blueprint ``account`` telah terdaftar di aplikas
 API
 ^^^
 
-Di zemfrog anda dapat membuat base API nya saja atau dengan (CRUD).
+Di zemfrog kamu dapat membuat base API nya saja atau dengan (CRUD).
 Contoh, membuat base API (tanpa CRUD)::
 
     $ flask api new article
@@ -87,7 +87,7 @@ Sekarang, membuat API dengan (CRUD) !
 
 .. note::
 
-    Anda tidak dapat membuat API (CRUD) jika anda tidak mempunyai model ORM untuk 
+    Kamu tidak dapat membuat API (CRUD) jika kamu tidak mempunyai model ORM untuk 
     API tersebut.
 
 Mari membuat model ``Product``. Model ini nantinya, yang akan kita buatkan API (CRUD) nya.
@@ -105,14 +105,14 @@ Sekarang, kita membuatkan API (CRUD) untuk model ``Product``.
 
 .. warning::
 
-    Perlu dicatat, anda harus membuat API dengan nama yang sama dengan model ORM anda.
+    Perlu dicatat, kamu harus membuat API dengan nama yang sama dengan model ORM kamu.
     Dan jangan lupa tambahkan opsi ``--crud``.
 
 Contoh::
 
     $ flask api new Product --crud
 
-API ini tidak akan bekerja jika anda belum menambahkan nya pada config ``APIS``.
+API ini tidak akan bekerja jika kamu belum menambahkan nya pada config ``APIS``.
 Mari kita tambahkan ke config::
 
     APIS = ['api.product']
