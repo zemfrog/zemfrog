@@ -54,7 +54,8 @@ Daftarkan fungsi view ke blueprint.
 
     Format route akan terlihat seperti ini ``(url, view, methods)``.
 
-::
+.. code-block:: python
+
     # account/urls.py
 
     routes = [
