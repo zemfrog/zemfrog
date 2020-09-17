@@ -47,7 +47,7 @@ def search_model(name):
     Fungsi untuk mendapatkan lokasi model.
     """
 
-    for src, models in current_app.models:
+    for src, models in current_app.models.items():
         if name in models:
             return src
 
