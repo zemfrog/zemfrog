@@ -5,9 +5,9 @@ Credits
 Development Lead
 ----------------
 
-* Aprila Hijriyan <hijriyan23@gmail.com>
+* Aprila Hijriyan <hijriyan23(at)gmail(dot)com>
 
 Contributors
 ------------
 
-None yet. Why not be the first?
+* Untuk logo - M Julius <mjulius.dev(at)gmail(dot)com>
