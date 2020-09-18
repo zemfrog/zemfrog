@@ -5,5 +5,4 @@ from {{src_model}} import {{ model_list|join(', ') }}
 class {{name}}Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = {{name}}
-        load_instance = True
 {% endfor %}

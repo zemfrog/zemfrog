@@ -48,7 +48,7 @@ def auto_status_code(func):
         if isinstance(result, dict):
             status_code = result.get("status_code", 200)
 
-        if not isinstance(result, tuple):
+        if not isinstance(result, (tuple, list)):
             result = result, status_code
 
         return result

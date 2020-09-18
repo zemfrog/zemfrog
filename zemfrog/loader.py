@@ -6,7 +6,7 @@ from importlib import import_module
 
 from flask.cli import load_dotenv
 from flask.blueprints import Blueprint
-from flask_apispec.extension import FlaskApiSpec
+from flask_apispec import FlaskApiSpec, doc
 
 from .generator import g_schema
 from .exception import ZemfrogEnvironment
@@ -138,11 +138,14 @@ def load_docs(app: Flask):
     docs: FlaskApiSpec = import_attr("extensions.apispec.docs")
     for res in apis:
         res = import_module(res)
+        api_docs = res.docs
         routes = res.routes
         endpoint = res.endpoint
         for detail in routes:
             _, view, _ = detail
             e = endpoint + "_" + view.__name__
+            if api_docs:
+                view = doc(**api_docs)(view)
             docs.register(view, endpoint=e, blueprint="api")
 
     api_docs = app.config.get("API_DOCS", False)
@@ -151,8 +154,11 @@ def load_docs(app: Flask):
         for name in blueprints:
             bp = name + ".routes.blueprint"
             bp: Blueprint = import_attr(bp)
-            routes = name + ".urls.routes"
-            routes = import_attr(routes)
+            urls = name + ".urls"
+            urls = import_module(urls)
+            api_docs = urls.docs
+            routes = urls.routes
             for _, view, _ in routes:
+                if api_docs:
+                    view = doc(**api_docs)(view)
                 docs.register(view, blueprint=name)
-                print("docs:", view, name)
