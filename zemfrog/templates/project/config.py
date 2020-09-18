@@ -7,6 +7,10 @@ class Development(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = "JWT secret key!"
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
+    MAIL_PORT = 8025
+    MAIL_DEFAULT_SENDER = "admin@localhost.com"
+    APISPEC_TITLE = "API Docs"
+    APISPEC_SWAGGER_UI_URL = "/docs"
     DEBUG = True
     EXTENSIONS = [
         "extensions.sqlalchemy",
@@ -15,6 +19,7 @@ class Development(object):
         "extensions.jwt",
         "extensions.mail",
         "extensions.celery",
+        "extensions.apispec",
     ]
     COMMANDS = [
         "zemfrog.commands.api",
@@ -24,6 +29,7 @@ class Development(object):
     ]
     BLUEPRINTS = ["auth"]
     APIS = []
+    API_DOCS = True
     CREATE_DB = True
     CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
     CELERY_BROKER_URL = CELERY_RESULT_BACKEND

@@ -1,23 +1,30 @@
 from zemfrog.decorators import is_json_request, json_renderer
 from zemfrog.helper import db_add, db_delete, db_update
+from zemfrog.models import DefaultResponseSchema
 from flask import request
+from flask_apispec import marshal_with, use_kwargs
 from extensions.sqlalchemy import db
+from extensions.marshmallow import ma
 from ${src_model} import ${name}
 from ${src_schema} import ${name}Schema
 
+class UpdateSchema(${name}Schema):
+    __update__ = ma.Nested(${name}Schema)
+
 schema = ${name}Schema()
 
-@json_renderer
+@marshal_with(${name}Schema(many=True), 200)
 def get():
     """
     Read all data.
     """
 
     data = ${name}.query.all()
-    return schema.dump(data, many=True)
+    return data
 
-@is_json_request
-@json_renderer
+@use_kwargs(schema)
+@marshal_with(DefaultResponseSchema, 200)
+@marshal_with(DefaultResponseSchema, 403)
 def add():
     """
     Add data.
@@ -40,8 +47,10 @@ def add():
         "reason": reason
     }
 
-@is_json_request
-@json_renderer
+@use_kwargs(UpdateSchema)
+@marshal_with(DefaultResponseSchema, 200)
+@marshal_with(DefaultResponseSchema, 404)
+@marshal_with(DefaultResponseSchema, 403)
 def update():
     """
     Update data.
@@ -69,8 +78,9 @@ def update():
         "reason": reason
     }
 
-@is_json_request
-@json_renderer
+@use_kwargs(schema)
+@marshal_with(DefaultResponseSchema, 200)
+@marshal_with(DefaultResponseSchema, 404)
 def delete():
     """
     Delete data.

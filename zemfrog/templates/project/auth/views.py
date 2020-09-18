@@ -1,21 +1,32 @@
 from datetime import datetime, timedelta
 from flask import request, url_for
 from flask_jwt_extended import create_access_token, decode_token
+from flask_apispec import use_kwargs, marshal_with
 from jwt import DecodeError, ExpiredSignatureError
 from werkzeug.security import generate_password_hash, check_password_hash
-from zemfrog.decorators import json_renderer, is_json_request
+from zemfrog.decorators import auto_status_code
 from zemfrog.helper import db_add, db_update, db_commit, get_mail_template
+from zemfrog.models import (
+    DefaultResponseSchema,
+    LoginSchema,
+    LoginSuccessSchema,
+    PasswordResetSchema,
+    RegisterSchema,
+    RequestPasswordResetSchema,
+)
 
 from extensions.sqlalchemy import db
 from models.user import User, Log
 from services.email import send_email
 
 
-@is_json_request
-@json_renderer
-def login():
-    email = request.json.get("email")
-    passw = request.json.get("password")
+@use_kwargs(LoginSchema)
+@marshal_with(DefaultResponseSchema, 401)
+@marshal_with(LoginSuccessSchema, 200)
+@auto_status_code
+def login(**kwds):
+    email = kwds.get("email")
+    passw = kwds.get("password")
     user = User.query.filter_by(email=email).first()
 
     if user and user.confirmed and check_password_hash(user.password, passw):
@@ -29,12 +40,15 @@ def login():
     return {"reason": "Email atau password salah.", "status_code": 401}
 
 
-@is_json_request
-@json_renderer
-def register():
-    username = request.json.get("username")
-    passw = request.json.get("password")
-    email = request.json.get("email")
+@use_kwargs(RegisterSchema)
+@marshal_with(DefaultResponseSchema, 200)
+@marshal_with(DefaultResponseSchema, 403)
+@marshal_with(DefaultResponseSchema, 401)
+@auto_status_code
+def register(**kwds):
+    username = kwds.get("username")
+    passw = kwds.get("password")
+    email = kwds.get("email")
     if email:
         user = User.query.filter_by(email=email).first()
         if not user:
@@ -70,8 +84,9 @@ def register():
     return {"reason": reason, "status_code": status_code}
 
 
-@is_json_request
-@json_renderer
+@marshal_with(DefaultResponseSchema, 200)
+@marshal_with(DefaultResponseSchema, 403)
+@auto_status_code
 def confirm_account(token):
     try:
         data = decode_token(token)
@@ -98,10 +113,13 @@ def confirm_account(token):
     return {"reason": reason, "status_code": status_code}
 
 
-@is_json_request
-@json_renderer
-def request_password_reset():
-    email = request.json.get("email")
+@use_kwargs(RequestPasswordResetSchema)
+@marshal_with(DefaultResponseSchema, 200)
+@marshal_with(DefaultResponseSchema, 403)
+@marshal_with(DefaultResponseSchema, 401)
+@auto_status_code
+def request_password_reset(**kwds):
+    email = kwds.get("email")
     if email:
         user = User.query.filter_by(email=email).first()
         if not user:
@@ -127,9 +145,13 @@ def request_password_reset():
     return {"reason": reason, "status_code": status_code}
 
 
-@is_json_request
-@json_renderer
-def password_reset(token):
+@use_kwargs(PasswordResetSchema)
+@marshal_with(DefaultResponseSchema, 200)
+@marshal_with(DefaultResponseSchema, 403)
+@marshal_with(DefaultResponseSchema, 401)
+@marshal_with(DefaultResponseSchema, 404)
+@auto_status_code
+def password_reset(token, **kwds):
     try:
         data = decode_token(token)
         email = data["identity"]
@@ -137,7 +159,7 @@ def password_reset(token):
             raise DecodeError
 
         user = User.query.filter_by(email=email).first()
-        passw = request.json.get("password")
+        passw = kwds.get("password")
         if user and passw:
             passw = generate_password_hash(passw)
             db_update(db, user, password=passw)

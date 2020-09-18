@@ -1,14 +1,11 @@
-from zemfrog.decorators import json_renderer
+from flask_apispec import marshal_with
 
-@json_renderer
+
+@marshal_with(None, 200)
 def get():
-    return {
-        "text": "welcome :')"
-    }
+    return {"text": "welcome :')"}
 
 
 endpoint = "${url_prefix}"
 url_prefix = "/${url_prefix}"
-routes = [
-    ("/get", get, ["GET"])
-]
+routes = [("/get", get, ["GET"])]
