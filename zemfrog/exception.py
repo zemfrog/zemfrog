@@ -1,11 +1,18 @@
 class ZemfrogException(Exception):
     pass
 
+
 class ZemfrogTemplateNotFound(ZemfrogException):
     pass
+
 
 class ZemfrogEnvironment(ZemfrogException):
     pass
 
+
 class ZemfrogModelNotFound(ZemfrogException):
+    pass
+
+
+class ZemfrogJSONError(ZemfrogException):
     pass

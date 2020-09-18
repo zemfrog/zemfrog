@@ -88,6 +88,9 @@ def g_schema(src, models):
     Fungsi untuk membuat model schema.
     """
 
+    if not models:
+        return
+
     print("Creating schema for %r... " % src, end="")
     copy_template("schema", "schema")
     old_filename = os.path.join("schema", "name.py")

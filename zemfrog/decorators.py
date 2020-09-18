@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from functools import wraps
+from .exception import ZemfrogJSONError
 
 
 def is_json_request(func):
@@ -25,6 +26,31 @@ def json_renderer(func):
     @wraps(func)
     def wrapper(*args, **kwds):
         result = func(*args, **kwds)
-        return jsonify(result)
+        if not isinstance(result, (dict, list)):
+            raise ZemfrogJSONError("%r harus tipe dict atau list" % result)
+
+        status_code = result.get("status_code", 200)
+        return jsonify(result), status_code
+
+    return wrapper
+
+
+def auto_status_code(func):
+    """
+    Decorator untuk membuat response status kode HTTP secara otomatis
+    sesuai key ``status_code`` pada json.
+    """
+
+    @wraps(func)
+    def wrapper(*args, **kwds):
+        result = func(*args, **kwds)
+        status_code = 200
+        if isinstance(result, dict):
+            status_code = result.get("status_code", 200)
+
+        if not isinstance(result, tuple):
+            result = result, status_code
+
+        return result
 
     return wrapper
