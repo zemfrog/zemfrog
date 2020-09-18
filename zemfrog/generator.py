@@ -43,7 +43,7 @@ def g_api_crud(name):
 
     src_model = search_model(name)
     src_schema = src_model.replace("models", "schema", 1)
-    print("Creating rest api (crud) %r... " % name, end="")
+    print("Creating REST API (crud) %r... " % name, end="")
     copy_template("crud", "api")
     old_filename = os.path.join("api", "name.py")
     with open(old_filename) as fp:
@@ -71,14 +71,15 @@ def g_blueprint(name):
 
     print("Creating blueprint %r... " % name, end="")
     copy_template("blueprint", name.lower())
-    filename = os.path.join(name.lower(), "routes.py")
-    with open(filename) as fp:
-        old_data = fp.read()
-        py_t = string.Template(old_data)
-        new_data = py_t.safe_substitute(name=name)
+    for fname in ("routes", "urls"):
+        filename = os.path.join(name.lower(), fname + ".py")
+        with open(filename) as fp:
+            old_data = fp.read()
+            py_t = string.Template(old_data)
+            new_data = py_t.safe_substitute(name=name)
 
-    with open(filename, "w") as fp:
-        fp.write(new_data)
+        with open(filename, "w") as fp:
+            fp.write(new_data)
 
     print("(done)")
 

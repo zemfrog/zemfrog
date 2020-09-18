@@ -6,6 +6,7 @@ def get():
     return {"text": "welcome :')"}
 
 
+docs = {"tags": ["${name}"]}
 endpoint = "${url_prefix}"
 url_prefix = "/${url_prefix}"
 routes = [("/get", get, ["GET"])]

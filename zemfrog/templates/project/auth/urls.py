@@ -1,5 +1,6 @@
 from . import views
 
+docs = {"tags": ["auth"]}
 routes = [
     ("/login", views.login, ["POST"]),
     ("/register", views.register, ["POST"]),

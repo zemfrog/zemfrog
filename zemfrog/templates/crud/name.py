@@ -1,7 +1,6 @@
-from zemfrog.decorators import is_json_request, json_renderer
+from zemfrog.decorators import auto_status_code
 from zemfrog.helper import db_add, db_delete, db_update
 from zemfrog.models import DefaultResponseSchema
-from flask import request
 from flask_apispec import marshal_with, use_kwargs
 from extensions.sqlalchemy import db
 from extensions.marshmallow import ma
@@ -25,15 +24,15 @@ def get():
 @use_kwargs(schema)
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
-def add():
+@auto_status_code
+def add(**json):
     """
     Add data.
     """
 
-    json = request.get_json()
     found = ${name}.query.filter_by(**json).first()
     if not found:
-        model = schema.load(json)
+        model = ${name}(**json)
         db_add(db, model)
         status_code = 200
         reason = "Data berhasil ditambahkan."
@@ -51,12 +50,12 @@ def add():
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
 @marshal_with(DefaultResponseSchema, 403)
-def update():
+@auto_status_code
+def update(**json):
     """
     Update data.
     """
 
-    json = request.get_json()
     new_data = json.pop("__update__", None)
     if new_data and isinstance(new_data, dict):
         model = ${name}.query.filter_by(**json).first()
@@ -81,12 +80,12 @@ def update():
 @use_kwargs(schema)
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
-def delete():
+@auto_status_code
+def delete(**json):
     """
     Delete data.
     """
 
-    json = request.get_json()
     model = ${name}.query.filter_by(**json).first()
     if model:
         db_delete(db, model)
@@ -102,6 +101,8 @@ def delete():
         "reason": reason
     }
 
+
+docs = {"tags": ["${name}"]}
 endpoint = "${url_prefix}"
 url_prefix = "/${url_prefix}"
 routes = [
