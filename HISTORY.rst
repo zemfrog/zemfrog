@@ -42,3 +42,15 @@ History
 * refactor blueprint boilerplate
 * add send async email
 * fix celery
+
+1.0.7 (2020-09-19)
+------------------
+
+* Fix: `#8 <https://github.com/zemfrog/zemfrog/issues/8>`_
+* flask-apispec integration.
+* improve authentication.
+* add default schema models.
+* Fix: rest api boilerplate
+* IMPROVE: Added a prompt if a schema model exists.
+* IMPROVE: add zemfrgo to requirements
+* DOC: add README to project boilerplate

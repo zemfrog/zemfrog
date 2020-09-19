@@ -17,6 +17,12 @@ setup_requirements = []
 
 test_requirements = []
 
+project_urls = {
+    "Github": "https://github.com/zemfrog/zemfrog",
+    "Issue Tracker": "https://github.com/zemfrog/zemfrog/issues",
+    "Donation": "https://www.patreon.com/aprilahijriyan",
+}
+
 setup(
     author="Aprila Hijriyan",
     author_email="hijriyan23@gmail.com",
@@ -49,6 +55,7 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/zemfrog/zemfrog",
-    version="1.0.6",
+    version="1.0.7",
     zip_safe=False,
+    project_urls=project_urls,
 )
