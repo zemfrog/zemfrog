@@ -10,3 +10,4 @@ python-dotenv
 celery
 redis
 gunicorn
+zemfrog
