@@ -92,6 +92,12 @@ def g_schema(src, models):
     if not models:
         return
 
+    srcfile = import_module(src).__file__.replace("models" + os.sep, "schema" + os.sep)
+    if os.path.isfile(srcfile):
+        choice = input("File %r exist, apakah mau di timpa? (y/N): " % src).lower()
+        if choice != "y":
+            return
+
     print("Creating schema for %r... " % src, end="")
     copy_template("schema", "schema")
     old_filename = os.path.join("schema", "name.py")
@@ -101,7 +107,6 @@ def g_schema(src, models):
         new_data = t.render(model_list=models, src_model=src)
 
     os.remove(old_filename)
-    srcfile = import_module(src).__file__.replace("models" + os.sep, "schema" + os.sep)
     dirname = os.path.dirname(srcfile).replace("models" + os.sep, "schema" + os.sep)
     try:
         os.makedirs(dirname)
