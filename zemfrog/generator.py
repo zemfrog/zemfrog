@@ -13,6 +13,15 @@ def g_project(name):
 
     print("Creating %r project..." % name)
     copy_template("project", name)
+    readme = os.path.join(name, "README.rst")
+    with open(readme) as fp:
+        data = fp.read()
+        t = string.Template(data)
+        new = t.safe_substitute(name=name)
+
+    os.remove(readme)
+    with open(readme, "w") as fp:
+        fp.write(new)
 
 
 def g_api(name):
