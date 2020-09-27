@@ -2,25 +2,56 @@
 Usage
 =====
 
-Membuat project dengan ``zemfrog``::
+First, you have to create a project with ``zemfrog``::
 
     $ zemfrog create frog
 
+The application structure is as follows::
 
-Dan sekarang jalankan::
+    frog (root directory)
+    ├── api
+    ├── auth
+    ├── commands
+    ├── extensions
+    ├── mail
+    ├── models
+    ├── schema
+    ├── services
+    ├── config.py
+    ├── Procfile
+    ├── README.rst
+    ├── requirements.txt
+    └── wsgi.py
+
+* ``api`` - This directory is for all REST API resources.
+* ``auth`` - This directory is the default JWT authentication.
+* ``commands`` - This directory is for the commands that will be registered in the flask command.
+* ``extensions`` - This directory is for a list of flask extensions.
+* ``mail`` - This directory is for the list of mail templates.
+* ``models`` - This directory is for a list of sqlalchemy ORM models.
+* ``schema`` - This directory is for the list of marshmallow schema models.
+* ``services`` - This directory is for the celery task list.
+* ``config.py`` - Flask application configuration file.
+* ``Procfile`` - Configuration file for deploying on heroku.
+* ``README.rst`` - A short description of how to run zemfrog applications.
+* ``requirements.txt`` - List of application dependencies.
+* ``wsgi.py`` - Flask application here.
+
+And now run your application::
 
     $ cd frog
+    $ pip install -r requirements.txt
     $ flask run
 
 
 Blueprints
-^^^^^^^^^^
+----------
 
-Membuat blueprint boilerplate::
+Make a boilerplate blueprint::
 
     $ flask blueprint new account
 
-Struktur blueprint akan terlihat seperti ini::
+The blueprint structure will look like this::
 
     account
     ├── __init__.py
@@ -31,14 +62,14 @@ Struktur blueprint akan terlihat seperti ini::
 +---------------+---------------------------------+
 | Filename      | Description                     |
 +===============+=================================+
-| ``routes.py`` | objek blueprint kamu disini     |
+| ``routes.py`` | Your blueprint is here          |
 +---------------+---------------------------------+
-| ``urls.py``   | semua API enpoints kamu disini  |
+| ``urls.py``   | All your endpoints are here     |
 +---------------+---------------------------------+
-| ``views.py``  | semua fungsi view kamu disini   |
+| ``views.py``  | All your view functions here    |
 +---------------+---------------------------------+
 
-Mari kita membuat 2 fungsi view::
+Let's create 2 view functions::
 
     # account/views.py
 
@@ -48,11 +79,11 @@ Mari kita membuat 2 fungsi view::
     def logout():
         return "logout cuk"
 
-Daftarkan fungsi view ke blueprint.
+Register the view function to the blueprint, otherwise your view function will not be in the blueprint.
 
 .. note::
 
-    Format route akan terlihat seperti ini ``(url, view, methods)``.
+    The route format will look like this ``(url, view, methods)``.
 
 .. code-block:: python
 
@@ -63,36 +94,51 @@ Daftarkan fungsi view ke blueprint.
         ('/logout', views.logout, ['POST'])
     ]
 
-Sekarang kamu dapat menambahkan blueprint ke aplikasi flask kamu, bagaimana??
-Masukin nama blueprint kamu ke config ``BLUEPRINTS``, e.g.::
+Now all views will be listed on the blueprint. However, you need to register your blueprints in the flask app.
+Add your blueprint name to the ``BLUEPRINTS`` configuration in config.py::
 
     BLUEPRINTS = ['account']
 
-Dan, sekarang kamu bisa melihat blueprint ``account`` telah terdaftar di aplikasi flask::
+And, now you can see the blueprint ``account`` has been registered in the flask application::
 
     $ flask routes
 
 
 API
-^^^
+---
 
-Di zemfrog kamu dapat membuat base API nya saja atau dengan (CRUD).
-Contoh, membuat base API (tanpa CRUD)::
+zemfrog is specially designed for building REST APIs quickly.
+In zemfrog you can create a basic CRUD or just boilerplate API.
+
+All API resources are located in the ``api`` directory.
+
+Let's start by creating an API resource::
 
     $ flask api new article
 
-Cara diatas akan membuat module article.py di direktori ``api`` dan itu adalah sumberdaya API untuk article.
+Now you have the article API resource::
 
-Sekarang, membuat API dengan (CRUD) !
+    api
+    ├── article.py
+    ├── __init__.py
+
+In the article API resource there are variables ``docs``, ``endpoint``, ``url_prefix`` and ``routes``.
+
+
+* ``docs`` - For your REST API documentation, see `here <https://flask-apispec.readthedocs.io/en/latest/api_reference.html#flask_apispec.annotations.doc>`_.
+* ``endpoint`` - For naming your view function. So if the view name is ``add`` then it will become ``article_add``.
+* ``url_prefix`` - URL prefix for the API resource.
+* ``routes`` - All of your API endpoints.
+
+Now, we will create a basic REST API.
 
 .. note::
 
-    Kamu tidak dapat membuat API (CRUD) jika kamu tidak mempunyai model ORM untuk 
-    API tersebut.
+    You cannot create a REST API if you don't have an ORM model for that API.
 
-Mari membuat model ``Product``. Model ini nantinya, yang akan kita buatkan API (CRUD) nya.
+Let's create a ``Product`` model.
 
-Rubah, file ``models/__init__.py`` menjadi seperti ini::
+Change the file ``models/__init__.py`` to be like this::
 
     from extensions.sqlalchemy import db
     from sqlalchemy import Column, String, Integer
@@ -101,18 +147,16 @@ Rubah, file ``models/__init__.py`` menjadi seperti ini::
         id = Column(Integer, primary_key=True)
         name = Column(String)
 
-Sekarang, kita membuatkan API (CRUD) untuk model ``Product``.
-
 .. warning::
 
-    Perlu dicatat, kamu harus membuat API dengan nama yang sama dengan model ORM kamu.
-    Dan jangan lupa tambahkan opsi ``--crud``.
+    Keep in mind, you have to create an API with the same name as your ORM model.
+    And don't forget to add the ``--crud`` option.
 
-Contoh::
+And we can create a REST API::
 
     $ flask api new Product --crud
 
-API ini tidak akan bekerja jika kamu belum menambahkan nya pada config ``APIS``.
-Mari kita tambahkan ke config::
+This REST API will not work if you haven't added it to the ``APIS`` config.
+Let's add it to the config::
 
     APIS = ['api.product']
