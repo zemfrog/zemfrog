@@ -59,15 +59,9 @@ The blueprint structure will look like this::
     ├── urls.py
     └── views.py
 
-+---------------+---------------------------------+
-| Filename      | Description                     |
-+===============+=================================+
-| ``routes.py`` | Your blueprint is here          |
-+---------------+---------------------------------+
-| ``urls.py``   | All your endpoints are here     |
-+---------------+---------------------------------+
-| ``views.py``  | All your view functions here    |
-+---------------+---------------------------------+
+* ``routes.py`` - Your blueprint is here.
+* ``urls.py``   - All your endpoints are here.
+* ``views.py``  - All your view functions here.
 
 Let's create 2 view functions::
 
