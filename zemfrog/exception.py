@@ -12,7 +12,3 @@ class ZemfrogEnvironment(ZemfrogException):
 
 class ZemfrogModelNotFound(ZemfrogException):
     pass
-
-
-class ZemfrogJSONError(ZemfrogException):
-    pass
