@@ -3,10 +3,10 @@ from . import loader
 from celery import Celery
 
 
-def make_celery(app: Flask):
+def make_celery(app: Flask) -> Celery:
     """
-    Membuat aplikasi celery untuk aplikasi flask.
-    Sumber https://flask.palletsprojects.com/en/1.1.x/patterns/celery/#configure
+    Creating a celery application for flask applications.
+    Source: https://flask.palletsprojects.com/en/1.1.x/patterns/celery/#configure
     """
 
     celery = Celery(
@@ -25,9 +25,12 @@ def make_celery(app: Flask):
     return celery
 
 
-def create_app(name):
+def create_app(name: str) -> Flask:
     """
-    Fungsi untuk membuat aplikasi flask kamu.
+    Functions to build your flask application and load all configurations.
+
+    :param name: import name.
+
     """
 
     app = Flask(name)

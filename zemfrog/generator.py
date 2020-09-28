@@ -6,9 +6,12 @@ from jinja2 import Template
 from .helper import copy_template, search_model
 
 
-def g_project(name):
+def g_project(name: str):
     """
-    Fungsi untuk membuat project.
+    Functions for creating projects.
+
+    :param name: project name.
+
     """
 
     print("Creating %r project..." % name)
@@ -24,12 +27,15 @@ def g_project(name):
         fp.write(new)
 
 
-def g_api(name):
+def g_api(name: str):
     """
-    Fungsi untuk membuat API.
+    Functions for creating APIs.
+
+    :param name: REST API name.
+
     """
 
-    print("Creating rest api %r... " % name, end="")
+    print("Creating API %r... " % name, end="")
     copy_template("api", "api")
     old_filename = os.path.join("api", "name.py")
     with open(old_filename) as fp:
@@ -45,14 +51,17 @@ def g_api(name):
     print("(done)")
 
 
-def g_api_crud(name):
+def g_api_crud(name: str):
     """
-    Fungsi untuk membuat REST API.
+    Function for creating REST API.
+
+    :param name: REST API name.
+
     """
 
     src_model = search_model(name)
     src_schema = src_model.replace("models", "schema", 1)
-    print("Creating REST API (crud) %r... " % name, end="")
+    print("Creating REST API %r... " % name, end="")
     copy_template("crud", "api")
     old_filename = os.path.join("api", "name.py")
     with open(old_filename) as fp:
@@ -73,9 +82,12 @@ def g_api_crud(name):
     print("(done)")
 
 
-def g_blueprint(name):
+def g_blueprint(name: str):
     """
-    Fungsi untuk membuat blueprint boilerplate.
+    Function for creating blueprints.
+
+    :param name: blueprint name.
+
     """
 
     print("Creating blueprint %r... " % name, end="")
@@ -93,9 +105,13 @@ def g_blueprint(name):
     print("(done)")
 
 
-def g_schema(src, models):
+def g_schema(src: str, models: list):
     """
-    Fungsi untuk membuat model schema.
+    Function for creating schema models.
+
+    :param src: source model.
+    :param models: list of ORM models in your model module.
+
     """
 
     if not models:
@@ -103,7 +119,9 @@ def g_schema(src, models):
 
     srcfile = import_module(src).__file__.replace("models" + os.sep, "schema" + os.sep)
     if os.path.isfile(srcfile):
-        choice = input("File %r exist, apakah mau di timpa? (y/N): " % src).lower()
+        choice = input(
+            "File %r exist, do you want to overwrite it? (y/N): " % src
+        ).lower()
         if choice != "y":
             return
 
@@ -128,9 +146,12 @@ def g_schema(src, models):
     print("(done)")
 
 
-def g_command(name):
+def g_command(name: str):
     """
-    Fungsi untuk membuat command boilerplate.
+    Function to create boilerplate command.
+
+    :param name: command name.
+
     """
 
     print("Creating command %r..." % name, end="")

@@ -2,6 +2,7 @@ import os
 
 from importlib import import_module
 from distutils.dir_util import copy_tree
+from types import ModuleType
 from jinja2 import Template
 from flask import current_app
 from flask_sqlalchemy import Model
@@ -11,9 +12,14 @@ from .exception import ZemfrogTemplateNotFound, ZemfrogModelNotFound
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "templates")
 
 
-def get_template(name):
+def get_template(name: str) -> str:
     """
-    Fungsi untuk mendapatkan base template.
+    Function to get template base directory.
+
+    :param name: template directory name.
+
+    :raises: ZemfrogTemplateNotFound
+
     """
 
     t = os.path.join(TEMPLATE_DIR, name)
@@ -23,18 +29,25 @@ def get_template(name):
     return t
 
 
-def copy_template(name, dst):
+def copy_template(name: str, dst: str):
     """
-    Fungsi untuk menyalin template.
+    Function for copying templates.
+
+    :param name: template directory name.
+    :param dst: Destination output.
+
     """
 
     t = get_template(name)
     copy_tree(t, dst)
 
 
-def import_attr(module):
+def import_attr(module: str):
     """
-    Fungsi untuk mengambil atribut pada modul.
+    Functions to get attributes in modules.
+
+    :param module: e.g. os.path
+
     """
 
     pkg, name = module.rsplit(".", 1)
@@ -42,21 +55,29 @@ def import_attr(module):
     return getattr(mod, name)
 
 
-def search_model(name):
+def search_model(name: str) -> str:
     """
-    Fungsi untuk mendapatkan lokasi model.
+    Function for getting the model location.
+
+    :param name: model name.
+
+    :raises: ZemfrogModelNotFound
+
     """
 
     for src, models in current_app.models.items():
         if name in models:
             return src
 
-    raise ZemfrogModelNotFound("Tidak dapat menemukan model orm %r" % name)
+    raise ZemfrogModelNotFound("Cannot find %r orm model" % name)
 
 
-def get_models(mod):
+def get_models(mod: ModuleType) -> list:
     """
-    Fungsi untuk mendapatkan semua model ORM pada modul.
+    Function to get all ORM models in the module.
+
+    :param mod: module object.
+
     """
 
     models = []
@@ -75,7 +96,7 @@ def get_models(mod):
 
 def db_add(db, model):
     """
-    Fungsi untuk menambahkan data ke database.
+    Functions for adding data to the database.
     """
 
     db.session.add(model)
@@ -84,7 +105,7 @@ def db_add(db, model):
 
 def db_delete(db, model):
     """
-    Fungsi untuk menghapus data di database.
+    Functions to delete data in the database.
     """
 
     db.session.delete(model)
@@ -93,7 +114,7 @@ def db_delete(db, model):
 
 def db_update(db, model, **kwds):
     """
-    Fungsi untuk memperbaharui data di database.
+    Function to update data in database.
     """
 
     for k, v in kwds.items():
@@ -103,7 +124,7 @@ def db_update(db, model, **kwds):
 
 def db_commit(db):
     """
-    Fungsi untuk menyimpan data ke database.
+    Functions for saving data to a database.
     """
 
     db.session.commit()
@@ -111,12 +132,18 @@ def db_commit(db):
 
 def get_mail_template(name, **context):
     """
-    Fungsi untuk mendapatkan email template.
+    Functions to get email templates.
+
+    :param name: email template name.
+    :param \*\*context: jinja context.
+
+    :raises: ZemfrogTemplateNotFound
+
     """
 
     tmp_src = os.path.join("mail", name)
     if not os.path.isfile(tmp_src):
-        raise ZemfrogTemplateNotFound("email template %r tidak ditemukan" % name)
+        raise ZemfrogTemplateNotFound("Email template %r was not found" % name)
 
     with open(tmp_src) as fp:
         data = fp.read()

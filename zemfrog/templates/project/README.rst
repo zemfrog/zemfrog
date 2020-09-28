@@ -1,26 +1,32 @@
 ${name}
 =======
 
-Project ini menggunakan `zemfrog <https://github.com/zemfrog/zemfrog>`_
+This project uses `zemfrog <https://github.com/zemfrog/zemfrog>`_
 
 
 Usage
 =====
 
-Jalankan aplikasi::
+Assume if you already installed virtualenv and go run the application::
 
+    $ virtualenv venv
+    $ source venv/bin/activate
     $ pip install -r requirements.txt
     $ flask run
 
-Jalankan smtp server::
+Run the smtp server::
 
     $ python -m smtpd -n -d -c DebuggingServer
 
-Jalankan celery worker::
+
+.. note::
+    Before running Celery worker, you need to have redis installed on your device.
+
+Run the celery worker::
 
     $ celery -A wsgi:celery worker
 
-Dan semuanya sudah siap, sekarang pergi ke http://127.0.0.1:5000/docs.
+And everything is ready, now go to http://127.0.0.1:5000/docs.
 
 
 Credits
