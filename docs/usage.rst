@@ -6,6 +6,10 @@ First, you have to create a project with ``zemfrog``::
 
     $ zemfrog create frog
 
+
+Application structure
+---------------------
+
 The application structure is as follows::
 
     frog (root directory)
@@ -42,6 +46,28 @@ And now run your application::
     $ cd frog
     $ pip install -r requirements.txt
     $ flask run
+
+
+Commands
+--------
+
+In the flask application there is a feature to add "own commands" to flask commands. However, these are not automatically added by flask. 
+Don't worry, this behavior will be handled by zemfrog automatically.
+
+Let's create a boilerplate command::
+
+    $ flask command new foo
+
+Now you have ``foo.py`` in the commands directory and you will see the ``command`` variable in the file ``foo.py``. 
+This variable will be imported and added to the flask command by zemfrog automatically.
+
+Then add a command to the ``COMMANDS`` configuration in config.py::
+
+    COMMANDS = ['commands.foo']
+
+Now you can see the command foo is registered in the application::
+
+    $ flask foo
 
 
 Blueprints
@@ -143,6 +169,7 @@ Change the file ``models/__init__.py`` to be like this::
 
 .. warning::
     Keep in mind, at this time the command to create a schema model will overwrite all previous schemas.
+    See this `issue <https://github.com/zemfrog/zemfrog/issues/12>`_ for details.
 
 Then create a schema for your ORM model::
 
