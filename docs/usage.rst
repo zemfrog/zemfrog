@@ -41,11 +41,28 @@ The application structure is as follows::
 * ``requirements.txt`` - List of application dependencies.
 * ``wsgi.py`` - Flask application here.
 
-And now run your application::
+Assume if you already installed virtualenv and go run the application::
 
     $ cd frog
+    $ virtualenv venv
     $ pip install -r requirements.txt
     $ flask run
+
+
+Configuration
+-------------
+
+There are several configurations in the zemfrog application, including:
+
+* ``EXTENSIONS`` - List your flask extensions here.
+* ``COMMANDS`` - List your commands here.
+* ``BLUEPRINTS`` - List your blueprint here.
+* ``APIS`` - List your REST API resources here.
+* ``API_DOCS`` - Configuration for automation creates REST API documentation using ``flask-apispec``. Default value is ``True``.
+* ``CREATE_DB`` - Configuration for automation creates tables of all models. Default value is ``True``, but I will remove this configuration in the future.
+
+Yep! that's all the configuration for the zemfrog application.
+However, you can also add configurations for celery and other flask extensions in config.py :)
 
 
 Commands
