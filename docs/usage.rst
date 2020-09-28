@@ -45,6 +45,7 @@ Assume if you already installed virtualenv and go run the application::
 
     $ cd frog
     $ virtualenv venv
+    $ source venv/bin/activate
     $ pip install -r requirements.txt
     $ flask run
 
