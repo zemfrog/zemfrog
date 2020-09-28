@@ -142,6 +142,13 @@ Change the file ``models/__init__.py`` to be like this::
         name = Column(String)
 
 .. warning::
+    Keep in mind, at this time the command to create a schema model will overwrite all previous schemas.
+
+Then create a schema for your ORM model::
+
+    flask schema load
+
+.. warning::
 
     Keep in mind, you have to create an API with the same name as your ORM model.
     And don't forget to add the ``--crud`` option.
