@@ -11,7 +11,7 @@ class LoginSuccessSchema(Schema):
 
 
 class LoginSchema(Schema):
-    email = fields.String()
+    email = fields.Email()
     password = fields.String()
 
 
@@ -20,7 +20,7 @@ class RegisterSchema(LoginSchema):
 
 
 class RequestPasswordResetSchema(Schema):
-    email = fields.String()
+    email = fields.Email()
 
 
 class PasswordResetSchema(Schema):
