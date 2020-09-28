@@ -15,8 +15,8 @@ from .helper import get_models, import_attr
 
 def load_config(app: Flask):
     """
-    Memuat konfigurasi untuk aplikasi zemfrog kamu dari environment
-    ``ZEMFROG_ENV``, rubah environment aplikasi mu di file ``.flaskenv``.
+    Loads the configuration for your zemfrog application based on the environment
+    ``ZEMFROG_ENV``, change your application environment in the file ``.flaskenv``.
     """
 
     load_dotenv()
@@ -29,7 +29,7 @@ def load_config(app: Flask):
 
 def load_extensions(app: Flask):
     """
-    Fungsi untuk memuat semua ekstensi flask kamu.
+    The function to load all your flask extensions based on the ``EXTENSIONS`` configuration in config.py.
     """
 
     extensions = app.config.get("EXTENSIONS", [])
@@ -41,7 +41,7 @@ def load_extensions(app: Flask):
 
 def load_models(app: Flask):
     """
-    Fungsi untuk memuat semua model ORM kamu.
+    A function to load all your ORM models in the ``models`` directory.
     """
 
     app.models = {}
@@ -62,7 +62,7 @@ def load_models(app: Flask):
 
 def load_commands(app: Flask):
     """
-    Fungsi untuk memuat semua command kamu dan mendaftarkan ke command ``flask``.
+    A function to load all your commands and register them in the ``flask`` command.
     """
 
     commands = app.config.get("COMMANDS", [])
@@ -74,7 +74,7 @@ def load_commands(app: Flask):
 
 def load_blueprints(app: Flask):
     """
-    Fungsi untuk memuat semua blueprint flask yang sudah terdaftar di config ``BLUEPRINTS`` pada config.py
+    The function to load all blueprints based on the ``BLUEPRINTS`` configuration in config.py
     """
 
     blueprints = app.config.get("BLUEPRINTS", [])
@@ -91,7 +91,7 @@ def load_blueprints(app: Flask):
 
 def load_apis(app: Flask):
     """
-    Fungsi untuk memuat semua resource API kamu ke flask.
+    A function to load all of your API resources to flask based on the ``APIS`` configuration in config.py.
     """
 
     apis = app.config.get("APIS", [])
@@ -112,7 +112,7 @@ def load_apis(app: Flask):
 
 def load_services(app: Flask):
     """
-    Fungsi untuk memuat semua background task celery.
+    Function to load all celery tasks based on ``SERVICES`` configuration in config.py.
     """
 
     services = app.config.get("SERVICES", [])
@@ -122,7 +122,7 @@ def load_services(app: Flask):
 
 def load_schemas(app: Flask):
     """
-    Fungsi untuk membuat model schema menggunakan marshmallow secara otomatis.
+    A function to create marshmallow schema models automatically for all your ORM models.
     """
 
     for src, models in app.models.items():
@@ -131,8 +131,11 @@ def load_schemas(app: Flask):
 
 def load_docs(app: Flask):
     """
-    Fungsi untuk membuat api docs.
+    Function for creating api docs using ``flask-apispec``.
     """
+
+    if not app.config.get("API_DOCS", False):
+        return
 
     apis = app.config.get("APIS", [])
     docs: FlaskApiSpec = import_attr("extensions.apispec.docs")
@@ -148,17 +151,15 @@ def load_docs(app: Flask):
                 view = doc(**api_docs)(view)
             docs.register(view, endpoint=e, blueprint="api")
 
-    api_docs = app.config.get("API_DOCS", False)
-    if api_docs:
-        blueprints = app.config.get("BLUEPRINTS", [])
-        for name in blueprints:
-            bp = name + ".routes.blueprint"
-            bp: Blueprint = import_attr(bp)
-            urls = name + ".urls"
-            urls = import_module(urls)
-            api_docs = urls.docs
-            routes = urls.routes
-            for _, view, _ in routes:
-                if api_docs:
-                    view = doc(**api_docs)(view)
-                docs.register(view, blueprint=name)
+    blueprints = app.config.get("BLUEPRINTS", [])
+    for name in blueprints:
+        bp = name + ".routes.blueprint"
+        bp: Blueprint = import_attr(bp)
+        urls = name + ".urls"
+        urls = import_module(urls)
+        api_docs = urls.docs
+        routes = urls.routes
+        for _, view, _ in routes:
+            if api_docs:
+                view = doc(**api_docs)(view)
+            docs.register(view, blueprint=name)
