@@ -137,8 +137,8 @@ def load_docs(app: Flask):
     if not app.config.get("API_DOCS", False):
         return
 
-    apis = app.config.get("APIS", [])
     docs: FlaskApiSpec = import_attr("extensions.apispec.docs")
+    apis = app.config.get("APIS", [])
     for res in apis:
         res = import_module(res)
         api_docs = res.docs
