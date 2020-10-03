@@ -5,4 +5,4 @@ Which focuses on building API structures that are easy to customize, flexible an
 
 __author__ = "Aprila Hijriyan"
 __email__ = "hijriyan23@gmail.com"
-__version__ = "1.0.7"
+__version__ = "1.0.8"

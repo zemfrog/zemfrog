@@ -54,3 +54,10 @@ History
 * IMPROVE: Added a prompt if a schema model exists.
 * IMPROVE: add zemfrgo to requirements
 * DOC: add README to project boilerplate
+
+1.0.8 (2020-10-03)
+------------------
+
+* Fix: `#12 <https://github.com/zemfrog/zemfrog/issues/12>`_, `#13 <https://github.com/zemfrog/zemfrog/issues/13>`_, `#14 <https://github.com/zemfrog/zemfrog/issues/14>`_
+* IMPROVE: import the orm model in the schema generator.
+* General Update:  update development status
