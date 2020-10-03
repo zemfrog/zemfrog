@@ -11,5 +11,4 @@ python-dotenv
 celery
 redis
 gunicorn
-astor
 zemfrog

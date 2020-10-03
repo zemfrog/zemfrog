@@ -1,4 +1,5 @@
 flask
 flask-sqlalchemy
 celery
+astor
 Click>=7.0
