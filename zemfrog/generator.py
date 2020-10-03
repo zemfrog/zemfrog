@@ -143,7 +143,9 @@ def g_schema(src: str, models: list):
                 models.remove(k)
 
         if models:
-            for m in models:
+            print("Creating schema for %r... " % src, end="")
+            node_import.names = []
+            for m in klass + models:
                 m = ast.alias(name=m, asname=None)
                 node_import.names.append(m)
 
@@ -161,6 +163,8 @@ def g_schema(src: str, models: list):
             new_data = astor.to_source(root) + "\n" + new_models
             with open(srcfile, "w") as fp:
                 fp.write(new_data)
+
+            print("(done)")
 
         if klass:
             return
