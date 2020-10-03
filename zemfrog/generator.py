@@ -1,6 +1,9 @@
 from importlib import import_module
 import os
 import string
+import ast
+import astor
+import textwrap
 from jinja2 import Template
 
 from .helper import copy_template, search_model
@@ -119,10 +122,47 @@ def g_schema(src: str, models: list):
 
     srcfile = import_module(src).__file__.replace("models" + os.sep, "schema" + os.sep)
     if os.path.isfile(srcfile):
-        choice = input(
-            "File %r exist, do you want to overwrite it? (y/N): " % src
-        ).lower()
-        if choice != "y":
+        with open(srcfile) as fp:
+            data = fp.read()
+
+        node_import = None
+        klass = []
+        root = ast.parse(data, filename=os.path.basename(srcfile))
+        for node in ast.iter_child_nodes(root):
+            if isinstance(node, ast.ImportFrom) and node.module == "models.user":
+                node_import = node
+
+            elif isinstance(node, ast.ClassDef):
+                for b in node.bases:
+                    if b.value.id == "ma" and node.name.endswith("Schema"):
+                        name = node.name.replace("Schema", "")
+                        klass.append(name)
+
+        for k in klass:
+            if k in models:
+                models.remove(k)
+
+        if models:
+            for m in models:
+                m = ast.alias(name=m, asname=None)
+                node_import.names.append(m)
+
+            tmp = textwrap.dedent(
+                """\
+            {% for name in model_list %}
+            class {{name}}Schema(ma.SQLAlchemyAutoSchema):
+                class Meta:
+                    model = {{name}}
+            {% endfor %}
+            """
+            )
+            t = Template(tmp)
+            new_models = t.render(model_list=models)
+            new_data = astor.to_source(root) + "\n" + new_models
+            with open(srcfile, "w") as fp:
+                fp.write(new_data)
+
+        if klass:
             return
 
     print("Creating schema for %r... " % src, end="")
