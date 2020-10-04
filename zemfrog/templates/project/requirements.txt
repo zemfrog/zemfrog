@@ -7,6 +7,7 @@ flask-apispec
 flask-marshmallow
 flask-shell-ipython
 marshmallow-sqlalchemy
+apispec>=1.0.0,<4
 python-dotenv
 celery
 redis
