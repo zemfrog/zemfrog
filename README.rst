@@ -20,7 +20,7 @@ zemfrog
 
 Zemfrog is a simple REST API framework based on flask.
 Which focuses on building a customizable, flexible and manageable REST API!
-We believe zemfrog can speed up your work with flask and please help us develop this boilerplate!
+We believe zemfrog can speed up your work with flask and please help us develop this framework!
 
 * Free software: MIT license
 * Documentation: https://zemfrog.readthedocs.io.
