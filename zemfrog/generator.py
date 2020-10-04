@@ -142,7 +142,7 @@ def g_schema(src: str, models: list):
             if k in models:
                 models.remove(k)
 
-        if models:
+        if models and node_import is not None:
             print("Creating schema for %r... " % src, end="")
             node_import.names = []
             for m in klass + models:
