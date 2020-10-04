@@ -1,6 +1,6 @@
 """
-Zemfrog is a powerful boilerplate for flask. 
-Which focuses on building API structures that are easy to customize, flexible and manageable!
+Zemfrog is a simple REST API framework based on flask.
+Which focuses on building a customizable, flexible and manageable REST API!
 """
 
 __author__ = "Aprila Hijriyan"

@@ -38,7 +38,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    description="Zemfrog is a powerful boilerplate for flask.",
+    description="Zemfrog is a simple REST API framework based on flask.",
     entry_points={
         "console_scripts": [
             "zemfrog=zemfrog.cli:main",
