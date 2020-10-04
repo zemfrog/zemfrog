@@ -61,3 +61,9 @@ History
 * Fix: `#12 <https://github.com/zemfrog/zemfrog/issues/12>`_, `#13 <https://github.com/zemfrog/zemfrog/issues/13>`_, `#14 <https://github.com/zemfrog/zemfrog/issues/14>`_
 * IMPROVE: import the orm model in the schema generator.
 * General Update:  update development status
+
+1.0.9 (2020-10-05)
+------------------
+
+* Fix: `#16 <https://github.com/zemfrog/zemfrog/issues/16>`_, `#14 <https://github.com/zemfrog/zemfrog/issues/14>`_, `#17 <https://github.com/zemfrog/zemfrog/issues/17>`_
+* NEW: add version option
