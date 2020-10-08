@@ -4,12 +4,13 @@ import string
 import ast
 import astor
 import textwrap
+from flask.globals import current_app
 from jinja2 import Template
 
-from .helper import copy_template, search_model
+from .helper import copy_template, get_import_name, search_model
 
 
-def g_project(name: str):
+def g_project(name: str, import_name: str):
     """
     Functions for creating projects.
 
@@ -17,17 +18,24 @@ def g_project(name: str):
 
     """
 
-    print("Creating %r project..." % name)
+    print("Creating %r project... " % name, end="")
     copy_template("project", name)
-    readme = os.path.join(name, "README.rst")
-    with open(readme) as fp:
-        data = fp.read()
-        t = string.Template(data)
-        new = t.safe_substitute(name=name)
+    main_app = True if import_name == "wsgi" else False
+    for root, _, files in os.walk(name):
+        for f in files:
+            if not f.endswith((".py", ".rst")):
+                continue
 
-    os.remove(readme)
-    with open(readme, "w") as fp:
-        fp.write(new)
+            f = os.path.join(root, f)
+            with open(f) as fp:
+                data = fp.read()
+                t = Template(data)
+                new = t.render(import_name=import_name, main_app=main_app, name=name)
+
+            with open(f, "w") as fp:
+                fp.write(new)
+
+    print("(done)")
 
 
 def g_api(name: str):
@@ -39,15 +47,16 @@ def g_api(name: str):
     """
 
     print("Creating API %r... " % name, end="")
-    copy_template("api", "api")
-    old_filename = os.path.join("api", "name.py")
+    api_dir = os.path.join(current_app.root_path, "api")
+    copy_template("api", api_dir)
+    old_filename = os.path.join(api_dir, "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()
         py_t = string.Template(old_data)
         new_data = py_t.safe_substitute(name=name, url_prefix=name.lower())
 
     os.remove(old_filename)
-    new_filename = os.path.join("api", name.lower() + ".py")
+    new_filename = os.path.join(api_dir, name.lower() + ".py")
     with open(new_filename, "w") as fp:
         fp.write(new_data)
 
@@ -63,10 +72,12 @@ def g_api_crud(name: str):
     """
 
     src_model = search_model(name)
-    src_schema = src_model.replace("models", "schema", 1)
+    import_name = get_import_name(current_app)
+    src_schema = src_model.replace(import_name + "models", import_name + "schema", 1)
+    api_dir = os.path.join(current_app.root_path, "api")
     print("Creating REST API %r... " % name, end="")
-    copy_template("crud", "api")
-    old_filename = os.path.join("api", "name.py")
+    copy_template("crud", api_dir)
+    old_filename = os.path.join(api_dir, "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()
         py_t = string.Template(old_data)
@@ -78,7 +89,7 @@ def g_api_crud(name: str):
         )
 
     os.remove(old_filename)
-    new_filename = os.path.join("api", name.lower() + ".py")
+    new_filename = os.path.join(api_dir, name.lower() + ".py")
     with open(new_filename, "w") as fp:
         fp.write(new_data)
 
@@ -94,9 +105,10 @@ def g_blueprint(name: str):
     """
 
     print("Creating blueprint %r... " % name, end="")
-    copy_template("blueprint", name.lower())
+    bp_dir = os.path.join(current_app.root_path, name.lower())
+    copy_template("blueprint", bp_dir)
     for fname in ("routes", "urls"):
-        filename = os.path.join(name.lower(), fname + ".py")
+        filename = os.path.join(bp_dir, fname + ".py")
         with open(filename) as fp:
             old_data = fp.read()
             py_t = string.Template(old_data)
@@ -170,12 +182,15 @@ def g_schema(src: str, models: list):
             return
 
     print("Creating schema for %r... " % src, end="")
-    copy_template("schema", "schema")
-    old_filename = os.path.join("schema", "name.py")
+    import_name = get_import_name(current_app).rstrip(".")
+    main_app = True if import_name == "wsgi" else False
+    schema_dir = os.path.join(current_app.root_path, "schema")
+    copy_template("schema", schema_dir)
+    old_filename = os.path.join(schema_dir, "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()
         t = Template(old_data)
-        new_data = t.render(model_list=models, src_model=src)
+        new_data = t.render(main_app=main_app, model_list=models, src_model=src)
 
     os.remove(old_filename)
     dirname = os.path.dirname(srcfile).replace("models" + os.sep, "schema" + os.sep)
@@ -199,15 +214,16 @@ def g_command(name: str):
     """
 
     print("Creating command %r..." % name, end="")
-    copy_template("command", "commands")
-    old_filename = os.path.join("commands", "name.py")
+    cmd_dir = os.path.join(current_app.root_path, "commands")
+    copy_template("command", cmd_dir)
+    old_filename = os.path.join(cmd_dir, "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()
         py_t = string.Template(old_data)
         new_data = py_t.safe_substitute(name=name)
 
     os.remove(old_filename)
-    new_filename = os.path.join("commands", name.lower() + ".py")
+    new_filename = os.path.join(cmd_dir, name.lower() + ".py")
     with open(new_filename, "w") as fp:
         fp.write(new_data)
 

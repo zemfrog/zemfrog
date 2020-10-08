@@ -1,5 +1,5 @@
-from extensions.celery import celery
-from extensions.mail import mail
+from {{ "" if main_app else ".." }}extensions.celery import celery
+from {{ "" if main_app else ".." }}extensions.mail import mail
 
 
 @celery.task

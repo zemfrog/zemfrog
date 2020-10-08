@@ -34,7 +34,6 @@ def create_app(name: str) -> Flask:
     """
 
     app = Flask(name)
-
     with app.app_context():
         loader.load_config(app)
         loader.load_extensions(app)
@@ -44,5 +43,6 @@ def create_app(name: str) -> Flask:
         loader.load_commands(app)
         loader.load_services(app)
         loader.load_docs(app)
+        loader.load_apps(app)
 
     return app

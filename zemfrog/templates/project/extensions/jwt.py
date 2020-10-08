@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_jwt_extended import JWTManager
-from models.user import User
+from {{ "" if main_app else ".." }}models.user import User
 
 jwt = JWTManager()
 

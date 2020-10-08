@@ -12,6 +12,9 @@ class Development(object):
     APISPEC_TITLE = "API Docs"
     APISPEC_SWAGGER_UI_URL = "/docs"
     DEBUG = True
+    {% if main_app -%}
+        APPS = []
+    {%- endif %}
     EXTENSIONS = [
         "extensions.sqlalchemy",
         "extensions.marshmallow",
@@ -26,6 +29,9 @@ class Development(object):
         "zemfrog.commands.blueprint",
         "zemfrog.commands.schema",
         "zemfrog.commands.command",
+        {% if main_app -%}
+            "zemfrog.commands.app"
+        {%- endif %}
     ]
     BLUEPRINTS = ["auth"]
     APIS = []

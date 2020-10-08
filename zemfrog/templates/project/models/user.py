@@ -1,4 +1,4 @@
-from extensions.sqlalchemy import db
+from {{ "" if main_app else ".." }}extensions.sqlalchemy import db
 from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 
