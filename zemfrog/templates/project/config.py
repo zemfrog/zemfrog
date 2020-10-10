@@ -1,9 +1,11 @@
 from datetime import timedelta
-
+from os import path
 
 class Development(object):
     SECRET_KEY = "Your secret key!"
-    SQLALCHEMY_DATABASE_URI = "sqlite:///db.sqlite"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(
+        path.dirname(__file__), "db.sqlite"
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = "JWT secret key!"
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
