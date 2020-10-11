@@ -4,11 +4,11 @@ from importlib import import_module
 from os import getenv
 from typing import List
 
+import pkg_resources
 from flask import Flask
 from flask.blueprints import Blueprint
-from flask.cli import load_dotenv, run_command, routes_command, shell_command
+from flask.cli import load_dotenv, routes_command, run_command, shell_command
 from flask_apispec import FlaskApiSpec, doc
-import pkg_resources
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from .exception import ZemfrogEnvironment
@@ -201,10 +201,13 @@ def load_apps(app: Flask):
     mounts = {}
     for a in apps:
         name = a["name"]
-        path = a["path"]
+        path = a.get("path", "/" + name)
+        help = a.get("help", "")
         yourapp: Flask = import_attr(name + ".wsgi.app")
-        yourapp.cli.name = name
-        app.cli.add_command(yourapp.cli)
-        mounts[path] = app
+        cli = yourapp.cli
+        cli.help = help
+        app.cli.add_command(cli, name)
+
+        mounts[path] = yourapp
 
     app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)
