@@ -2,7 +2,7 @@ import os
 from glob import glob
 from importlib import import_module
 from os import getenv
-from typing import List
+from typing import Dict, List
 
 import pkg_resources
 from flask import Flask
@@ -197,7 +197,7 @@ def load_apps(app: Flask):
     Muat semua aplikasi dan gabungkan jadi satu.
     """
 
-    apps: List[str] = app.config.get("APPS", [])
+    apps: List[Dict] = app.config.get("APPS", [])
     mounts = {}
     for a in apps:
         name = a["name"]
