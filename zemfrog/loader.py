@@ -52,11 +52,14 @@ def load_models(app: Flask):
 
     app.models = {}
     true = app.config.get("CREATE_DB")
+    import_name = get_import_name(app)
+    if import_name:
+        import_name = import_name.replace(".", "/")
+
     if true:
-        models_dir = os.path.join(app.root_path, "models/**/*.py")
         models = [
             x.rsplit(".", 1)[0].replace(os.sep, ".")
-            for x in glob(models_dir, recursive=True)
+            for x in glob(import_name + "models/**/*.py", recursive=True)
         ]
         for m in models:
             if "__init__" in m:
