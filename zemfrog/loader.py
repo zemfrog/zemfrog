@@ -194,12 +194,15 @@ def load_docs(app: Flask):
 
 def load_apps(app: Flask):
     """
-    Muat semua aplikasi dan gabungkan jadi satu.
+    Load all applications and combine them together using ``DispatcherMiddleware``.
     """
 
     apps: List[Dict] = app.config.get("APPS", [])
     mounts = {}
     for a in apps:
+        if not isinstance(a, dict):
+            a = {"name": a}
+
         name = a["name"]
         path = a.get("path", "/" + name)
         help = a.get("help", "")
@@ -207,7 +210,6 @@ def load_apps(app: Flask):
         cli = yourapp.cli
         cli.help = help
         app.cli.add_command(cli, name)
-
         mounts[path] = yourapp
 
     app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)
