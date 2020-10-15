@@ -185,10 +185,6 @@ Change the file ``models/__init__.py`` to be like this::
         id = Column(Integer, primary_key=True)
         name = Column(String)
 
-.. warning::
-    Keep in mind, at this time the command to create a schema model will overwrite all previous schemas.
-    See this `issue <https://github.com/zemfrog/zemfrog/issues/12>`_ for details.
-
 Then create a schema for your ORM model::
 
     flask schema load
@@ -206,3 +202,27 @@ This REST API will not work if you haven't added it to the ``APIS`` config.
 Let's add it to the config::
 
     APIS = ['api.product']
+
+
+Multiple Application
+--------------------
+
+In zemfrog you can easily create sub applications.
+
+Let's start by creating a sub application as below::
+
+    $ flask app new sub
+
+And add your sub-application to the ``APPS`` configuration in the config.py file::
+
+    APPS = ["sub"]
+
+You can also add sub-applications using a dictionary::
+
+    APPS = [
+        {
+            "name": "sub", # Your application name.
+            "path": "/sub-app", # Application URL prefix. (optional)
+            "help": "Sub app command" # Help messages for your app commands. (optional)
+        }
+    ]
