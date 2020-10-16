@@ -72,6 +72,16 @@ def load_commands(app: Flask):
         app.cli.add_command(cmd)
 
 
+def load_urls(app: Flask):
+    """
+    This function will load all urls in the main application.
+    """
+
+    routes = import_attr("urls.routes")
+    for url, view, methods in routes:
+        app.add_url_rule(url, view_func=view, methods=methods)
+
+
 def load_blueprints(app: Flask):
     """
     The function to load all blueprints based on the ``BLUEPRINTS`` configuration in config.py
