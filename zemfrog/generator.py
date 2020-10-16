@@ -25,7 +25,6 @@ def g_project(name: str):
         t = string.Template(data)
         new = t.safe_substitute(name=name)
 
-    os.remove(readme)
     with open(readme, "w") as fp:
         fp.write(new)
 
