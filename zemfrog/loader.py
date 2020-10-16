@@ -148,6 +148,14 @@ def load_docs(app: Flask):
         return
 
     docs: FlaskApiSpec = import_attr("extensions.apispec.docs")
+    urls = import_module("urls")
+    api_docs = urls.docs
+    routes = urls.routes
+    for _, view, _ in routes:
+        if api_docs:
+            view = doc(**api_docs)(view)
+        docs.register(view)
+
     apis = app.config.get("APIS", [])
     for res in apis:
         res = import_module(res)
