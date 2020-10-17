@@ -73,6 +73,10 @@ def g_api_crud(name: str):
 
     src_model = search_model(name)
     import_name = get_import_name(current_app)
+    main_app = True if import_name == "wsgi" else False
+    if not main_app:
+        src_model = "models"
+
     src_schema = src_model.replace(import_name + "models", import_name + "schema", 1)
     api_dir = os.path.join(current_app.root_path, "api")
     print("Creating REST API %r... " % name, end="")
@@ -80,8 +84,8 @@ def g_api_crud(name: str):
     old_filename = os.path.join(api_dir, "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()
-        py_t = string.Template(old_data)
-        new_data = py_t.safe_substitute(
+        py_t = Template(old_data)
+        new_data = py_t.render(
             name=name,
             url_prefix=name.lower(),
             src_model=src_model,
@@ -184,6 +188,9 @@ def g_schema(src: str, models: list):
     print("Creating schema for %r... " % src, end="")
     import_name = get_import_name(current_app).rstrip(".")
     main_app = True if import_name == "wsgi" else False
+    if not main_app:
+        src = "models"
+
     schema_dir = os.path.join(current_app.root_path, "schema")
     copy_template("schema", schema_dir)
     old_filename = os.path.join(schema_dir, "name.py")
