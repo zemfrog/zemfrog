@@ -78,7 +78,7 @@ def g_api_crud(name: str):
         idx = len(import_name)
         src_model = src_model[idx:]
 
-    src_schema = src_model.replace(import_name + "models", import_name + "schema", 1)
+    src_schema = src_model.replace("models", "schema", 1)
     api_dir = os.path.join(current_app.root_path, "api")
     print("Creating REST API %r... " % name, end="")
     copy_template("crud", api_dir)
