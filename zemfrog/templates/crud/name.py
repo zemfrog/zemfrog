@@ -2,23 +2,23 @@ from zemfrog.decorators import auto_status_code
 from zemfrog.helper import db_add, db_delete, db_update
 from zemfrog.models import DefaultResponseSchema
 from flask_apispec import marshal_with, use_kwargs
-from extensions.sqlalchemy import db
-from extensions.marshmallow import ma
-from ${src_model} import ${name}
-from ${src_schema} import ${name}Schema
+from {{ "" if main_app else ".." }}extensions.sqlalchemy import db
+from {{ "" if main_app else ".." }}extensions.marshmallow import ma
+from {{ "" if main_app else ".." }}{{src_model}} import {{name}}
+from {{ "" if main_app else ".." }}{{src_schema}} import {{name}}Schema
 
-class UpdateSchema(${name}Schema):
-    __update__ = ma.Nested(${name}Schema)
+class UpdateSchema({{name}}Schema):
+    __update__ = ma.Nested({{name}}Schema)
 
-schema = ${name}Schema()
+schema = {{name}}Schema()
 
-@marshal_with(${name}Schema(many=True), 200)
+@marshal_with({{name}}Schema(many=True), 200)
 def get():
     """
     Read all data.
     """
 
-    data = ${name}.query.all()
+    data = {{name}}.query.all()
     return data
 
 @use_kwargs(schema)
@@ -30,9 +30,9 @@ def add(**json):
     Add data.
     """
 
-    found = ${name}.query.filter_by(**json).first()
+    found = {{name}}.query.filter_by(**json).first()
     if not found:
-        model = ${name}(**json)
+        model = {{name}}(**json)
         db_add(db, model)
         status_code = 200
         reason = "Data berhasil ditambahkan."
@@ -58,7 +58,7 @@ def update(**json):
 
     new_data = json.pop("__update__", None)
     if new_data and isinstance(new_data, dict):
-        model = ${name}.query.filter_by(**json).first()
+        model = {{name}}.query.filter_by(**json).first()
         if not model:
             status_code = 404
             reason = "Data tidak ditemukan."
@@ -86,7 +86,7 @@ def delete(**json):
     Delete data.
     """
 
-    model = ${name}.query.filter_by(**json).first()
+    model = {{name}}.query.filter_by(**json).first()
     if model:
         db_delete(db, model)
         status_code = 200
@@ -102,9 +102,9 @@ def delete(**json):
     }
 
 
-docs = {"tags": ["${name}"]}
-endpoint = "${url_prefix}"
-url_prefix = "/${url_prefix}"
+docs = {"tags": ["{{name}}"]}
+endpoint = "{{url_prefix}}"
+url_prefix = "/{{url_prefix}}"
 routes = [
     ("/get", get, ["GET"]),
     ("/add", add, ["POST"]),

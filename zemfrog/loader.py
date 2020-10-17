@@ -1,16 +1,19 @@
 import os
-from flask import Flask
-from os import getenv
 from glob import glob
 from importlib import import_module
+from os import getenv
+from typing import Dict, List
 
-from flask.cli import load_dotenv
+import pkg_resources
+from flask import Flask
 from flask.blueprints import Blueprint
+from flask.cli import load_dotenv, routes_command, run_command, shell_command
 from flask_apispec import FlaskApiSpec, doc
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
-from .generator import g_schema
 from .exception import ZemfrogEnvironment
-from .helper import get_models, import_attr
+from .generator import g_schema
+from .helper import get_import_name, get_models, import_attr
 
 
 def load_config(app: Flask):
@@ -19,12 +22,14 @@ def load_config(app: Flask):
     ``ZEMFROG_ENV``, change your application environment in the file ``.flaskenv``.
     """
 
-    load_dotenv()
+    path = os.path.join(app.root_path, ".flaskenv")
+    load_dotenv(path)
     env = getenv("ZEMFROG_ENV")
     if not env:
         raise ZemfrogEnvironment("environment not found")
 
-    app.config.from_object("config." + env.capitalize())
+    import_name = get_import_name(app)
+    app.config.from_object(import_name + "config." + env.capitalize())
 
 
 def load_extensions(app: Flask):
@@ -33,8 +38,9 @@ def load_extensions(app: Flask):
     """
 
     extensions = app.config.get("EXTENSIONS", [])
+    import_name = get_import_name(app)
     for ext in extensions:
-        ext = import_module(ext)
+        ext = import_module(import_name + ext)
         init_func = getattr(ext, "init_app")
         init_func(app)
 
@@ -46,10 +52,14 @@ def load_models(app: Flask):
 
     app.models = {}
     true = app.config.get("CREATE_DB")
+    import_name = get_import_name(app)
+    if import_name:
+        import_name = import_name.replace(".", "/")
+
     if true:
         models = [
             x.rsplit(".", 1)[0].replace(os.sep, ".")
-            for x in glob("models/**/*.py", recursive=True)
+            for x in glob(import_name + "models/**/*.py", recursive=True)
         ]
         for m in models:
             if "__init__" in m:
@@ -66,10 +76,23 @@ def load_commands(app: Flask):
     """
 
     commands = app.config.get("COMMANDS", [])
-    for cmd in commands:
-        cmd = cmd + ".command"
-        cmd = import_attr(cmd)
+    import_name = get_import_name(app)
+    for name in commands:
+        try:
+            n = import_name + name + ".command"
+            cmd = import_attr(n)
+        except ImportError:
+            n = name + ".command"
+            cmd = import_attr(n)
+
         app.cli.add_command(cmd)
+
+    if import_name:
+        for cmd in (run_command, shell_command, routes_command):
+            app.cli.add_command(cmd)
+
+        for ep in pkg_resources.iter_entry_points("flask.commands"):
+            app.cli.add_command(ep.load(), ep.name)
 
 
 def load_urls(app: Flask):
@@ -88,10 +111,11 @@ def load_blueprints(app: Flask):
     """
 
     blueprints = app.config.get("BLUEPRINTS", [])
+    import_name = get_import_name(app)
     for name in blueprints:
-        bp = name + ".routes.blueprint"
+        bp = import_name + name + ".routes.blueprint"
         bp: Blueprint = import_attr(bp)
-        routes = name + ".urls.routes"
+        routes = import_name + name + ".urls.routes"
         routes = import_attr(routes)
         for url, view, methods in routes:
             bp.add_url_rule(url, view_func=view, methods=methods)
@@ -105,9 +129,10 @@ def load_apis(app: Flask):
     """
 
     apis = app.config.get("APIS", [])
-    api: Blueprint = import_attr("api.api")
+    import_name = get_import_name(app)
+    api: Blueprint = import_attr(import_name + "api.api")
     for res in apis:
-        res = import_module(res)
+        res = import_module(import_name + res)
         endpoint = res.endpoint
         url_prefix = res.url_prefix
         routes = res.routes
@@ -126,8 +151,9 @@ def load_services(app: Flask):
     """
 
     services = app.config.get("SERVICES", [])
+    import_name = get_import_name(app)
     for sv in services:
-        import_module(sv)
+        import_module(import_name + sv)
 
 
 def load_schemas(app: Flask):
@@ -147,8 +173,9 @@ def load_docs(app: Flask):
     if not app.config.get("API_DOCS", False):
         return
 
-    docs: FlaskApiSpec = import_attr("extensions.apispec.docs")
-    urls = import_module("urls")
+    import_name = get_import_name(app)
+    docs: FlaskApiSpec = import_attr(import_name + "extensions.apispec.docs")
+    urls = import_module(import_name + "urls")
     api_docs = urls.docs
     routes = urls.routes
     for _, view, _ in routes:
@@ -158,7 +185,7 @@ def load_docs(app: Flask):
 
     apis = app.config.get("APIS", [])
     for res in apis:
-        res = import_module(res)
+        res = import_module(import_name + res)
         api_docs = res.docs
         routes = res.routes
         endpoint = res.endpoint
@@ -171,9 +198,9 @@ def load_docs(app: Flask):
 
     blueprints = app.config.get("BLUEPRINTS", [])
     for name in blueprints:
-        bp = name + ".routes.blueprint"
+        bp = import_name + name + ".routes.blueprint"
         bp: Blueprint = import_attr(bp)
-        urls = name + ".urls"
+        urls = import_name + name + ".urls"
         urls = import_module(urls)
         api_docs = urls.docs
         routes = urls.routes
@@ -181,3 +208,26 @@ def load_docs(app: Flask):
             if api_docs:
                 view = doc(**api_docs)(view)
             docs.register(view, blueprint=name)
+
+
+def load_apps(app: Flask):
+    """
+    Load all applications and combine them together using ``DispatcherMiddleware``.
+    """
+
+    apps: List[Dict] = app.config.get("APPS", [])
+    mounts = {}
+    for a in apps:
+        if not isinstance(a, dict):
+            a = {"name": a}
+
+        name = a["name"]
+        path = a.get("path", "/" + name)
+        help = a.get("help", "")
+        yourapp: Flask = import_attr(name + ".wsgi.app")
+        cli = yourapp.cli
+        cli.help = help
+        app.cli.add_command(cli, name)
+        mounts[path] = yourapp
+
+    app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)

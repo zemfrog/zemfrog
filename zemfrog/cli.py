@@ -19,4 +19,4 @@ def create(name):
     Create a project.
     """
 
-    g_project(name)
+    g_project(name, "wsgi")

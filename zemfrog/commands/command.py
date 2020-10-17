@@ -1,5 +1,7 @@
 import click
+from flask.cli import with_appcontext
 from ..generator import g_command
+
 
 @click.group("command")
 def group():
@@ -9,6 +11,7 @@ def group():
 
 
 @group.command()
+@with_appcontext
 @click.argument("name")
 def new(name):
     """
@@ -16,5 +19,6 @@ def new(name):
     """
 
     g_command(name)
+
 
 command = group

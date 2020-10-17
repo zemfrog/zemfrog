@@ -1,5 +1,6 @@
 import click
 
+from flask.cli import with_appcontext
 from ..generator import g_blueprint
 
 
@@ -11,6 +12,7 @@ def group():
 
 
 @group.command()
+@with_appcontext
 @click.argument("name")
 def new(name):
     """

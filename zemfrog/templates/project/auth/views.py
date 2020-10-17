@@ -15,9 +15,9 @@ from zemfrog.models import (
     RequestPasswordResetSchema,
 )
 
-from extensions.sqlalchemy import db
-from models.user import User, Log
-from services.email import send_email
+from {{ "" if main_app else ".." }}extensions.sqlalchemy import db
+from {{ "" if main_app else ".." }}models.user import User, Log
+from {{ "" if main_app else ".." }}services.email import send_email
 
 
 @use_kwargs(LoginSchema)
