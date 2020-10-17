@@ -75,7 +75,8 @@ def g_api_crud(name: str):
     import_name = get_import_name(current_app)
     main_app = True if import_name == "wsgi" else False
     if not main_app:
-        src_model = "models"
+        idx = len(import_name)
+        src_model = src_model[idx:]
 
     src_schema = src_model.replace(import_name + "models", import_name + "schema", 1)
     api_dir = os.path.join(current_app.root_path, "api")
@@ -189,7 +190,8 @@ def g_schema(src: str, models: list):
     import_name = get_import_name(current_app).rstrip(".")
     main_app = True if import_name == "wsgi" else False
     if not main_app:
-        src = "models"
+        idx = len(import_name) + 1
+        src = src[idx:]
 
     schema_dir = os.path.join(current_app.root_path, "schema")
     copy_template("schema", schema_dir)
