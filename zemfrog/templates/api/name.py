@@ -1,9 +1,8 @@
-from flask_apispec import marshal_with
+from flask import jsonify
 
 
-@marshal_with(None, 200)
 def get():
-    return {"text": "welcome :')"}
+    return jsonify(text="welcome :')")
 
 
 docs = {"tags": ["${name}"]}
