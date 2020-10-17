@@ -105,7 +105,7 @@ def load_blueprints(app: Flask):
     for name in blueprints:
         bp = import_name + name + ".routes.blueprint"
         bp: Blueprint = import_attr(bp)
-        routes = name + ".urls.routes"
+        routes = import_name + name + ".urls.routes"
         routes = import_attr(routes)
         for url, view, methods in routes:
             bp.add_url_rule(url, view_func=view, methods=methods)
@@ -182,7 +182,7 @@ def load_docs(app: Flask):
     for name in blueprints:
         bp = import_name + name + ".routes.blueprint"
         bp: Blueprint = import_attr(bp)
-        urls = name + ".urls"
+        urls = import_name + name + ".urls"
         urls = import_module(urls)
         api_docs = urls.docs
         routes = urls.routes
