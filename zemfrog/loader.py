@@ -124,6 +124,19 @@ def load_blueprints(app: Flask):
         app.register_blueprint(bp)
 
 
+def load_middlewares(app: Flask):
+    """
+    Function to load all middlewares.
+    """
+
+    middlewares = app.config.get("MIDDLEWARES", [])
+    import_name = get_import_name(app)
+    for name in middlewares:
+        name = import_name + name + ".init_middleware"
+        middleware = import_attr(name)
+        app.wsgi_app = middleware(app.wsgi_app)
+
+
 def load_apis(app: Flask):
     """
     A function to load all of your API resources to flask based on the ``APIS`` configuration in config.py.

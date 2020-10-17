@@ -40,6 +40,7 @@ def create_app(name: str) -> Flask:
         loader.load_models(app)
         loader.load_urls(app)
         loader.load_blueprints(app)
+        loader.load_middlewares(app)
         loader.load_apis(app)
         loader.load_commands(app)
         loader.load_services(app)

@@ -127,6 +127,23 @@ def g_blueprint(name: str):
     print("(done)")
 
 
+def g_middleware(name: str):
+    """
+    Function for creating middleware.
+
+    :param str name: middleware name.
+
+    """
+
+    print("Creating middleware %r... " % name, end="")
+    middleware_dir = os.path.join(current_app.root_path, "middlewares")
+    copy_template("middleware", middleware_dir)
+    old_filename = os.path.join(middleware_dir, "name.py")
+    new_filename = os.path.join(middleware_dir, name.lower() + ".py")
+    os.rename(old_filename, new_filename)
+    print("(done)")
+
+
 def g_schema(src: str, models: list):
     """
     Function for creating schema models.
