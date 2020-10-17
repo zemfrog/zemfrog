@@ -1,2 +1,2 @@
 def index():
-    return "index page"
+    return "{{ '' if main_app else name + ' ' }}index page"
