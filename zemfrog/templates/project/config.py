@@ -29,6 +29,7 @@ class Development(object):
     COMMANDS = [
         "zemfrog.commands.api",
         "zemfrog.commands.blueprint",
+        "zemfrog.commands.middleware",
         "zemfrog.commands.schema",
         "zemfrog.commands.command",
         {% if main_app -%}
@@ -36,6 +37,7 @@ class Development(object):
         {%- endif %}
     ]
     BLUEPRINTS = ["auth"]
+    MIDDLEWARES = []
     APIS = []
     API_DOCS = True
     CREATE_DB = True
