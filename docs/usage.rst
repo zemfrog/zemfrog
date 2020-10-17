@@ -17,6 +17,7 @@ The application structure is as follows::
     ├── auth
     ├── commands
     ├── extensions
+    ├── middlewares
     ├── mail
     ├── models
     ├── schema
@@ -25,12 +26,15 @@ The application structure is as follows::
     ├── Procfile
     ├── README.rst
     ├── requirements.txt
+    ├── urls.py
+    ├── views.py
     └── wsgi.py
 
 * ``api`` - This directory is for all REST API resources.
 * ``auth`` - This directory is the default JWT authentication.
 * ``commands`` - This directory is for the commands that will be registered in the flask command.
 * ``extensions`` - This directory is for a list of flask extensions.
+* ``middlewares`` - This directory is a list of middleware.
 * ``mail`` - This directory is for the list of mail templates.
 * ``models`` - This directory is for a list of sqlalchemy ORM models.
 * ``schema`` - This directory is for the list of marshmallow schema models.
@@ -39,6 +43,8 @@ The application structure is as follows::
 * ``Procfile`` - Configuration file for deploying on heroku.
 * ``README.rst`` - A short description of how to run zemfrog applications.
 * ``requirements.txt`` - List of application dependencies.
+* ``urls.py`` - List your application endpoints.
+* ``views.py`` - List of your app view functions.
 * ``wsgi.py`` - Flask application here.
 
 Assume if you already installed virtualenv and go run the application::
@@ -58,6 +64,7 @@ There are several configurations in the zemfrog application, including:
 * ``EXTENSIONS`` - List your flask extensions here.
 * ``COMMANDS`` - List your commands here.
 * ``BLUEPRINTS`` - List your blueprint here.
+* ``MIDDLEWARES`` - List of middleware here.
 * ``APIS`` - List your REST API resources here.
 * ``API_DOCS`` - Configuration for automation creates REST API documentation using ``flask-apispec``. Default value is ``True``.
 * ``CREATE_DB`` - Configuration for automation creates tables of all models. Default value is ``True``, but I will remove this configuration in the future.
@@ -65,6 +72,23 @@ There are several configurations in the zemfrog application, including:
 Yep! that's all the configuration for the zemfrog application.
 However, you can also add configurations for celery and other flask extensions in config.py :)
 
+
+Routes
+------
+
+The route format in zemfrog is inspired by the django framework. the format is as follows::
+
+.. note::
+
+    The route format specification is ``(url, view, methods)``.
+
+Example::
+
+    # urls.py
+
+    routes = [
+        ('/', views.index, ['GET']),
+    ]
 
 Commands
 --------
@@ -119,10 +143,6 @@ Let's create 2 view functions::
 
 Register the view function to the blueprint, otherwise your view function will not be in the blueprint.
 
-.. note::
-
-    The route format will look like this ``(url, view, methods)``.
-
 .. code-block:: python
 
     # account/urls.py
@@ -141,6 +161,21 @@ And, now you can see the blueprint ``account`` has been registered in the flask 
 
     $ flask routes
 
+
+Middlewares
+-----------
+
+In this section, I will explain how easy it is to create middleware.
+Let's start by creating the boilerplate middleware::
+
+    $ flask middleware new auth
+
+The above command will create an auth.py file to the ``middlewares`` directory and in the auth.py file there is a function ``init_middleware``.
+This function is to register your middleware in the flask application.
+
+And register your middleware to config file::
+
+    MIDDLEWARES = ["middlewares.auth"]
 
 API
 ---
@@ -226,3 +261,9 @@ You can also add sub-applications using a dictionary::
             "help": "Sub app command" # Help messages for your app commands. (optional)
         }
     ]
+
+For now, managing nested applications via the FLASK_APP environment.
+Example::
+
+    $ export FLASK_APP=sub.wsgi
+    $ flask db init
