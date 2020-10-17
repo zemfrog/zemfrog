@@ -103,8 +103,8 @@ def delete(**json):
 
 
 docs = {"tags": ["{{name}}"]}
-endpoint = "${url_prefix}"
-url_prefix = "/${url_prefix}"
+endpoint = "{{url_prefix}}"
+url_prefix = "/{{url_prefix}}"
 routes = [
     ("/get", get, ["GET"]),
     ("/add", add, ["POST"]),
