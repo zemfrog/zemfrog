@@ -73,8 +73,9 @@ def g_api_crud(name: str):
 
     src_model = search_model(name)
     import_name = get_import_name(current_app)
-    main_app = True if import_name == "wsgi" else False
-    if not main_app:
+    main_app = True
+    if import_name:
+        main_app = False
         idx = len(import_name)
         src_model = src_model[idx:]
 
@@ -91,6 +92,7 @@ def g_api_crud(name: str):
             url_prefix=name.lower(),
             src_model=src_model,
             src_schema=src_schema,
+            main_app=main_app,
         )
 
     os.remove(old_filename)
@@ -188,8 +190,9 @@ def g_schema(src: str, models: list):
 
     print("Creating schema for %r... " % src, end="")
     import_name = get_import_name(current_app).rstrip(".")
-    main_app = True if import_name == "wsgi" else False
-    if not main_app:
+    main_app = True
+    if import_name:
+        main_app = False
         idx = len(import_name) + 1
         src = src[idx:]
 
