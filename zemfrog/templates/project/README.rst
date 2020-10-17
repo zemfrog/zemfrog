@@ -1,4 +1,4 @@
-${name}
+{{name}}
 =======
 
 This project uses `zemfrog <https://github.com/zemfrog/zemfrog>`_
