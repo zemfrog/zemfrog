@@ -95,6 +95,16 @@ def load_commands(app: Flask):
             app.cli.add_command(ep.load(), ep.name)
 
 
+def load_urls(app: Flask):
+    """
+    This function will load all urls in the main application.
+    """
+
+    routes = import_attr("urls.routes")
+    for url, view, methods in routes:
+        app.add_url_rule(url, view_func=view, methods=methods)
+
+
 def load_blueprints(app: Flask):
     """
     The function to load all blueprints based on the ``BLUEPRINTS`` configuration in config.py
@@ -165,6 +175,14 @@ def load_docs(app: Flask):
 
     import_name = get_import_name(app)
     docs: FlaskApiSpec = import_attr(import_name + "extensions.apispec.docs")
+    urls = import_module(import_name + "urls")
+    api_docs = urls.docs
+    routes = urls.routes
+    for _, view, _ in routes:
+        if api_docs:
+            view = doc(**api_docs)(view)
+        docs.register(view)
+
     apis = app.config.get("APIS", [])
     for res in apis:
         res = import_module(import_name + res)

@@ -1,5 +1,5 @@
 """
-Zemfrog is a simple REST API framework based on flask.
+Zemfrog is a simple framework based on flask for building a REST API quickly.
 Which focuses on building a customizable, flexible and manageable REST API!
 """
 
