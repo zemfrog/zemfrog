@@ -37,7 +37,7 @@ def login(**kwds):
         access_token = create_access_token(email)
         return {"access_token": access_token}
 
-    return {"reason": "Email atau password salah.", "status_code": 401}
+    return {"reason": "Incorrect email or password.", "status_code": 401}
 
 
 @use_kwargs(RegisterSchema)
@@ -68,17 +68,17 @@ def register(**kwds):
                 )
                 link_confirm = url_for(".confirm_account", token=token)
                 msg = get_mail_template("register.html", link_confirm=link_confirm)
-                send_email.delay("Pendaftaran", html=msg, recipients=[email])
-                reason = "Sukses daftar"
+                send_email.delay("Registration", html=msg, recipients=[email])
+                reason = "Successful registration."
                 status_code = 200
             else:
-                reason = "Username dan password dibutuhkan"
+                reason = "Username and password are required."
                 status_code = 403
         else:
-            reason = "Email telah digunakan."
+            reason = "Email already exists."
             status_code = 403
     else:
-        reason = "Email dibutuhkan."
+        reason = "Email required."
         status_code = 401
 
     return {"reason": reason, "status_code": status_code}
@@ -97,7 +97,7 @@ def confirm_account(token):
         user = User.query.filter_by(email=email).first()
         if user:
             if not user.confirmed:
-                reason = "Terkonfirmasi."
+                reason = "Confirmed."
                 status_code = 200
                 db_update(db, user, confirmed=True, confirmed_at=datetime.utcnow())
             else:
@@ -115,18 +115,18 @@ def confirm_account(token):
 
 @use_kwargs(RequestPasswordResetSchema)
 @marshal_with(DefaultResponseSchema, 200)
+@marshal_with(DefaultResponseSchema, 404)
 @marshal_with(DefaultResponseSchema, 403)
-@marshal_with(DefaultResponseSchema, 401)
 @auto_status_code
 def request_password_reset(**kwds):
     email = kwds.get("email")
     if email:
         user = User.query.filter_by(email=email).first()
         if not user:
-            reason = "Email tidak terdaftar."
-            status_code = 403
+            reason = "User not found."
+            status_code = 404
         else:
-            reason = "Permintaan password reset terkirim."
+            reason = "A password reset request has been sent."
             status_code = 200
             token = create_access_token(
                 email,
@@ -139,8 +139,8 @@ def request_password_reset(**kwds):
             )
             send_email.delay("Forgot password", html=msg, recipients=[email])
     else:
-        reason = "Email dibutuhkan."
-        status_code = 401
+        reason = "Email required."
+        status_code = 403
 
     return {"reason": reason, "status_code": status_code}
 
@@ -163,10 +163,10 @@ def password_reset(token, **kwds):
         if user and passw:
             passw = generate_password_hash(passw)
             db_update(db, user, password=passw)
-            reason = "Sukses password reset."
+            reason = "Successfully change password."
             status_code = 200
         else:
-            reason = "User tidak ditemukan"
+            reason = "User not found."
             status_code = 404
 
     except DecodeError:
@@ -174,7 +174,7 @@ def password_reset(token, **kwds):
         status_code = 401
 
     except ExpiredSignatureError:
-        reason = "Token kadaluwarsa."
+        reason = "Token expired."
         status_code = 403
 
     return {"reason": reason, "status_code": status_code}
