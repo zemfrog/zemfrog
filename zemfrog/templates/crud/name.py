@@ -35,11 +35,11 @@ def add(**json):
         model = {{name}}(**json)
         db_add(db, model)
         status_code = 200
-        reason = "Data berhasil ditambahkan."
+        reason = "Successfully added data."
 
     else:
         status_code = 403
-        reason = "Data sudah ditemukan."
+        reason = "Data already exists."
 
     return {
         "status_code": status_code,
@@ -61,16 +61,16 @@ def update(**json):
         model = {{name}}.query.filter_by(**json).first()
         if not model:
             status_code = 404
-            reason = "Data tidak ditemukan."
+            reason = "Data not found."
 
         else:
             db_update(db, model, **new_data)
             status_code = 200
-            reason = "Data berhasil diperbaharui."
+            reason = "Successfully updating data."
 
     else:
         status_code = 403
-        reason = "Data baru tidak ditemukan."
+        reason = "New data not found."
 
     return {
         "status_code": status_code,
@@ -90,11 +90,11 @@ def delete(**json):
     if model:
         db_delete(db, model)
         status_code = 200
-        reason = "Data berhasil dihapus."
+        reason = "Data deleted successfully."
 
     else:
         status_code = 404
-        reason = "Data tidak ditemukan."
+        reason = "Data not found."
 
     return {
         "status_code": status_code,
