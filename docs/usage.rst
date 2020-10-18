@@ -76,7 +76,7 @@ However, you can also add configurations for celery and other flask extensions i
 Routes
 ------
 
-The route format in zemfrog is inspired by the django framework. the format is as follows::
+The route format in zemfrog is inspired by the django framework. the format is as follows
 
 .. note::
 
