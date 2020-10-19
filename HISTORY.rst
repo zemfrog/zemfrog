@@ -67,3 +67,12 @@ History
 
 * Fix: `#16 <https://github.com/zemfrog/zemfrog/issues/16>`_, `#14 <https://github.com/zemfrog/zemfrog/issues/14>`_, `#17 <https://github.com/zemfrog/zemfrog/issues/17>`_
 * NEW: add version option
+
+1.2.0 (2020-10-19)
+------------------
+
+* NEW: add load urls
+* NEW: add load middlewares
+* NEW: middleware boilerplate.
+* NEW: multiple apps support
+* Fix minor bugs
