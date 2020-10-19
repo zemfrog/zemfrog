@@ -3,18 +3,24 @@ zemfrog
 =======
 
 .. image:: https://raw.githubusercontent.com/zemfrog/zemfrog/master/docs/_static/logo.png
-        :target: https://zemfrog.readthedocs.io
-        :alt: zemfrog logo
+    :target: https://zemfrog.readthedocs.io
+    :alt: zemfrog logo
 
-.. image:: https://img.shields.io/pypi/v/zemfrog.svg
-        :target: https://pypi.python.org/pypi/zemfrog
+.. image:: https://img.shields.io/pypi/v/zemfrog.svg?style=for-the-badge
+    :target: https://pypi.python.org/pypi/zemfrog
 
-.. image:: https://img.shields.io/travis/zemfrog/zemfrog.svg
-        :target: https://travis-ci.com/zemfrog/zemfrog
+.. image:: https://img.shields.io/github/downloads/zemfrog/zemfrog/total?logo=github&style=for-the-badge
+    :alt: GitHub All Releases
+
+.. image:: https://img.shields.io/pypi/dm/zemfrog?logo=python&style=for-the-badge
+    :target: https://pypi.python.org/pypi/zemfrog/
+
+.. image:: https://img.shields.io/travis/zemfrog/zemfrog.svg?style=for-the-badge
+    :target: https://travis-ci.com/zemfrog/zemfrog
 
 .. image:: https://readthedocs.org/projects/zemfrog/badge/?version=latest
-        :target: https://zemfrog.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
+    :target: https://zemfrog.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 
 
