@@ -9,6 +9,9 @@ zemfrog
 .. image:: https://img.shields.io/pypi/v/zemfrog.svg?style=for-the-badge
     :target: https://pypi.python.org/pypi/zemfrog
 
+.. image:: https://img.shields.io/pypi/status/zemfrog.svg
+    :target: https://pypi.python.org/pypi/zemfrog/
+
 .. image:: https://img.shields.io/github/downloads/zemfrog/zemfrog/total?logo=github&style=for-the-badge
     :alt: GitHub All Releases
 
