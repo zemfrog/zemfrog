@@ -18,7 +18,7 @@ zemfrog
 .. image:: https://img.shields.io/travis/zemfrog/zemfrog.svg?style=for-the-badge
     :target: https://travis-ci.com/zemfrog/zemfrog
 
-.. image:: https://readthedocs.org/projects/zemfrog/badge/?version=latest
+.. image:: https://readthedocs.org/projects/zemfrog/badge/?version=latest&style=for-the-badge
     :target: https://zemfrog.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
