@@ -1,7 +1,6 @@
 import os
 from glob import glob
 from importlib import import_module
-from os import getenv
 from typing import Dict, List
 
 import pkg_resources
@@ -24,7 +23,7 @@ def load_config(app: Flask):
 
     path = os.path.join(app.root_path, ".flaskenv")
     load_dotenv(path)
-    env = getenv("ZEMFROG_ENV")
+    env = os.getenv("ZEMFROG_ENV")
     if not env:
         raise ZemfrogEnvironment("environment not found")
 
