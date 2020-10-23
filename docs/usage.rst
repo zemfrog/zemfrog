@@ -76,8 +76,6 @@ However, you can also add configurations for celery and other flask extensions i
 Routes
 ------
 
-The route format in zemfrog is inspired by the django framework. the format is as follows
-
 .. note::
 
     The route format specification is ``(url, view, methods)``.
@@ -262,8 +260,6 @@ You can also add sub-applications using a dictionary::
         }
     ]
 
-For now, managing nested applications via the FLASK_APP environment.
-Example::
+To manage nested applications you just need to use the ``sub`` command and you will be at a simple ``command prompt``::
 
-    $ export FLASK_APP=sub.wsgi
-    $ flask db init
+    $ flask sub
