@@ -1,14 +1,10 @@
-#!/usr/bin/env python
 """
-Example of the fancy ZSH prompt that @anki-code was using.
+Reference: 
+- https://github.com/prompt-toolkit/python-prompt-toolkit/blob/master/examples/prompts/fancy-zsh-prompt.py
+- https://github.com/prompt-toolkit/python-prompt-toolkit/blob/master/examples/prompts/auto-completion/nested-autocompletion.py
 
-The theme is coming from the xonsh plugin from the xhh project:
-https://github.com/xxh/xxh-plugin-xonsh-theme-bar
-
-See:
-- https://github.com/xonsh/xonsh/issues/3356
-- https://github.com/prompt-toolkit/python-prompt-toolkit/issues/1111
 """
+
 import datetime
 import os
 import sys
