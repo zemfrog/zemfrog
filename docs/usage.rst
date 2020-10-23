@@ -18,10 +18,12 @@ The application structure is as follows::
     ├── commands
     ├── extensions
     ├── middlewares
-    ├── mail
     ├── models
     ├── schema
     ├── services
+    ├── static
+    ├── templates
+    ├── templates/emails
     ├── config.py
     ├── Procfile
     ├── README.rst
@@ -35,10 +37,12 @@ The application structure is as follows::
 * ``commands`` - This directory is for the commands that will be registered in the flask command.
 * ``extensions`` - This directory is for a list of flask extensions.
 * ``middlewares`` - This directory is a list of middleware.
-* ``mail`` - This directory is for the list of mail templates.
 * ``models`` - This directory is for a list of sqlalchemy ORM models.
 * ``schema`` - This directory is for the list of marshmallow schema models.
 * ``services`` - This directory is for the celery task list.
+* ``static`` - Static files.
+* ``templates`` - Templates folder.
+* ``templates/emails`` - This directory is for the list of email templates.
 * ``config.py`` - Flask application configuration file.
 * ``Procfile`` - Configuration file for deploying on heroku.
 * ``README.rst`` - A short description of how to run zemfrog applications.
