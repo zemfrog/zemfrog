@@ -3,9 +3,7 @@ import os
 from importlib import import_module
 from distutils.dir_util import copy_tree
 from types import ModuleType
-from flask.app import Flask
-from jinja2 import Template
-from flask import current_app
+from flask import current_app, Flask, render_template
 from flask_sqlalchemy import Model
 
 from .exception import ZemfrogTemplateNotFound, ZemfrogModelNotFound
@@ -138,19 +136,9 @@ def get_mail_template(name, **context):
     :param name: email template name.
     :param \*\*context: jinja context.
 
-    :raises: ZemfrogTemplateNotFound
-
     """
 
-    tmp_src = os.path.join(current_app.root_path, "mail", name)
-    if not os.path.isfile(tmp_src):
-        raise ZemfrogTemplateNotFound("Email template %r was not found" % tmp_src)
-
-    with open(tmp_src) as fp:
-        data = fp.read()
-
-    t = Template(data)
-    tmp = t.render(**context)
+    tmp = render_template("emails/" + name, **context)
     return tmp
 
 
