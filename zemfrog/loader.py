@@ -1,10 +1,11 @@
 import os
 from glob import glob
 from importlib import import_module
-from os import getenv
 from typing import Dict, List
 
+
 import pkg_resources
+import click
 from flask import Flask
 from flask.blueprints import Blueprint
 from flask.cli import load_dotenv, routes_command, run_command, shell_command
@@ -14,6 +15,7 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from .exception import ZemfrogEnvironment
 from .generator import g_schema
 from .helper import get_import_name, get_models, import_attr
+from .repl import build_repl
 
 
 def load_config(app: Flask):
@@ -24,7 +26,7 @@ def load_config(app: Flask):
 
     path = os.path.join(app.root_path, ".flaskenv")
     load_dotenv(path)
-    env = getenv("ZEMFROG_ENV")
+    env = os.getenv("ZEMFROG_ENV")
     if not env:
         raise ZemfrogEnvironment("environment not found")
 
@@ -239,7 +241,11 @@ def load_apps(app: Flask):
         path = a.get("path", "/" + name)
         help = a.get("help", "")
         yourapp: Flask = import_attr(name + ".wsgi.app")
-        cli = yourapp.cli
+
+        @click.command(name)
+        def cli():
+            build_repl(yourapp)
+
         cli.help = help
         app.cli.add_command(cli, name)
         mounts[path] = yourapp
