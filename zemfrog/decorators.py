@@ -31,7 +31,7 @@ def auto_status_code(func: Callable) -> Callable:
 
 def api_doc(**kwds) -> Callable:
     """
-    Menambahkn dokumentasi API melalui dokumentasi yang ada di fungsi view.
+    Decorator for adding API documentation through the documentation in the view function.
     """
 
     def wrapper(func: Callable):
@@ -45,7 +45,7 @@ def api_doc(**kwds) -> Callable:
 
 def authenticate(func: Callable) -> Callable:
     """
-    Autentikasi view dengan jwt.
+    Decorator to add jwt view authentication.
     """
 
     func = api_doc(security=current_app.config.get("APISPEC_SECURITY_PARAMS", []))(
