@@ -46,6 +46,7 @@ def api_doc(**kwds) -> Callable:
 def authenticate(func: Callable) -> Callable:
     """
     Decorator to add jwt view authentication.
+    Reference: https://github.com/tiangolo/full-stack-flask-couchdb/tree/master/%7B%7Bcookiecutter.project_slug%7D%7D/backend/app/app/api/api_v1.
     """
 
     func = api_doc(security=current_app.config.get("APISPEC_SECURITY_PARAMS", []))(
