@@ -33,7 +33,7 @@ class Role(db.Model):
 
 class Log(db.Model):
     """
-    Log aktivitas user.
+    User activity log.
     """
 
     id = Column(Integer, primary_key=True)
