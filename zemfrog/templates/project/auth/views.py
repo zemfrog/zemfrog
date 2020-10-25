@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flask import request, url_for
+from flask import url_for
 from flask_jwt_extended import create_access_token, decode_token
 from flask_apispec import use_kwargs, marshal_with
 from jwt import DecodeError, ExpiredSignatureError
@@ -20,12 +20,16 @@ from {{ "" if main_app else ".." }}models.user import User, Log
 from {{ "" if main_app else ".." }}services.email import send_email
 
 
-@use_kwargs(LoginSchema)
-@marshal_with(DefaultResponseSchema, 401)
+@use_kwargs(LoginSchema(strict=True), location="form")
+@marshal_with(DefaultResponseSchema, 404)
 @marshal_with(LoginSuccessSchema, 200)
 @auto_status_code
 def login(**kwds):
-    email = kwds.get("email")
+    """
+    Login and get access token.
+    """
+
+    email = kwds.get("username")
     passw = kwds.get("password")
     user = User.query.filter_by(email=email).first()
 
@@ -37,24 +41,31 @@ def login(**kwds):
         access_token = create_access_token(email)
         return {"access_token": access_token}
 
-    return {"reason": "Incorrect email or password.", "status_code": 401}
+    return {"reason": "Incorrect email or password.", "status_code": 404}
 
 
-@use_kwargs(RegisterSchema)
+@use_kwargs(RegisterSchema(strict=True), location="form")
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
-@marshal_with(DefaultResponseSchema, 401)
 @auto_status_code
 def register(**kwds):
-    username = kwds.get("username")
+    """
+    Register an account.
+    """
+
+    email = kwds.get("username")
     passw = kwds.get("password")
-    email = kwds.get("email")
+    first_name = kwds.get("first_name")
+    last_name = kwds.get("last_name")
+    username = first_name + " " + last_name
     if email:
         user = User.query.filter_by(email=email).first()
         if not user:
             if username and passw:
                 passw = generate_password_hash(passw)
                 user = User(
+                    first_name=first_name,
+                    last_name=last_name,
                     name=username,
                     email=email,
                     password=passw,
@@ -79,7 +90,7 @@ def register(**kwds):
             status_code = 403
     else:
         reason = "Email required."
-        status_code = 401
+        status_code = 403
 
     return {"reason": reason, "status_code": status_code}
 
@@ -88,6 +99,10 @@ def register(**kwds):
 @marshal_with(DefaultResponseSchema, 403)
 @auto_status_code
 def confirm_account(token):
+    """
+    Confirm account.
+    """
+
     try:
         data = decode_token(token)
         email = data["identity"]
@@ -113,13 +128,17 @@ def confirm_account(token):
     return {"reason": reason, "status_code": status_code}
 
 
-@use_kwargs(RequestPasswordResetSchema)
+@use_kwargs(RequestPasswordResetSchema(strict=True), location="form")
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
 @marshal_with(DefaultResponseSchema, 403)
 @auto_status_code
 def request_password_reset(**kwds):
-    email = kwds.get("email")
+    """
+    Request a password reset.
+    """
+
+    email = kwds.get("username")
     if email:
         user = User.query.filter_by(email=email).first()
         if not user:
@@ -145,13 +164,17 @@ def request_password_reset(**kwds):
     return {"reason": reason, "status_code": status_code}
 
 
-@use_kwargs(PasswordResetSchema)
+@use_kwargs(PasswordResetSchema(strict=True), location="form")
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
 @marshal_with(DefaultResponseSchema, 401)
 @marshal_with(DefaultResponseSchema, 404)
 @auto_status_code
 def password_reset(token, **kwds):
+    """
+    Reset user password.
+    """
+
     try:
         data = decode_token(token)
         email = data["identity"]
