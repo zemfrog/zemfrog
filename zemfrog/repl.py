@@ -63,7 +63,7 @@ def get_prompt(app: Flask) -> HTML:
     return merge_formatted_text([left_part, padding, right_part, "\n", "$ "])
 
 
-def get_commands(cli) -> dict:
+def get_commands(cli: Group) -> dict:
     commands = {}
     for name, cmd in cli.commands.items():
         value = None
@@ -73,7 +73,7 @@ def get_commands(cli) -> dict:
     return commands
 
 
-def get_auto_complete(cli) -> NestedCompleter:
+def get_auto_complete(cli: Group) -> NestedCompleter:
     commands = {"flask": get_commands(cli)}
     completer = NestedCompleter.from_nested_dict(commands)
     return completer
