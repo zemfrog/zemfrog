@@ -38,7 +38,6 @@ class Development(object):
         "zemfrog.commands.api",
         "zemfrog.commands.blueprint",
         "zemfrog.commands.middleware",
-        "zemfrog.commands.schema",
         "zemfrog.commands.command",
         {% if main_app -%}
             "zemfrog.commands.app"
