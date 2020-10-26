@@ -5,15 +5,27 @@ from flask_apispec import marshal_with, use_kwargs
 from {{ "" if main_app else ".." }}extensions.sqlalchemy import db
 from {{ "" if main_app else ".." }}extensions.marshmallow import ma
 from {{ "" if main_app else ".." }}{{src_model}} import {{name}}
-from {{ "" if main_app else ".." }}{{src_schema}} import {{name}}Schema
 
-class UpdateSchema({{name}}Schema):
-    __update__ = ma.Nested({{name}}Schema(strict=True))
+class Create{{name}}Schema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = {{name}}
 
-schema = {{name}}Schema(strict=True)
+class Read{{name}}Schema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = {{name}}
+
+class Update{{name}}Schema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = {{name}}
+
+    __update__ = ma.Nested(Read{{name}}Schema(strict=True))
+
+class Delete{{name}}Schema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = {{name}}
 
 @authenticate
-@marshal_with({{name}}Schema(many=True), 200)
+@marshal_with(Read{{name}}Schema(many=True), 200)
 def get():
     """
     Read all data.
@@ -23,7 +35,7 @@ def get():
     return data
 
 @authenticate
-@use_kwargs(schema)
+@use_kwargs(Create{{name}}Schema(strict=True))
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
 @auto_status_code
@@ -49,7 +61,7 @@ def add(**json):
     }
 
 @authenticate
-@use_kwargs(UpdateSchema(strict=True))
+@use_kwargs(Update{{name}}Schema(strict=True))
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
 @marshal_with(DefaultResponseSchema, 403)
@@ -81,7 +93,7 @@ def update(**json):
     }
 
 @authenticate
-@use_kwargs(schema)
+@use_kwargs(Delete{{name}}Schema(strict=True))
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
 @auto_status_code

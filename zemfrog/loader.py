@@ -14,7 +14,6 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from .exception import ZemfrogEnvironment
 from .decorators import api_doc
-from .generator import g_schema
 from .helper import get_import_name, get_models, import_attr
 from .repl import build_repl
 
@@ -171,15 +170,6 @@ def load_services(app: Flask):
     import_name = get_import_name(app)
     for sv in services:
         import_module(import_name + sv)
-
-
-def load_schemas(app: Flask):
-    """
-    A function to create marshmallow schema models automatically for all your ORM models.
-    """
-
-    for src, models in app.models.items():
-        g_schema(src, models)
 
 
 def load_docs(app: Flask):

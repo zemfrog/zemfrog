@@ -1,9 +1,6 @@
 from importlib import import_module
 import os
 import string
-import ast
-import astor
-import textwrap
 from flask.globals import current_app
 from jinja2 import Template
 
@@ -141,96 +138,6 @@ def g_middleware(name: str):
     old_filename = os.path.join(middleware_dir, "name.py")
     new_filename = os.path.join(middleware_dir, name.lower() + ".py")
     os.rename(old_filename, new_filename)
-    print("(done)")
-
-
-def g_schema(src: str, models: list):
-    """
-    Function for creating schema models.
-
-    :param src: source model.
-    :param models: list of ORM models in your model module.
-
-    """
-
-    if not models:
-        return
-
-    srcfile = import_module(src).__file__.replace("models" + os.sep, "schema" + os.sep)
-    if os.path.isfile(srcfile):
-        with open(srcfile) as fp:
-            data = fp.read()
-
-        node_import = None
-        klass = []
-        root = ast.parse(data, filename=os.path.basename(srcfile))
-        for node in ast.iter_child_nodes(root):
-            if isinstance(node, ast.ImportFrom) and node.module == "models.user":
-                node_import = node
-
-            elif isinstance(node, ast.ClassDef):
-                for b in node.bases:
-                    if b.value.id == "ma" and node.name.endswith("Schema"):
-                        name = node.name.replace("Schema", "")
-                        klass.append(name)
-
-        for k in klass:
-            if k in models:
-                models.remove(k)
-
-        if models and node_import is not None:
-            print("Creating schema for %r... " % src, end="")
-            node_import.names = []
-            for m in klass + models:
-                m = ast.alias(name=m, asname=None)
-                node_import.names.append(m)
-
-            tmp = textwrap.dedent(
-                """\
-            {% for name in model_list %}
-            class {{name}}Schema(ma.SQLAlchemyAutoSchema):
-                class Meta:
-                    model = {{name}}
-            {% endfor %}
-            """
-            )
-            t = Template(tmp)
-            new_models = t.render(model_list=models)
-            new_data = astor.to_source(root) + "\n" + new_models
-            with open(srcfile, "w") as fp:
-                fp.write(new_data)
-
-            print("(done)")
-
-        if klass:
-            return
-
-    print("Creating schema for %r... " % src, end="")
-    import_name = get_import_name(current_app).rstrip(".")
-    main_app = True
-    if import_name:
-        main_app = False
-        idx = len(import_name) + 1
-        src = src[idx:]
-
-    schema_dir = os.path.join(current_app.root_path, "schema")
-    copy_template("schema", schema_dir)
-    old_filename = os.path.join(schema_dir, "name.py")
-    with open(old_filename) as fp:
-        old_data = fp.read()
-        t = Template(old_data)
-        new_data = t.render(main_app=main_app, model_list=models, src_model=src)
-
-    os.remove(old_filename)
-    dirname = os.path.dirname(srcfile).replace("models" + os.sep, "schema" + os.sep)
-    try:
-        os.makedirs(dirname)
-    except FileExistsError:
-        pass
-
-    with open(srcfile, "w") as fp:
-        fp.write(new_data)
-
     print("(done)")
 
 

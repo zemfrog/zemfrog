@@ -1,5 +1,5 @@
 flask
 flask-sqlalchemy
+flask-jwt-extended
 celery
-astor
 Click>=7.0

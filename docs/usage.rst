@@ -19,7 +19,6 @@ The application structure is as follows::
     ├── extensions
     ├── middlewares
     ├── models
-    ├── schema
     ├── services
     ├── static
     ├── templates
@@ -38,7 +37,6 @@ The application structure is as follows::
 * ``extensions`` - This directory is for a list of flask extensions.
 * ``middlewares`` - This directory is a list of middleware.
 * ``models`` - This directory is for a list of sqlalchemy ORM models.
-* ``schema`` - This directory is for the list of marshmallow schema models.
 * ``services`` - This directory is for the celery task list.
 * ``static`` - Static files.
 * ``templates`` - Templates folder.
@@ -223,10 +221,6 @@ Change the file ``models/__init__.py`` to be like this::
     class Product(db.Model):
         id = Column(Integer, primary_key=True)
         name = Column(String)
-
-Then create a schema for your ORM model::
-
-    flask schema load
 
 .. warning::
 
