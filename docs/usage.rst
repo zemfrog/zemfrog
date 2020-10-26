@@ -7,8 +7,8 @@ First, you have to create a project with ``zemfrog``::
     $ zemfrog create frog
 
 
-Application structure
----------------------
+Project Layouts
+---------------
 
 The application structure is as follows::
 
@@ -72,6 +72,8 @@ There are several configurations in the zemfrog application, including:
 * ``APIS`` - List your REST API resources here.
 * ``API_DOCS`` - Configuration for automation creates REST API documentation using ``flask-apispec``. Default value is ``True``.
 * ``CREATE_DB`` - Configuration for automation creates tables of all models. Default value is ``True``, but I will remove this configuration in the future.
+* ``APISPEC_SECURITY_DEFINITIONS`` - Follow this https://swagger.io/docs/specification/authentication/.
+* ``APISPEC_SECURITY_PARAMS`` Follow this https://swagger.io/docs/specification/authentication/
 
 Yep! that's all the configuration for the zemfrog application.
 However, you can also add configurations for celery and other flask extensions in config.py :)
@@ -241,6 +243,18 @@ Let's add it to the config::
     APIS = ['api.product']
 
 
+JWT Authentication
+------------------
+
+One of my favorite features is this.
+
+Why? with this you are very easy and clear how you interact with the REST API which is protected with JWT authentication.
+
+This feature is inspired by the `FastAPI framework <https://github.com/tiangolo/fastapi>`_ and adopted from the project https://github.com/tiangolo/full-stack-flask-couchdb.
+
+All REST APIs are protected with JWT authentication by default. However, if you wish to disable it, you only need to commenting ``authenticate`` decorators.
+
+
 Multiple Application
 --------------------
 
@@ -267,3 +281,12 @@ You can also add sub-applications using a dictionary::
 To manage nested applications you just need to use the ``sub`` command and you will be at a simple ``command prompt``::
 
     $ flask sub
+
+
+Finish!
+-------
+
+You have read all the documentation and give it a try. Then, give me some feedback to improve this project :)
+
+Thank you!
+

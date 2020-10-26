@@ -1,4 +1,5 @@
-from marshmallow import Schema, fields
+import re
+from marshmallow import Schema, fields, validates, ValidationError
 
 
 class DefaultResponseSchema(Schema):
@@ -11,17 +12,28 @@ class LoginSuccessSchema(Schema):
 
 
 class LoginSchema(Schema):
-    email = fields.Email()
-    password = fields.String()
+    username = fields.Email(required=True)
+    password = fields.String(required=True)
 
 
 class RegisterSchema(LoginSchema):
-    username = fields.String()
+    first_name = fields.String(required=True)
+    last_name = fields.String(required=True)
+
+    @validates("first_name")
+    def validate_first_name(self, value):
+        if not re.search(r"^([a-zA-Z]*)$", value):
+            raise ValidationError("First name must be a character [a-zA-Z]")
+
+    @validates("last_name")
+    def validate_last_name(self, value):
+        if not re.search(r"^([a-zA-Z]*)$", value):
+            raise ValidationError("Last name must be a character [a-zA-Z]")
 
 
 class RequestPasswordResetSchema(Schema):
-    email = fields.Email()
+    username = fields.Email(required=True)
 
 
 class PasswordResetSchema(Schema):
-    password = fields.String()
+    password = fields.String(required=True)

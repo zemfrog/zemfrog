@@ -9,10 +9,11 @@ import click
 from flask import Flask
 from flask.blueprints import Blueprint
 from flask.cli import load_dotenv, routes_command, run_command, shell_command
-from flask_apispec import FlaskApiSpec, doc
+from flask_apispec import FlaskApiSpec
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from .exception import ZemfrogEnvironment
+from .decorators import api_doc
 from .generator import g_schema
 from .helper import get_import_name, get_models, import_attr
 from .repl import build_repl
@@ -192,24 +193,24 @@ def load_docs(app: Flask):
     import_name = get_import_name(app)
     docs: FlaskApiSpec = import_attr(import_name + "extensions.apispec.docs")
     urls = import_module(import_name + "urls")
-    api_docs = urls.docs
+    docs_params = urls.docs
     routes = urls.routes
     for _, view, _ in routes:
-        if api_docs:
-            view = doc(**api_docs)(view)
+        if docs_params:
+            view = api_doc(**docs_params)(view)
         docs.register(view)
 
     apis = app.config.get("APIS", [])
     for res in apis:
         res = import_module(import_name + res)
-        api_docs = res.docs
+        docs_params = res.docs
         routes = res.routes
         endpoint = res.endpoint
         for detail in routes:
             _, view, _ = detail
             e = endpoint + "_" + view.__name__
-            if api_docs:
-                view = doc(**api_docs)(view)
+            if docs_params:
+                view = api_doc(**docs_params)(view)
             docs.register(view, endpoint=e, blueprint="api")
 
     blueprints = app.config.get("BLUEPRINTS", [])
@@ -218,11 +219,11 @@ def load_docs(app: Flask):
         bp: Blueprint = import_attr(bp)
         urls = import_name + name + ".urls"
         urls = import_module(urls)
-        api_docs = urls.docs
+        docs_params = urls.docs
         routes = urls.routes
         for _, view, _ in routes:
-            if api_docs:
-                view = doc(**api_docs)(view)
+            if docs_params:
+                view = api_doc(**docs_params)(view)
             docs.register(view, blueprint=name)
 
 

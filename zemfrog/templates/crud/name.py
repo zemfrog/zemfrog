@@ -1,4 +1,4 @@
-from zemfrog.decorators import auto_status_code
+from zemfrog.decorators import auto_status_code, authenticate
 from zemfrog.helper import db_add, db_delete, db_update
 from zemfrog.models import DefaultResponseSchema
 from flask_apispec import marshal_with, use_kwargs
@@ -8,10 +8,11 @@ from {{ "" if main_app else ".." }}{{src_model}} import {{name}}
 from {{ "" if main_app else ".." }}{{src_schema}} import {{name}}Schema
 
 class UpdateSchema({{name}}Schema):
-    __update__ = ma.Nested({{name}}Schema)
+    __update__ = ma.Nested({{name}}Schema(strict=True))
 
-schema = {{name}}Schema()
+schema = {{name}}Schema(strict=True)
 
+@authenticate
 @marshal_with({{name}}Schema(many=True), 200)
 def get():
     """
@@ -21,6 +22,7 @@ def get():
     data = {{name}}.query.all()
     return data
 
+@authenticate
 @use_kwargs(schema)
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
@@ -46,7 +48,8 @@ def add(**json):
         "reason": reason
     }
 
-@use_kwargs(UpdateSchema)
+@authenticate
+@use_kwargs(UpdateSchema(strict=True))
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
 @marshal_with(DefaultResponseSchema, 403)
@@ -77,6 +80,7 @@ def update(**json):
         "reason": reason
     }
 
+@authenticate
 @use_kwargs(schema)
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)

@@ -9,6 +9,8 @@ class User(db.Model):
     """
 
     id = Column(Integer, primary_key=True)
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
     name = Column(String, nullable=False)
     email = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
@@ -31,7 +33,7 @@ class Role(db.Model):
 
 class Log(db.Model):
     """
-    Log aktivitas user.
+    User activity log.
     """
 
     id = Column(Integer, primary_key=True)

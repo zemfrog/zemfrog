@@ -13,7 +13,7 @@ def user_loader_callback(identity):
 
 @jwt.user_loader_error_loader
 def custom_user_loader_error(identity):
-    ret = {"reason": "User {} not found".format(identity)}
+    ret = {"reason": "User {} not found".format(identity), "status_code": 404}
     return jsonify(ret), 404
 
 

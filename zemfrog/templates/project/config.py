@@ -13,6 +13,14 @@ class Development(object):
     MAIL_DEFAULT_SENDER = "admin@localhost.com"
     APISPEC_TITLE = "API Docs"
     APISPEC_SWAGGER_UI_URL = "/docs"
+    APISPEC_SECURITY_DEFINITIONS = {
+        "Bearer": {
+            "type": "oauth2",
+            "flow": "password",
+            "tokenUrl": "/auth/jwt/login",
+        }
+    }
+    APISPEC_SECURITY_PARAMS = [{"Bearer": []}]
     DEBUG = True
     {% if main_app -%}
         APPS = []
