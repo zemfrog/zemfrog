@@ -76,3 +76,15 @@ History
 * NEW: middleware boilerplate.
 * NEW: multiple apps support
 * Fix minor bugs
+
+1.2.1 (2020-10-27)
+------------------
+
+* New Feature: added prompt to manage the app.
+* moved mail dir to templates/emails
+* add ``api_doc`` & ``authenticate`` decorator.
+* NEW: add swagger oauth2.
+* NEW: add first_name & last_name column.
+* IMPROVE: Support creating REST API descriptions via function documents.
+* Refactor Code: Rename and add field validation.
+* Code Change: update REST API structure.
