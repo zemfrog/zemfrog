@@ -1,9 +1,11 @@
 import click
 
-@click.group("${name}")
+
+@click.group("{{name}}")
 def group():
     """
-    ${name} command.
+    {{name}} command.
     """
+
 
 command = group
