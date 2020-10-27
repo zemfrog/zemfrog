@@ -42,6 +42,7 @@ def create_app(name: str) -> Flask:
         loader.load_blueprints(app)
         loader.load_middlewares(app)
         loader.load_apis(app)
+        loader.load_error_handlers(app)
         loader.load_commands(app)
         loader.load_services(app)
         loader.load_docs(app)

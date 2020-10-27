@@ -39,6 +39,7 @@ class Development(object):
         "zemfrog.commands.blueprint",
         "zemfrog.commands.middleware",
         "zemfrog.commands.command",
+        "zemfrog.commands.errorhandler",
         {% if main_app -%}
             "zemfrog.commands.app"
         {%- endif %}
@@ -46,6 +47,7 @@ class Development(object):
     BLUEPRINTS = ["auth"]
     MIDDLEWARES = []
     APIS = []
+    ERROR_HANDLERS = {}
     API_DOCS = True
     CREATE_DB = True
     CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
