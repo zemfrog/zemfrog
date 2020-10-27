@@ -158,3 +158,24 @@ def g_command(name: str):
         fp.write(new_data)
 
     print("(done)")
+
+
+def g_error_handler(name):
+    """
+    Function for creating error handler.
+
+    :param str name: name of the handler.
+
+    """
+
+    print("Creating error handler %r... " % name, end="")
+    eh_dir = os.path.join(current_app.root_path, "handlers")
+    old_filename = get_template("errorhandler", "name.py")
+    with open(old_filename) as fp:
+        data = fp.read()
+
+    new_filename = os.path.join(eh_dir, name.lower() + ".py")
+    with open(new_filename, "w") as fp:
+        fp.write(data)
+
+    print("(done)")

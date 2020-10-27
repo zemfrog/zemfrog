@@ -161,6 +161,18 @@ def load_apis(app: Flask):
     app.register_blueprint(api)
 
 
+def load_error_handlers(app: Flask):
+    """
+    Function to load all error handlers
+    """
+
+    import_name = get_import_name(app)
+    handlers = app.config.get("ERROR_HANDLERS", {})
+    for code, view in handlers.items():
+        view = import_attr(import_name + view + ".handler")
+        app.register_error_handler(code, view)
+
+
 def load_services(app: Flask):
     """
     Function to load all celery tasks based on ``SERVICES`` configuration in config.py.
