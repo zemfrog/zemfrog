@@ -11,19 +11,19 @@ from .exception import ZemfrogTemplateNotFound, ZemfrogModelNotFound
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "templates")
 
 
-def get_template(name: str) -> str:
+def get_template(*paths) -> str:
     """
     Function to get template base directory.
 
-    :param name: template directory name.
+    :param paths: template directory or file name.
 
     :raises: ZemfrogTemplateNotFound
 
     """
 
-    t = os.path.join(TEMPLATE_DIR, name)
-    if not os.path.isdir(t):
-        raise ZemfrogTemplateNotFound("unknown template %r" % name)
+    t = os.path.join(TEMPLATE_DIR, *paths)
+    if not (os.path.isdir(t) or os.path.isfile(t)):
+        raise ZemfrogTemplateNotFound("unknown template %r" % os.sep.join(paths))
 
     return t
 

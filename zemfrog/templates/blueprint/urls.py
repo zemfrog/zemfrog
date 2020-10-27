@@ -1,4 +1,4 @@
 from . import views
 
-docs = {"tags": ["${name}"]}
+docs = {"tags": ["{{name}}"]}
 routes = []

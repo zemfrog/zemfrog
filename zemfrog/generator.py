@@ -1,10 +1,8 @@
-from importlib import import_module
 import os
-import string
 from flask.globals import current_app
 from jinja2 import Template
 
-from .helper import copy_template, get_import_name, search_model
+from .helper import copy_template, get_import_name, get_template, search_model
 
 
 def g_project(name: str, import_name: str):
@@ -45,14 +43,12 @@ def g_api(name: str):
 
     print("Creating API %r... " % name, end="")
     api_dir = os.path.join(current_app.root_path, "api")
-    copy_template("api", api_dir)
-    old_filename = os.path.join(api_dir, "name.py")
+    old_filename = get_template("api", "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()
-        py_t = string.Template(old_data)
-        new_data = py_t.safe_substitute(name=name, url_prefix=name.lower())
+        py_t = Template(old_data)
+        new_data = py_t.render(name=name, url_prefix=name.lower())
 
-    os.remove(old_filename)
     new_filename = os.path.join(api_dir, name.lower() + ".py")
     with open(new_filename, "w") as fp:
         fp.write(new_data)
@@ -76,11 +72,9 @@ def g_api_crud(name: str):
         idx = len(import_name)
         src_model = src_model[idx:]
 
-    src_schema = src_model.replace("models", "schema", 1)
     api_dir = os.path.join(current_app.root_path, "api")
     print("Creating REST API %r... " % name, end="")
-    copy_template("crud", api_dir)
-    old_filename = os.path.join(api_dir, "name.py")
+    old_filename = get_template("crud", "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()
         py_t = Template(old_data)
@@ -88,11 +82,9 @@ def g_api_crud(name: str):
             name=name,
             url_prefix=name.lower(),
             src_model=src_model,
-            src_schema=src_schema,
             main_app=main_app,
         )
 
-    os.remove(old_filename)
     new_filename = os.path.join(api_dir, name.lower() + ".py")
     with open(new_filename, "w") as fp:
         fp.write(new_data)
@@ -115,8 +107,8 @@ def g_blueprint(name: str):
         filename = os.path.join(bp_dir, fname + ".py")
         with open(filename) as fp:
             old_data = fp.read()
-            py_t = string.Template(old_data)
-            new_data = py_t.safe_substitute(name=name)
+            py_t = Template(old_data)
+            new_data = py_t.render(name=name)
 
         with open(filename, "w") as fp:
             fp.write(new_data)
@@ -134,10 +126,14 @@ def g_middleware(name: str):
 
     print("Creating middleware %r... " % name, end="")
     middleware_dir = os.path.join(current_app.root_path, "middlewares")
-    copy_template("middleware", middleware_dir)
-    old_filename = os.path.join(middleware_dir, "name.py")
+    old_filename = get_template("middleware", "name.py")
+    with open(old_filename) as fp:
+        data = fp.read()
+
     new_filename = os.path.join(middleware_dir, name.lower() + ".py")
-    os.rename(old_filename, new_filename)
+    with open(new_filename, "w") as fp:
+        fp.write(data)
+
     print("(done)")
 
 
@@ -151,14 +147,12 @@ def g_command(name: str):
 
     print("Creating command %r..." % name, end="")
     cmd_dir = os.path.join(current_app.root_path, "commands")
-    copy_template("command", cmd_dir)
-    old_filename = os.path.join(cmd_dir, "name.py")
+    old_filename = get_template("command", "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()
-        py_t = string.Template(old_data)
-        new_data = py_t.safe_substitute(name=name)
+        py_t = Template(old_data)
+        new_data = py_t.render(name=name)
 
-    os.remove(old_filename)
     new_filename = os.path.join(cmd_dir, name.lower() + ".py")
     with open(new_filename, "w") as fp:
         fp.write(new_data)
