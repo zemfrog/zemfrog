@@ -88,3 +88,9 @@ History
 * IMPROVE: Support creating REST API descriptions via function documents.
 * Refactor Code: Rename and add field validation.
 * Code Change: update REST API structure.
+
+1.2.2 (2020-10-28)
+------------------
+
+* Refactor generator
+* New Feature: add error handler
