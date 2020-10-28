@@ -35,6 +35,7 @@ The application structure is as follows::
 * ``auth`` - This directory is the default JWT authentication.
 * ``commands`` - This directory is for the commands that will be registered in the flask command.
 * ``extensions`` - This directory is for a list of flask extensions.
+* ``handlers`` - This directory is for error handlers.
 * ``middlewares`` - This directory is a list of middleware.
 * ``models`` - This directory is for a list of sqlalchemy ORM models.
 * ``services`` - This directory is for the celery task list.
@@ -66,6 +67,7 @@ There are several configurations in the zemfrog application, including:
 * ``EXTENSIONS`` - List your flask extensions here.
 * ``COMMANDS`` - List your commands here.
 * ``BLUEPRINTS`` - List your blueprint here.
+* ``ERROR_HANDLERS`` - List of error handlers.
 * ``MIDDLEWARES`` - List of middleware here.
 * ``APIS`` - List your REST API resources here.
 * ``API_DOCS`` - Configuration for automation creates REST API documentation using ``flask-apispec``. Default value is ``True``.
@@ -112,6 +114,26 @@ Then add a command to the ``COMMANDS`` configuration in config.py::
 Now you can see the command foo is registered in the application::
 
     $ flask foo
+
+
+Error Handling
+--------------
+
+In zemfrog you can handle errors easily, you just need to make a boilerplate handler. Like this::
+
+    $ flask handler new not_found
+
+And in the ``handlers/not_found.py`` module there is a ``handler`` function which zemfrog will import automatically.
+
+Now register to the ``ERROR_HANDLERS`` configuration. Like this::
+
+    ERROR_HANDLERS = {
+        404: "handlers.not_found"
+    }
+
+.. note::
+
+    The format of the error handler is ``{code_or_exception: "error handler"}``
 
 
 Blueprints
