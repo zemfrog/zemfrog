@@ -1,4 +1,5 @@
 import os
+import re
 
 from importlib import import_module
 from distutils.dir_util import copy_tree
@@ -149,3 +150,9 @@ def get_import_name(app: Flask) -> str:
         else app.import_name.rstrip(".wsgi") + "."
     )
     return import_name
+
+
+def validate_name(value: str):
+    re_var = re.compile(r"^([A-Za-z_]+[\w]+)$")
+    if not re_var.search(value):
+        raise SystemExit("Error: invalid name %r" % value)
