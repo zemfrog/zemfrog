@@ -2,7 +2,13 @@ import os
 from flask.globals import current_app
 from jinja2 import Template
 
-from .helper import copy_template, get_import_name, get_template, search_model
+from .helper import (
+    copy_template,
+    get_import_name,
+    get_template,
+    search_model,
+    validate_name,
+)
 
 
 def g_project(name: str, import_name: str):
@@ -13,6 +19,7 @@ def g_project(name: str, import_name: str):
 
     """
 
+    validate_name(name)
     print("Creating %r project... " % name, end="")
     copy_template("project", name)
     main_app = True if import_name == "wsgi" else False
@@ -41,6 +48,7 @@ def g_api(name: str):
 
     """
 
+    validate_name(name)
     print("Creating API %r... " % name, end="")
     api_dir = os.path.join(current_app.root_path, "api")
     old_filename = get_template("api", "name.py")
@@ -64,6 +72,7 @@ def g_api_crud(name: str):
 
     """
 
+    validate_name(name)
     src_model = search_model(name)
     import_name = get_import_name(current_app)
     main_app = True
@@ -100,6 +109,7 @@ def g_blueprint(name: str):
 
     """
 
+    validate_name(name)
     print("Creating blueprint %r... " % name, end="")
     bp_dir = os.path.join(current_app.root_path, name.lower())
     copy_template("blueprint", bp_dir)
@@ -124,6 +134,7 @@ def g_middleware(name: str):
 
     """
 
+    validate_name(name)
     print("Creating middleware %r... " % name, end="")
     middleware_dir = os.path.join(current_app.root_path, "middlewares")
     old_filename = get_template("middleware", "name.py")
@@ -145,6 +156,7 @@ def g_command(name: str):
 
     """
 
+    validate_name(name)
     print("Creating command %r..." % name, end="")
     cmd_dir = os.path.join(current_app.root_path, "commands")
     old_filename = get_template("command", "name.py")
@@ -168,6 +180,7 @@ def g_error_handler(name):
 
     """
 
+    validate_name(name)
     print("Creating error handler %r... " % name, end="")
     eh_dir = os.path.join(current_app.root_path, "handlers")
     old_filename = get_template("errorhandler", "name.py")
