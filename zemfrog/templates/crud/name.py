@@ -2,7 +2,6 @@ from zemfrog.decorators import auto_status_code, authenticate
 from zemfrog.helper import db_add, db_delete, db_update
 from zemfrog.models import DefaultResponseSchema
 from flask_apispec import marshal_with, use_kwargs
-from {{ "" if main_app else ".." }}extensions.sqlalchemy import db
 from {{ "" if main_app else ".." }}extensions.marshmallow import ma
 from {{ "" if main_app else ".." }}{{src_model}} import {{name}}
 
@@ -47,7 +46,7 @@ def add(**json):
     found = {{name}}.query.filter_by(**json).first()
     if not found:
         model = {{name}}(**json)
-        db_add(db, model)
+        db_add(model)
         status_code = 200
         reason = "Successfully added data."
 
@@ -79,7 +78,7 @@ def update(**json):
             reason = "Data not found."
 
         else:
-            db_update(db, model, **new_data)
+            db_update(model, **new_data)
             status_code = 200
             reason = "Successfully updating data."
 
@@ -104,7 +103,7 @@ def delete(**json):
 
     model = {{name}}.query.filter_by(**json).first()
     if model:
-        db_delete(db, model)
+        db_delete(model)
         status_code = 200
         reason = "Data deleted successfully."
 
