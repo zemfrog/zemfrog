@@ -15,7 +15,6 @@ from zemfrog.models import (
     RequestPasswordResetSchema,
 )
 
-from {{ "" if main_app else ".." }}extensions.sqlalchemy import db
 from {{ "" if main_app else ".." }}models.user import User, Log
 from {{ "" if main_app else ".." }}services.email import send_email
 
@@ -37,7 +36,7 @@ def login(**kwds):
         login_at = datetime.utcnow()
         log = Log(login_at=login_at)
         user.logs.append(log)
-        db_commit(db)
+        db_commit()
         access_token = create_access_token(email)
         return {"access_token": access_token}
 
@@ -71,7 +70,7 @@ def register(**kwds):
                     password=passw,
                     register_at=datetime.utcnow(),
                 )
-                db_add(db, user)
+                db_add(user)
                 token = create_access_token(
                     email,
                     expires_delta=False,
@@ -110,13 +109,10 @@ def confirm_account(token):
             raise DecodeError
 
         user = User.query.filter_by(email=email).first()
-        if user:
-            if not user.confirmed:
-                reason = "Confirmed."
-                status_code = 200
-                db_update(db, user, confirmed=True, confirmed_at=datetime.utcnow())
-            else:
-                raise DecodeError
+        if user and not user.confirmed:
+            reason = "Confirmed."
+            status_code = 200
+            db_update(user, confirmed=True, confirmed_at=datetime.utcnow())
 
         else:
             raise DecodeError
@@ -185,7 +181,7 @@ def password_reset(token, **kwds):
         passw = kwds.get("password")
         if user and passw:
             passw = generate_password_hash(passw)
-            db_update(db, user, password=passw)
+            db_update(user, password=passw)
             reason = "Successfully change password."
             status_code = 200
         else:

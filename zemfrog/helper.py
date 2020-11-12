@@ -7,6 +7,7 @@ from types import ModuleType
 from flask import current_app, Flask, render_template
 from flask_sqlalchemy import Model
 
+from .globals import current_db
 from .exception import ZemfrogTemplateNotFound, ZemfrogModelNotFound
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "templates")
@@ -94,40 +95,40 @@ def get_models(mod: ModuleType) -> list:
     return models
 
 
-def db_add(db, model):
+def db_add(model):
     """
     Functions for adding data to the database.
     """
 
-    db.session.add(model)
-    db_commit(db)
+    current_db.session.add(model)
+    db_commit()
 
 
-def db_delete(db, model):
+def db_delete(model):
     """
     Functions to delete data in the database.
     """
 
-    db.session.delete(model)
-    db_commit(db)
+    current_db.session.delete(model)
+    db_commit()
 
 
-def db_update(db, model, **kwds):
+def db_update(model, **kwds):
     """
     Function to update data in database.
     """
 
     for k, v in kwds.items():
         setattr(model, k, v)
-    db_commit(db)
+    db_commit()
 
 
-def db_commit(db):
+def db_commit():
     """
     Functions for saving data to a database.
     """
 
-    db.session.commit()
+    current_db.session.commit()
 
 
 def get_mail_template(name, **context):
