@@ -16,7 +16,7 @@ from zemfrog.models import (
 )
 
 from {{ "" if main_app else ".." }}models.user import User, Log
-from {{ "" if main_app else ".." }}services.email import send_email
+from {{ "" if main_app else ".." }}tasks.email import send_email
 
 
 @use_kwargs(LoginSchema(strict=True), location="form")
