@@ -145,7 +145,7 @@ So you need to understand about celery. See here https://docs.celeryproject.org/
 And how do I make a background task?
 
 All background tasks are in the ``tasks`` directory of the project layouts.
-And in the tasks directory, a sample background task is also available.
+And in the ``tasks`` directory, a sample background task is also available.
 
 .. code-block:: python
 
@@ -159,7 +159,7 @@ And in the tasks directory, a sample background task is also available.
 
 
 .. note::
-    If you want to create a background task, you have to use the ``celery`` app from the extensions directory.
+    If you want to create a background task, you have to use the ``celery`` app from the ``extensions`` directory.
     Like the sample above.
 
 
