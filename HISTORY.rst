@@ -94,3 +94,11 @@ History
 
 * Refactor generator
 * New Feature: add error handler
+
+
+1.2.3 (2020-11-13)
+------------------
+
+* Adding: current_db local proxy
+* rename services directory to tasks
+
