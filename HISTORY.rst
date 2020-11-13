@@ -102,3 +102,9 @@ History
 * Adding: current_db local proxy
 * rename services directory to tasks
 
+
+1.2.4 (current)
+---------------
+
+* support multiple static files
+

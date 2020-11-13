@@ -6,8 +6,7 @@ from typing import Dict, List
 
 import pkg_resources
 import click
-from flask import Flask
-from flask.blueprints import Blueprint
+from flask import Flask, Blueprint, send_from_directory
 from flask.cli import load_dotenv, routes_command, run_command, shell_command
 from flask_apispec import FlaskApiSpec
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
@@ -45,6 +44,32 @@ def load_extensions(app: Flask):
         ext = import_module(import_name + ext)
         init_func = getattr(ext, "init_app")
         init_func(app)
+
+
+def load_staticfiles(app: Flask):
+    """
+    This function is to create multiple static files based on the ``STATICFILES`` configuration.
+    """
+
+    staticfiles = app.config.get("STATICFILES", [])
+    for static in staticfiles:
+        path, endpoint, static_folder = static
+        static_host = None
+        if len(static) == 4:
+            static_host = static[-1]
+
+        def serve_static(filename):
+            cache_timeout = app.get_send_file_max_age(filename)
+            return send_from_directory(
+                static_folder, filename, cache_timeout=cache_timeout
+            )
+
+        app.add_url_rule(
+            path.rstrip("/") + "/<path:filename>",
+            endpoint=endpoint,
+            host=static_host,
+            view_func=serve_static,
+        )
 
 
 def load_models(app: Flask):
