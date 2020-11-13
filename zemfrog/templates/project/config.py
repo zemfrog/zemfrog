@@ -45,6 +45,7 @@ class Development(object):
         {%- endif %}
     ]
     BLUEPRINTS = ["auth"]
+    STATICFILES = []
     MIDDLEWARES = []
     APIS = []
     ERROR_HANDLERS = {}

@@ -136,6 +136,22 @@ Now register to the ``ERROR_HANDLERS`` configuration. Like this::
     The format of the error handler is ``{code_or_exception: "error handler"}``
 
 
+Multiple Static Files
+---------------------
+
+You can add more static files to serve via the ``STATICFILES`` configuration, like this::
+
+    STATICFILES = [
+        ("/assets", "assets", "assets")
+    ]
+
+Static file format values ​​are (``path``, ``endpoint``, ``static_folder``, ``static_host``).
+
+.. note::
+
+    the ``static_host`` value is optional
+
+
 Background Tasks
 ----------------
 

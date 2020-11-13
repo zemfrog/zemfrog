@@ -37,6 +37,7 @@ def create_app(name: str) -> Flask:
     with app.app_context():
         loader.load_config(app)
         loader.load_extensions(app)
+        loader.load_staticfiles(app)
         loader.load_models(app)
         loader.load_urls(app)
         loader.load_blueprints(app)
