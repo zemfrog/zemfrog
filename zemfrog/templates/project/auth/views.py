@@ -160,6 +160,39 @@ def request_password_reset(**kwds):
     return {"reason": reason, "status_code": status_code}
 
 
+@marshal_with(DefaultResponseSchema, 200)
+@marshal_with(DefaultResponseSchema, 401)
+@marshal_with(DefaultResponseSchema, 403)
+@auto_status_code
+def confirm_password_reset_token(token):
+    """
+    Validate password reset token.
+    """
+
+    try:
+        data = decode_token(token)
+        email = data["identity"]
+        if not data["user_claims"].get("token_password_reset"):
+            raise DecodeError
+
+        user = User.query.filter_by(email=email).first()
+        if user:
+            reason = "Valid token."
+            status_code = 200
+        else:
+            raise DecodeError
+
+    except DecodeError:
+        reason = "Invalid token."
+        status_code = 401
+
+    except ExpiredSignatureError:
+        reason = "Token expired."
+        status_code = 403
+
+    return {"reason": reason, "status_code": status_code}
+
+
 @use_kwargs(PasswordResetSchema(strict=True), location="form")
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
