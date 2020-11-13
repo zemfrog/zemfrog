@@ -19,7 +19,7 @@ The application structure is as follows::
     ├── extensions
     ├── middlewares
     ├── models
-    ├── services
+    ├── tasks
     ├── static
     ├── templates
     ├── templates/emails
@@ -38,7 +38,7 @@ The application structure is as follows::
 * ``handlers`` - This directory is for error handlers.
 * ``middlewares`` - This directory is a list of middleware.
 * ``models`` - This directory is for a list of sqlalchemy ORM models.
-* ``services`` - This directory is for the celery task list.
+* ``tasks`` - This directory is for the celery task list.
 * ``static`` - Static files.
 * ``templates`` - Templates folder.
 * ``templates/emails`` - This directory is for the list of email templates.
@@ -134,6 +134,33 @@ Now register to the ``ERROR_HANDLERS`` configuration. Like this::
 .. note::
 
     The format of the error handler is ``{code_or_exception: "error handler"}``
+
+
+Background Tasks
+----------------
+
+In zemfrog, it is integrated with Celery for background tasks.
+So you need to understand about celery. See here https://docs.celeryproject.org/en/stable/getting-started/introduction.html for more details.
+
+And how do I make a background task?
+
+All background tasks are in the ``tasks`` directory of the project layouts.
+And in the tasks directory, a sample background task is also available.
+
+.. code-block:: python
+
+    from extensions.celery import celery
+    from extensions.mail import mail
+
+
+    @celery.task
+    def send_email(*args, **kwds):
+        mail.send_message(*args, **kwds)
+
+
+.. note::
+    If you want to create a background task, you have to use the ``celery`` app from the extensions directory.
+    Like the sample above.
 
 
 Blueprints
