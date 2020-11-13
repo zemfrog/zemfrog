@@ -173,14 +173,14 @@ def load_error_handlers(app: Flask):
         app.register_error_handler(code, view)
 
 
-def load_services(app: Flask):
+def load_tasks(app: Flask):
     """
-    Function to load all celery tasks based on ``SERVICES`` configuration in config.py.
+    Function to load all celery tasks based on ``TASKS`` configuration in config.py.
     """
 
-    services = app.config.get("SERVICES", [])
+    tasks = app.config.get("TASKS", [])
     import_name = get_import_name(app)
-    for sv in services:
+    for sv in tasks:
         import_module(import_name + sv)
 
 
