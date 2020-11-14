@@ -8,7 +8,6 @@ Welcome to zemfrog's documentation!
    readme
    installation
    usage
-   zemfrog
    contributing
    authors
    history

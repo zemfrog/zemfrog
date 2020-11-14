@@ -3,3 +3,5 @@ flask-sqlalchemy
 flask-jwt-extended
 celery
 Click>=7.0
+sphinx-autoapi
+sphinx-rtd-theme
