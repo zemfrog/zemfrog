@@ -103,8 +103,9 @@ History
 * rename services directory to tasks
 
 
-1.2.4 (current)
----------------
+1.2.4 (2020-11-14)
+------------------
 
 * support multiple static files
-
+* Add an endpoint to validate the password reset token
+* fix `#37 <https://github.com/zemfrog/zemfrog/issues/37>`_
