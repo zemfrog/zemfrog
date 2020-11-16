@@ -109,3 +109,7 @@ History
 * support multiple static files
 * Add an endpoint to validate the password reset token
 * fix `#37 <https://github.com/zemfrog/zemfrog/issues/37>`_
+
+
+1.2.5 (latest)
+------------------
