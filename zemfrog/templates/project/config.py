@@ -40,6 +40,9 @@ class Development(object):
         "zemfrog.commands.middleware",
         "zemfrog.commands.command",
         "zemfrog.commands.errorhandler",
+        "zemfrog.commands.extension",
+        "zemfrog.commands.model",
+        "zemfrog.commands.task",
         {% if main_app -%}
             "zemfrog.commands.app"
         {%- endif %}
