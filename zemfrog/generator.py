@@ -40,6 +40,83 @@ def g_project(name: str, import_name: str):
     print("(done)")
 
 
+def g_extension(name: str):
+    """
+    Function for making extension boilerplate.
+
+    :param name: extension name.
+    """
+
+    validate_name(name)
+    print("Creating a %r extension..." % name, end="")
+    ext_dir = os.path.join(current_app.root_path, "extensions")
+    old_filename = get_template("extension", "name.py")
+    with open(old_filename) as fp:
+        new_data = fp.read()
+
+    new_filename = os.path.join(ext_dir, name.lower() + ".py")
+    with open(new_filename, "w") as fp:
+        fp.write(new_data)
+
+    print("(done)")
+
+
+def g_task(name: str):
+    """
+    Function for creating celery task.
+
+    :param name: task name.
+    """
+
+    validate_name(name)
+    print("Creating %r task..." % name, end="")
+    import_name = get_import_name(current_app)
+    main_app = True
+    if import_name:
+        main_app = False
+
+    ext_dir = os.path.join(current_app.root_path, "tasks")
+    old_filename = get_template("task", "name.py")
+    with open(old_filename) as fp:
+        old_data = fp.read()
+        py_t = Template(old_data)
+        new_data = py_t.render(main_app=main_app, task_name=name)
+
+    new_filename = os.path.join(ext_dir, name.lower() + ".py")
+    with open(new_filename, "w") as fp:
+        fp.write(new_data)
+
+    print("(done)")
+
+
+def g_model(name: str):
+    """
+    Function for creating sqlalchemy model.
+
+    :param name: model name.
+    """
+
+    validate_name(name)
+    print("Creating %r model..." % name, end="")
+    import_name = get_import_name(current_app)
+    main_app = True
+    if import_name:
+        main_app = False
+
+    model_dir = os.path.join(current_app.root_path, "models")
+    old_filename = get_template("model", "name.py")
+    with open(old_filename) as fp:
+        old_data = fp.read()
+        py_t = Template(old_data)
+        new_data = py_t.render(main_app=main_app, model_name=name.capitalize())
+
+    new_filename = os.path.join(model_dir, name.lower() + ".py")
+    with open(new_filename, "w") as fp:
+        fp.write(new_data)
+
+    print("(done)")
+
+
 def g_api(name: str):
     """
     Functions for creating APIs.
