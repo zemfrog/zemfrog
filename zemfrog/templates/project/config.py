@@ -43,6 +43,9 @@ class Development(object):
         "zemfrog.commands.extension",
         "zemfrog.commands.model",
         "zemfrog.commands.task",
+        "zemfrog.commands.user",
+        "zemfrog.commands.role",
+        "zemfrog.commands.permission",
         {% if main_app -%}
             "zemfrog.commands.app"
         {%- endif %}
@@ -55,6 +58,9 @@ class Development(object):
     TASKS = []
     API_DOCS = True
     CREATE_DB = True
+    USER_MODEL = "models.user.User"
+    ROLE_MODEL = "models.user.Role"
+    PERMISSION_MODEL = "models.user.Permission"
     CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
     CELERY_BROKER_URL = CELERY_RESULT_BACKEND
 
