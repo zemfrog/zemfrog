@@ -111,5 +111,10 @@ History
 * fix `#37 <https://github.com/zemfrog/zemfrog/issues/37>`_
 
 
-1.2.5 (latest)
+1.2.5 (2020-11-18)
 ------------------
+
+* NEW: add extension, model, task generator
+* Refactor Code: add model mixin
+* add command user, role & permission
+* FIX: auth logs
