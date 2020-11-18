@@ -5,7 +5,7 @@ from flask_apispec import use_kwargs, marshal_with
 from jwt import DecodeError, ExpiredSignatureError
 from werkzeug.security import generate_password_hash, check_password_hash
 from zemfrog.decorators import auto_status_code
-from zemfrog.helper import db_add, db_update, db_commit, get_mail_template
+from zemfrog.helper import db_add, db_update, db_commit, get_mail_template, get_user_roles
 from zemfrog.models import (
     DefaultResponseSchema,
     LoginSchema,
@@ -37,7 +37,9 @@ def login(**kwds):
         log = Log(login_at=login_at)
         user.logs.append(log)
         db_commit()
-        access_token = create_access_token(email)
+        roles = get_user_roles(user)
+        claims = {"roles": roles}
+        access_token = create_access_token(email, user_claims=claims)
         return {"access_token": access_token}
 
     return {"reason": "Incorrect email or password.", "status_code": 404}

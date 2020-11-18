@@ -78,13 +78,19 @@ def update(name):
     )
     perm = model.query.filter_by(name=name).first()
     if perm:
+        cols = {}
         new_name = input("Enter a new permission name: ").strip()
         description = input("Enter a new permission description: ").strip()
-        if new_name and description:
-            db_update(perm, name=new_name, description=description)
-            print("Successfully updated the %r permission to %r" % (name, new_name))
-        else:
-            print("Please enter the name and description of the permission correctly!")
+        if not new_name:
+            new_name = perm.name
+        cols["name"] = new_name
+
+        if not description:
+            description = perm.description
+        cols["description"] = description
+
+        db_update(perm, **cols)
+        print("Successfully updated the %r permission to %r" % (name, new_name))
     else:
         print("%r permission doesn't exist" % name)
 
