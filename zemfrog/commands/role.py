@@ -94,34 +94,38 @@ def update(name):
     )
     role = model.query.filter_by(name=name).first()
     if role:
+        cols = {}
         new_name = input("Enter a new role name: ").strip()
         description = input("Enter a new role description: ").strip()
         permissions = input("Enter new permissions: ").strip()
-        if new_name and description:
-            if permissions:
-                perm_model = import_attr(
-                    import_name
-                    + current_app.config.get(
-                        "PERMISSION_MODEL", "models.user.Permission"
-                    )
-                )
-                for perm_name in permissions.split(","):
-                    perm = perm_model.query.filter_by(name=perm_name).first()
-                    if perm:
-                        success = role.add_perm(perm)
-                        if success:
-                            msg = "Successfully added %r permission" % perm_name
-                        else:
-                            msg = "%r permission already exists" % perm_name
+        if not new_name:
+            new_name = role.name
+        cols["name"] = new_name
+
+        if not description:
+            description = role.description
+        cols["description"] = description
+
+        if permissions:
+            perm_model = import_attr(
+                import_name
+                + current_app.config.get("PERMISSION_MODEL", "models.user.Permission")
+            )
+            for perm_name in permissions.split(","):
+                perm = perm_model.query.filter_by(name=perm_name).first()
+                if perm:
+                    success = role.add_perm(perm)
+                    if success:
+                        msg = "Successfully added %r permission" % perm_name
                     else:
-                        msg = "%r permission does not exist" % perm_name
+                        msg = "%r permission already exists" % perm_name
+                else:
+                    msg = "%r permission does not exist" % perm_name
 
-                    print(msg)
+                print(msg)
 
-            db_update(role, name=new_name, description=description)
-            print("Successfully updated the %r role to %r" % (name, new_name))
-        else:
-            print("Please enter the name and description of the role correctly!")
+        db_update(role, **cols)
+        print("Successfully updated the %r role to %r" % (name, new_name))
     else:
         print("%r role doesn't exist" % name)
 
