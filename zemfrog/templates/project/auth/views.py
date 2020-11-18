@@ -153,6 +153,9 @@ def request_password_reset(**kwds):
                 "request_password_reset.html", link_reset=link_reset
             )
             send_email.delay("Forgot password", html=msg, recipients=[email])
+            log = Log(request_password_reset_at=datetime.utcnow())
+            user.logs.append(log)
+            db_commit()
     else:
         reason = "Email required."
         status_code = 403
@@ -214,6 +217,8 @@ def password_reset(token, **kwds):
         passw = kwds.get("password")
         if user and passw:
             passw = generate_password_hash(passw)
+            log = Log(updated_at=datetime.utcnow())
+            user.logs.append(log)
             db_update(user, password=passw)
             reason = "Successfully change password."
             status_code = 200

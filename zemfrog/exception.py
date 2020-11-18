@@ -12,3 +12,11 @@ class ZemfrogEnvironment(ZemfrogException):
 
 class ZemfrogModelNotFound(ZemfrogException):
     pass
+
+
+class ZemfrogRoleNotFound(ZemfrogException):
+    pass
+
+
+class ZemfrogRolePermissionNotFound(ZemfrogException):
+    pass
