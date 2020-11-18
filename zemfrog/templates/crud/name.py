@@ -23,7 +23,7 @@ class Delete{{name}}Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = {{name}}
 
-@authenticate
+@authenticate()
 @marshal_with(Read{{name}}Schema(many=True), 200)
 def get():
     """
@@ -33,7 +33,7 @@ def get():
     data = {{name}}.query.all()
     return data
 
-@authenticate
+@authenticate()
 @use_kwargs(Create{{name}}Schema(strict=True))
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
@@ -59,7 +59,7 @@ def add(**json):
         "reason": reason
     }
 
-@authenticate
+@authenticate()
 @use_kwargs(Update{{name}}Schema(strict=True))
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
@@ -91,7 +91,7 @@ def update(**json):
         "reason": reason
     }
 
-@authenticate
+@authenticate()
 @use_kwargs(Delete{{name}}Schema(strict=True))
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
