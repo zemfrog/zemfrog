@@ -118,3 +118,5 @@ History
 * Refactor Code: add model mixin
 * add command user, role & permission
 * FIX: auth logs
+* New Feature: supports role-based access control
+

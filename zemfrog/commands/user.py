@@ -31,7 +31,6 @@ def group():
 @click.option(
     "-r",
     "--roles",
-    required=True,
     help="User roles (separated by ,).",
     prompt="User roles (separated by ,)",
 )
@@ -53,10 +52,6 @@ def new(email, first_name, last_name, password, roles):
         role = role_model.query.filter_by(name=role.strip()).first()
         if role:
             user_roles.append(role)
-
-    if not user_roles:
-        print("User role required!")
-        return
 
     model = import_attr(
         import_name + current_app.config.get("USER_MODEL", "models.user.User")

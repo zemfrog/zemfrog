@@ -150,3 +150,11 @@ def get_import_name(app: Flask) -> str:
         else app.import_name.rstrip(".wsgi") + "."
     )
     return import_name
+
+
+def get_user_roles(user):
+    roles = {}
+    for role in user.roles:
+        permissions = [perm.name for perm in role.permissions]
+        roles[role.name] = permissions
+    return roles

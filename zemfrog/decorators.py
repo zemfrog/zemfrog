@@ -1,8 +1,9 @@
 from functools import wraps
 from typing import Callable
-from flask import current_app
+from flask import current_app, jsonify
 from flask_apispec import doc
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import verify_jwt_in_request
+from flask_jwt_extended.utils import get_jwt_claims
 
 
 def auto_status_code(func: Callable) -> Callable:
@@ -43,13 +44,54 @@ def api_doc(**kwds) -> Callable:
     return wrapper
 
 
-def authenticate(func: Callable) -> Callable:
+def jwt_required(roles={}) -> Callable:
     """
-    Decorator to add jwt view authentication.
+    Decorator to protect views with JWT & user roles.
+    """
+
+    def decorated(func: Callable) -> Callable:
+        @wraps(func)
+        def wrapper(*args, **kwds):
+            verify_jwt_in_request()
+            claims = get_jwt_claims()
+            jwt_roles = claims.get("roles", {})
+            for role, permissions in roles.items():
+                if not isinstance(permissions, (list, tuple)):
+                    permissions = []
+
+                if role in jwt_roles:
+                    valid_perms = jwt_roles.get(role, [])
+                    for perm in permissions:
+                        if perm not in valid_perms:
+                            return (
+                                jsonify(
+                                    reason="You don't have permission!", status_code=403
+                                ),
+                                403,
+                            )
+                else:
+                    return (
+                        jsonify(reason="Role not allowed!", status_code=403),
+                        403,
+                    )
+
+            return func(*args, **kwds)
+
+        return wrapper
+
+    return decorated
+
+
+def authenticate(roles={}) -> Callable:
+    """
+    Decorator to add jwt view authentication to API Docs.
     Reference: https://github.com/tiangolo/full-stack-flask-couchdb/tree/master/%7B%7Bcookiecutter.project_slug%7D%7D/backend/app/app/api/api_v1.
     """
 
-    func = api_doc(security=current_app.config.get("APISPEC_SECURITY_PARAMS", []))(
-        jwt_required(func)
-    )
-    return func
+    def decorated(func: Callable) -> Callable:
+        func = api_doc(security=current_app.config.get("APISPEC_SECURITY_PARAMS", []))(
+            jwt_required(roles)(func)
+        )
+        return func
+
+    return decorated

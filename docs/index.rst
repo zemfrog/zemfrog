@@ -9,6 +9,7 @@ Welcome to zemfrog's documentation!
    installation
    usage
    user_management
+   rbac
    contributing
    authors
    history
