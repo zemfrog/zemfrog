@@ -75,4 +75,4 @@ And add permission to the ``authenticate`` decorator, for example::
         return data
 
 
-Now the ``/api/user/get`` endpoint can only be accessed by admins who have the permission ``can_all ``!
+Now the ``/api/user/get`` endpoint can only be accessed by admins who have the permission ``can_all``!
