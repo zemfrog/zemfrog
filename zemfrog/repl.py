@@ -1,7 +1,7 @@
 """
 Reference: 
-- https://github.com/prompt-toolkit/python-prompt-toolkit/blob/master/examples/prompts/fancy-zsh-prompt.py
-- https://github.com/prompt-toolkit/python-prompt-toolkit/blob/master/examples/prompts/auto-completion/nested-autocompletion.py
+* https://github.com/prompt-toolkit/python-prompt-toolkit/blob/master/examples/prompts/fancy-zsh-prompt.py
+* https://github.com/prompt-toolkit/python-prompt-toolkit/blob/master/examples/prompts/auto-completion/nested-autocompletion.py
 
 """
 
@@ -34,10 +34,7 @@ style = Style.from_dict(
 )
 
 
-def get_prompt(app: Flask) -> HTML:
-    """
-    Build the prompt dynamically every time its rendered.
-    """
+def get_info_app(app: Flask):
     left_part = HTML(
         "<left-part>" " <import_name>%s</import_name> " "<path>%s</path>" "</left-part>"
     ) % (app.import_name, app.root_path)
@@ -59,8 +56,19 @@ def get_prompt(app: Flask) -> HTML:
     padding_size = total_width - used_width
 
     padding = HTML("<padding>%s</padding>") % (" " * padding_size,)
+    return left_part, padding, right_part, "\n"
 
-    return merge_formatted_text([left_part, padding, right_part, "\n", "$ "])
+
+def get_prompt(app: Flask):
+    """
+    Build the prompt dynamically every time its rendered.
+    """
+
+    info_app = []
+    if getattr(app, "_show_info_app", True):
+        info_app = get_info_app(app)
+
+    return merge_formatted_text([*info_app, "$ "])
 
 
 def get_commands(cli: Group) -> dict:
@@ -74,7 +82,7 @@ def get_commands(cli: Group) -> dict:
 
 
 def get_auto_complete(cli: Group) -> NestedCompleter:
-    commands = {"flask": get_commands(cli)}
+    commands = {"flask": get_commands(cli), "info": None}
     completer = NestedCompleter.from_nested_dict(commands)
     return completer
 
@@ -82,14 +90,21 @@ def get_auto_complete(cli: Group) -> NestedCompleter:
 def build_repl(app: Flask):
     while True:
         try:
-            os.environ["FLASK_APP"] = app.import_name
             answer = prompt(
                 lambda: get_prompt(app),
                 style=style,
                 completer=get_auto_complete(app.cli),
                 refresh_interval=1,
             )
-            os.system(answer)
+            if answer == "info":
+                print("* Import name: " + app.import_name)
+                print("* Root path: " + app.root_path)
+                print("* Environment: " + os.environ["ZEMFROG_ENV"])
+            else:
+                os.system(answer)
+
+            app._show_info_app = False
+
         except (EOFError, KeyboardInterrupt):
             print("Bye bye!")
-            sys.exit(1)
+            break
