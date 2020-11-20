@@ -2,6 +2,7 @@ from zemfrog.decorators import auto_status_code, authenticate
 from zemfrog.helper import db_add, db_delete, db_update
 from zemfrog.models import DefaultResponseSchema
 from flask_apispec import marshal_with, use_kwargs
+from marshmallow import fields
 from {{ "" if main_app else ".." }}extensions.marshmallow import ma
 from {{ "" if main_app else ".." }}{{src_model}} import {{name}}
 
@@ -23,6 +24,11 @@ class Delete{{name}}Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = {{name}}
 
+class Limit{{name}}Schema(ma.Schema):
+    start = fields.Integer()
+    stop = fields.Integer()
+
+
 @authenticate()
 @marshal_with(Read{{name}}Schema(), 200)
 def get(id):
@@ -34,13 +40,16 @@ def get(id):
     return data
 
 @authenticate()
+@use_kwargs(Limit{{name}}Schema(strict=True), location="query")
 @marshal_with(Read{{name}}Schema(many=True), 200)
-def list():
+def list(**kwds):
     """
     Read all data.
     """
 
-    data = {{name}}.query.all()
+    start = kwds.get("start")
+    stop = kwds.get("stop")
+    data = {{name}}.query[start:stop]
     return data
 
 @authenticate()

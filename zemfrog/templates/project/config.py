@@ -54,7 +54,7 @@ class Development(object):
     STATICFILES = []
     MIDDLEWARES = []
     APIS = []
-    ERROR_HANDLERS = {}
+    ERROR_HANDLERS = {422: "handlers.api_errors", 400: "handlers.api_errors"}
     TASKS = []
     API_DOCS = True
     CREATE_DB = True
