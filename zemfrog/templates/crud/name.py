@@ -24,8 +24,18 @@ class Delete{{name}}Schema(ma.SQLAlchemyAutoSchema):
         model = {{name}}
 
 @authenticate()
+@marshal_with(Read{{name}}Schema(), 200)
+def get(id):
+    """
+    Get one data based on the model's primary key.
+    """
+
+    data = {{name}}.query.get(id)
+    return data
+
+@authenticate()
 @marshal_with(Read{{name}}Schema(many=True), 200)
-def get():
+def list():
     """
     Read all data.
     """
@@ -121,7 +131,8 @@ docs = {"tags": ["{{name}}"]}
 endpoint = "{{url_prefix}}"
 url_prefix = "/{{url_prefix}}"
 routes = [
-    ("/get", get, ["GET"]),
+    ("/get/<id>", get, ["GET"]),
+    ("/list", list, ["GET"]),
     ("/add", add, ["POST"]),
     ("/update", update, ["PUT"]),
     ("/delete", delete, ["DELETE"])

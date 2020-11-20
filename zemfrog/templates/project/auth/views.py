@@ -19,6 +19,28 @@ from {{ "" if main_app else ".." }}models.user import User, Log
 from {{ "" if main_app else ".." }}tasks.email import send_email
 
 
+@marshal_with(DefaultResponseSchema, 403)
+@marshal_with(DefaultResponseSchema, 401)
+@marshal_with(DefaultResponseSchema, 200)
+@auto_status_code
+def test_token(token):
+    """
+    Test for jwt token.
+    """
+
+    reason = "Valid token"
+    status_code = 200
+    try:
+        decode_token(token)
+    except DecodeError:
+        reason = "Invalid token"
+        status_code = 403
+    except ExpiredSignatureError:
+        reason = "Token expired"
+        status_code = 401
+
+    return {"reason": reason, "status_code": status_code}
+
 @use_kwargs(LoginSchema(strict=True), location="form")
 @marshal_with(DefaultResponseSchema, 404)
 @marshal_with(LoginSuccessSchema, 200)
