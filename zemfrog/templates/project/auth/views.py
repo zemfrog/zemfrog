@@ -31,7 +31,11 @@ def test_token(token):
     reason = "Valid token"
     status_code = 200
     try:
-        decode_token(token)
+        email = decode_token(token)["identity"]
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            raise DecodeError
+
     except DecodeError:
         reason = "Invalid token"
         status_code = 403
