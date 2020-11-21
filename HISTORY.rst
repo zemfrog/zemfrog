@@ -120,3 +120,12 @@ History
 * FIX: auth logs
 * New Feature: supports role-based access control
 
+
+1.2.6 (2020-11-21)
+------------------
+
+* IMPROVE: commands to manage nested applications
+* Added endpoint for checking token jwt
+* Add an endpoint to retrieve one data from the model
+* Add schema to limit results
+* Added a handler for handling API errors

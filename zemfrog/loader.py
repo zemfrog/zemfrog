@@ -270,12 +270,23 @@ def load_apps(app: Flask):
         help = a.get("help", "")
         yourapp: Flask = import_attr(name + ".wsgi.app")
 
-        @click.command(name)
-        def cli():
-            build_repl(yourapp)
+        @click.command(
+            name,
+            context_settings=dict(
+                ignore_unknown_options=True,
+            ),
+        )
+        @click.option("-r", "--repl", is_flag=True, help="Activates REPL mode.")
+        @click.argument("args", nargs=-1, type=click.UNPROCESSED)
+        def cli(repl, args):
+            os.environ["FLASK_APP"] = yourapp.import_name
+            if repl:
+                build_repl(yourapp)
+            else:
+                os.system("flask " + " ".join(args))
 
         cli.help = help
-        app.cli.add_command(cli, name)
+        app.cli.add_command(cli)
         mounts[path] = yourapp
 
     app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)
