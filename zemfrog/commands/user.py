@@ -32,7 +32,6 @@ def group():
     "-r",
     "--roles",
     help="User roles (separated by ,).",
-    prompt="User roles (separated by ,)",
 )
 def new(email, first_name, last_name, password, roles):
     """
@@ -42,11 +41,11 @@ def new(email, first_name, last_name, password, roles):
     validate_email(email)
     validate_username(first_name)
     validate_username(last_name)
+    roles = input("User roles (separated by ,): ").strip()
     import_name = get_import_name(current_app)
     role_model = import_attr(
         import_name + current_app.config.get("ROLE_MODEL", "models.user.Role")
     )
-    roles = (roles or "").strip()
     user_roles = []
     for role in roles.split(","):
         role = role_model.query.filter_by(name=role.strip()).first()

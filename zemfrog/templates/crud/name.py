@@ -18,7 +18,7 @@ class Update{{name}}Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = {{name}}
 
-    __update__ = ma.Nested(Read{{name}}Schema(strict=True))
+    __update__ = ma.Nested(Read{{name}}Schema())
 
 class Delete{{name}}Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -40,7 +40,7 @@ def get(id):
     return data
 
 @authenticate()
-@use_kwargs(Limit{{name}}Schema(strict=True), location="query")
+@use_kwargs(Limit{{name}}Schema(), location="query")
 @marshal_with(Read{{name}}Schema(many=True), 200)
 def list(**kwds):
     """
@@ -53,7 +53,7 @@ def list(**kwds):
     return data
 
 @authenticate()
-@use_kwargs(Create{{name}}Schema(strict=True))
+@use_kwargs(Create{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
 @auto_status_code
@@ -79,7 +79,7 @@ def add(**json):
     }
 
 @authenticate()
-@use_kwargs(Update{{name}}Schema(strict=True))
+@use_kwargs(Update{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
 @marshal_with(DefaultResponseSchema, 403)
@@ -111,7 +111,7 @@ def update(**json):
     }
 
 @authenticate()
-@use_kwargs(Delete{{name}}Schema(strict=True))
+@use_kwargs(Delete{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
 @auto_status_code

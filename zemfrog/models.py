@@ -14,6 +14,7 @@ class LoginSuccessSchema(Schema):
 class LoginSchema(Schema):
     username = fields.Email(required=True)
     password = fields.String(required=True)
+    grant_type = fields.String(default="password")
 
 
 class RegisterSchema(LoginSchema):

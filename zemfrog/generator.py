@@ -264,3 +264,18 @@ def g_error_handler(name):
         fp.write(data)
 
     print("(done)")
+
+
+def g_loader(name):
+    validate_module_name(name)
+    print("Creating a loader %r... " % name, end="")
+    ld_dir = os.path.join(current_app.root_path, "loaders")
+    old_filename = get_template("loader", "name.py")
+    with open(old_filename) as fp:
+        data = fp.read()
+
+    new_filename = os.path.join(ld_dir, name.lower() + ".py")
+    with open(new_filename, "w") as fp:
+        fp.write(data)
+
+    print("(done)")

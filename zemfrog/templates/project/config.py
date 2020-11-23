@@ -46,6 +46,7 @@ class Development(object):
         "zemfrog.commands.user",
         "zemfrog.commands.role",
         "zemfrog.commands.permission",
+        "zemfrog.commands.loader",
         {% if main_app -%}
             "zemfrog.commands.app"
         {%- endif %}
@@ -61,6 +62,20 @@ class Development(object):
     USER_MODEL = "models.user.User"
     ROLE_MODEL = "models.user.Role"
     PERMISSION_MODEL = "models.user.Permission"
+    LOADERS = [
+        "zemfrog.loaders.extension",
+        "zemfrog.loaders.staticfile",
+        "zemfrog.loaders.model",
+        "zemfrog.loaders.url",
+        "zemfrog.loaders.blueprint",
+        "zemfrog.loaders.middleware",
+        "zemfrog.loaders.api",
+        "zemfrog.loaders.error_handler",
+        "zemfrog.loaders.command",
+        "zemfrog.loaders.task",
+        "zemfrog.loaders.openapi",
+        "zemfrog.loaders.multiapp",
+    ]
     CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
     CELERY_BROKER_URL = CELERY_RESULT_BACKEND
 
