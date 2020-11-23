@@ -129,3 +129,12 @@ History
 * Add an endpoint to retrieve one data from the model
 * Add schema to limit results
 * Added a handler for handling API errors
+
+
+1.2.7 (2020-11-24)
+------------------
+
+* FIX: user checks in the test token endpoint
+* NEW: support for creating your own app loader
+* FIX: Make user roles optional
+* FIX: `#49 <https://github.com/zemfrog/zemfrog/issues/49>`_
