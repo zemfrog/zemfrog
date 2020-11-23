@@ -1,5 +1,11 @@
+from importlib import import_module
+import os
+
 from flask import Flask
-from . import loader
+from flask.cli import load_dotenv
+
+from .exception import ZemfrogEnvironment
+from .helper import get_import_name
 from celery import Celery
 
 
@@ -25,6 +31,22 @@ def make_celery(app: Flask) -> Celery:
     return celery
 
 
+def load_config(app: Flask):
+    """
+    Loads the configuration for your zemfrog application based on the environment
+    ``ZEMFROG_ENV``, change your application environment in the file ``.flaskenv``.
+    """
+
+    path = os.path.join(app.root_path, ".flaskenv")
+    load_dotenv(path)
+    env = os.getenv("ZEMFROG_ENV")
+    if not env:
+        raise ZemfrogEnvironment("environment not found")
+
+    import_name = get_import_name(app)
+    app.config.from_object(import_name + "config." + env.capitalize())
+
+
 def create_app(name: str) -> Flask:
     """
     Functions to build your flask application and load all configurations.
@@ -34,19 +56,16 @@ def create_app(name: str) -> Flask:
     """
 
     app = Flask(name)
+    import_name = get_import_name(app)
     with app.app_context():
-        loader.load_config(app)
-        loader.load_extensions(app)
-        loader.load_staticfiles(app)
-        loader.load_models(app)
-        loader.load_urls(app)
-        loader.load_blueprints(app)
-        loader.load_middlewares(app)
-        loader.load_apis(app)
-        loader.load_error_handlers(app)
-        loader.load_commands(app)
-        loader.load_tasks(app)
-        loader.load_docs(app)
-        loader.load_apps(app)
+        load_config(app)
+        for yourloader in app.config.get("LOADERS", []):
+            try:
+                yourloader = import_module(yourloader)
+            except (ImportError, AttributeError):
+                yourloader = import_module(import_name + yourloader)
+
+            loader = getattr(yourloader, "loader")
+            loader(app)
 
     return app
