@@ -45,7 +45,7 @@ def test_token(token):
 
     return {"reason": reason, "status_code": status_code}
 
-@use_kwargs(LoginSchema(strict=True), location="form")
+@use_kwargs(LoginSchema(), location="form")
 @marshal_with(DefaultResponseSchema, 404)
 @marshal_with(LoginSuccessSchema, 200)
 @auto_status_code
@@ -71,7 +71,7 @@ def login(**kwds):
     return {"reason": "Incorrect email or password.", "status_code": 404}
 
 
-@use_kwargs(RegisterSchema(strict=True), location="form")
+@use_kwargs(RegisterSchema(), location="form")
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
 @auto_status_code
@@ -152,7 +152,7 @@ def confirm_account(token):
     return {"reason": reason, "status_code": status_code}
 
 
-@use_kwargs(RequestPasswordResetSchema(strict=True), location="form")
+@use_kwargs(RequestPasswordResetSchema(), location="form")
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
 @marshal_with(DefaultResponseSchema, 403)
@@ -224,7 +224,7 @@ def confirm_password_reset_token(token):
     return {"reason": reason, "status_code": status_code}
 
 
-@use_kwargs(PasswordResetSchema(strict=True), location="form")
+@use_kwargs(PasswordResetSchema(), location="form")
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
 @marshal_with(DefaultResponseSchema, 401)

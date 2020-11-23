@@ -1,7 +1,9 @@
 flask
+flask-apispec
 flask-sqlalchemy
 flask-jwt-extended
 celery
 Click>=7.0
+marshmallow
 sphinx-autoapi
 sphinx-rtd-theme
