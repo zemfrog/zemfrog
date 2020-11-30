@@ -73,10 +73,7 @@ There are several configurations in the zemfrog application, including:
 * ``API_DOCS`` - Configuration for automation creates REST API documentation using ``flask-apispec``. Default value is ``True``.
 * ``CREATE_DB`` - Configuration for automation creates tables of all models. Default value is ``True``, but I will remove this configuration in the future.
 * ``APISPEC_SECURITY_DEFINITIONS`` - Follow this https://swagger.io/docs/specification/authentication/.
-* ``APISPEC_SECURITY_PARAMS`` - Follow this https://swagger.io/docs/specification/authentication/
-* ``APPS`` - List of sub applications.
-* ``TASKS`` - Celery task list.
-* ``STATICFILES`` - List of static files to serve.
+* ``APISPEC_SECURITY_PARAMS`` Follow this https://swagger.io/docs/specification/authentication/
 
 Yep! that's all the configuration for the zemfrog application.
 However, you can also add configurations for celery and other flask extensions in config.py :)
@@ -112,7 +109,7 @@ This variable will be imported and added to the flask command by zemfrog automat
 
 Then add a command to the ``COMMANDS`` configuration in config.py::
 
-    COMMANDS = ['foo']
+    COMMANDS = ['commands.foo']
 
 Now you can see the command foo is registered in the application::
 
@@ -131,7 +128,7 @@ And in the ``handlers/not_found.py`` module there is a ``handler`` function whic
 Now register to the ``ERROR_HANDLERS`` configuration. Like this::
 
     ERROR_HANDLERS = {
-        404: "not_found"
+        404: "handlers.not_found"
     }
 
 .. note::
@@ -245,7 +242,7 @@ This function is to register your middleware in the flask application.
 
 And register your middleware to config file::
 
-    MIDDLEWARES = ["auth"]
+    MIDDLEWARES = ["middlewares.auth"]
 
 API
 ---
@@ -302,7 +299,7 @@ And we can create a REST API::
 This REST API will not work if you haven't added it to the ``APIS`` config.
 Let's add it to the config::
 
-    APIS = ['product']
+    APIS = ['api.product']
 
 
 JWT Authentication

@@ -12,17 +12,8 @@ def loader(app: Flask):
     apis = app.config.get("APIS", [])
     import_name = get_import_name(app)
     api: Blueprint = import_attr(import_name + "api.api")
-    prefix = "api."
-    for name in apis:
-        res = name
-        if not name.startswith(prefix):
-            res = prefix + res
-
-        try:
-            res = import_module(import_name + res)
-        except ImportError:
-            res = import_module(name)
-
+    for res in apis:
+        res = import_module(import_name + res)
         endpoint = res.endpoint
         url_prefix = res.url_prefix
         routes = res.routes

@@ -11,17 +11,11 @@ def loader(app: Flask):
     A function to load all your commands and register them in the ``flask`` command.
     """
 
-    dirname = "commands"
-    commands = app.config.get(dirname.upper(), [])
+    commands = app.config.get("COMMANDS", [])
     import_name = get_import_name(app)
-    prefix = dirname + "."
     for name in commands:
-        cmd = name
-        if not name.startswith(prefix):
-            cmd = prefix + cmd
-
         try:
-            n = import_name + cmd + ".command"
+            n = import_name + name + ".command"
             cmd = import_attr(n)
         except ImportError:
             n = name + ".command"

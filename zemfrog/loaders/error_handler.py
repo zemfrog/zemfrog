@@ -10,15 +10,6 @@ def loader(app: Flask):
 
     import_name = get_import_name(app)
     handlers = app.config.get("ERROR_HANDLERS", {})
-    prefix = "handlers."
-    for code, func in handlers.items():
-        view = func
-        if not func.startswith(prefix):
-            view = prefix + view
-
-        try:
-            view = import_attr(import_name + view + ".handler")
-        except (ImportError, AttributeError):
-            view = import_attr(view + ".handler")
-
+    for code, view in handlers.items():
+        view = import_attr(import_name + view + ".handler")
         app.register_error_handler(code, view)
