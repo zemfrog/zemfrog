@@ -26,13 +26,13 @@ class Development(object):
         APPS = []
     {%- endif %}
     EXTENSIONS = [
-        "extensions.sqlalchemy",
-        "extensions.marshmallow",
-        "extensions.migrate",
-        "extensions.jwt",
-        "extensions.mail",
-        "extensions.celery",
-        "extensions.apispec",
+        "sqlalchemy",
+        "marshmallow",
+        "migrate",
+        "jwt",
+        "mail",
+        "celery",
+        "apispec",
     ]
     COMMANDS = [
         "zemfrog.commands.api",
@@ -55,7 +55,7 @@ class Development(object):
     STATICFILES = []
     MIDDLEWARES = []
     APIS = []
-    ERROR_HANDLERS = {422: "handlers.api_errors", 400: "handlers.api_errors"}
+    ERROR_HANDLERS = {422: "api_errors", 400: "api_errors"}
     TASKS = []
     API_DOCS = True
     CREATE_DB = True
