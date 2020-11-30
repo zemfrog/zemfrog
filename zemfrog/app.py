@@ -57,15 +57,22 @@ def create_app(name: str) -> Flask:
 
     app = Flask(name)
     import_name = get_import_name(app)
+    dirname = "loaders"
+    prefix = dirname + "."
     with app.app_context():
         load_config(app)
-        for yourloader in app.config.get("LOADERS", []):
-            try:
-                yourloader = import_module(yourloader)
-            except (ImportError, AttributeError):
-                yourloader = import_module(import_name + yourloader)
+        for name in app.config.get(dirname.upper(), []):
+            yourloader = name
+            if not name.startswith(prefix):
+                yourloader = prefix + yourloader
 
-            loader = getattr(yourloader, "loader")
+            try:
+                yourloader = import_module(import_name + yourloader)
+                loader = getattr(yourloader, "loader")
+            except (ImportError, AttributeError):
+                yourloader = import_module(name)
+                loader = getattr(yourloader, "loader")
+
             loader(app)
 
     return app
