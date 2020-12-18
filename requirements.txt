@@ -5,5 +5,6 @@ flask-jwt-extended
 celery
 Click>=7.0
 marshmallow
+sqlalchemy-utils
 sphinx-autoapi
 sphinx-rtd-theme

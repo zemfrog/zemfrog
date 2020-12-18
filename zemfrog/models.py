@@ -17,9 +17,11 @@ class LoginSchema(Schema):
     grant_type = fields.String(default="password")
 
 
-class RegisterSchema(LoginSchema):
+class RegisterSchema(Schema):
     first_name = fields.String(required=True)
     last_name = fields.String(required=True)
+    username = fields.Email(required=True)
+    password = fields.String(required=True)
 
     @validates("first_name")
     def validate_first_name(self, value):
@@ -30,6 +32,11 @@ class RegisterSchema(LoginSchema):
     def validate_last_name(self, value):
         if not validate_username(value, silently=True):
             raise ValidationError("Last name must be a character [a-zA-Z]")
+
+    @validates("password")
+    def validate_password(self, value):
+        if len(value) < 8:
+            raise ValidationError("Password length must be greater than or equal to 8")
 
 
 class RequestPasswordResetSchema(Schema):

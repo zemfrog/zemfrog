@@ -114,12 +114,12 @@ def update(email):
     user = model.query.filter_by(email=email).first()
     if user:
         cols = {}
-        first_name = input("First name: ").strip()
+        first_name = input("New first name: ").strip()
         if not validate_username(first_name, silently=True):
             first_name = user.first_name
         cols["first_name"] = first_name
 
-        last_name = input("Last name: ").strip()
+        last_name = input("New last name: ").strip()
         if not validate_username(last_name, silently=True):
             last_name = user.last_name
         cols["last_name"] = last_name
@@ -129,7 +129,7 @@ def update(email):
             new_email = user.email
         cols["email"] = new_email
 
-        password = input("Password: ").strip()
+        password = input("New password: ").strip()
         if password:
             password = generate_password_hash(password)
         else:
