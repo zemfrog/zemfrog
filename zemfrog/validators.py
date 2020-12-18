@@ -24,7 +24,7 @@ def validate_email(value: str, silently=False):
 
 
 def validate_username(value: str, silently=False):
-    if not re.search(r"^([a-zA-Z]*)$", value):
+    if not re.search(r"^([a-zA-Z]+)$", value):
         if silently:
             return False
         raise SystemExit("Name must be a character [a-zA-Z]")

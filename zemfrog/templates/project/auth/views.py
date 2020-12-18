@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta
 from flask import url_for
-from flask_jwt_extended import create_access_token, decode_token
+from flask_jwt_extended import create_access_token, decode_token, get_raw_jwt
 from flask_apispec import use_kwargs, marshal_with
 from jwt import DecodeError, ExpiredSignatureError
+from marshmallow import fields
 from werkzeug.security import generate_password_hash, check_password_hash
-from zemfrog.decorators import auto_status_code
+from zemfrog.decorators import auto_status_code, authenticate
 from zemfrog.helper import db_add, db_update, db_commit, get_mail_template, get_user_roles
 from zemfrog.models import (
     DefaultResponseSchema,
@@ -15,35 +16,41 @@ from zemfrog.models import (
     RequestPasswordResetSchema,
 )
 
-from {{ "" if main_app else ".." }}models.user import User, Log
+from {{ "" if main_app else ".." }}extensions.marshmallow import ma
+from {{ "" if main_app else ".." }}models.user import User, Log, Role, Permission
 from {{ "" if main_app else ".." }}tasks.email import send_email
 
 
-@marshal_with(DefaultResponseSchema, 403)
-@marshal_with(DefaultResponseSchema, 401)
-@marshal_with(DefaultResponseSchema, 200)
-@auto_status_code
-def test_token(token):
+class PermissionSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Permission
+
+
+class RoleSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Role
+
+    permissions = fields.List(fields.Nested(PermissionSchema()))
+
+
+class UserDetailSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        exclude = ("password",)
+
+    roles = fields.List(fields.Nested(RoleSchema()))
+
+
+@authenticate()
+@marshal_with(UserDetailSchema)
+def user_detail():
     """
-    Test for jwt token.
+    User detail info.
     """
 
-    reason = "Valid token"
-    status_code = 200
-    try:
-        email = decode_token(token)["identity"]
-        user = User.query.filter_by(email=email).first()
-        if not user:
-            raise DecodeError
-
-    except DecodeError:
-        reason = "Invalid token"
-        status_code = 403
-    except ExpiredSignatureError:
-        reason = "Token expired"
-        status_code = 401
-
-    return {"reason": reason, "status_code": status_code}
+    email = get_raw_jwt().get("identity")
+    user = User.query.filter_by(email=email).first()
+    return user
 
 @use_kwargs(LoginSchema(), location="form")
 @marshal_with(DefaultResponseSchema, 404)

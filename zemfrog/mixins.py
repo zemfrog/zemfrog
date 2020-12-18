@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy_utils import EmailType
 
 from .exception import ZemfrogRoleNotFound, ZemfrogRolePermissionNotFound
 from .helper import db_commit, db_update
@@ -15,7 +16,7 @@ class UserMixin:
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     name = Column(String, nullable=False)
-    email = Column(String, nullable=False, unique=True)
+    email = Column(EmailType, nullable=False, unique=True)
     password = Column(String, nullable=False)
     register_at = Column(DateTime)
     confirmed = Column(Boolean)
