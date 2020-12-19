@@ -33,6 +33,7 @@ class Development(object):
         "mail",
         "celery",
         "apispec",
+        "cors"
     ]
     COMMANDS = [
         "zemfrog.commands.api",

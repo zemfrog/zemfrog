@@ -35,7 +35,7 @@ class RegisterSchema(Schema):
 
     @validates("password")
     def validate_password(self, value):
-        if validate_password_length(value, silently=True):
+        if not validate_password_length(value, silently=True):
             raise ValidationError("Password length must be greater than or equal to 8")
 
 
@@ -48,5 +48,5 @@ class PasswordResetSchema(Schema):
 
     @validates("password")
     def validate_password(self, value):
-        if validate_password_length(value, silently=True):
+        if not validate_password_length(value, silently=True):
             raise ValidationError("Password length must be greater than or equal to 8")

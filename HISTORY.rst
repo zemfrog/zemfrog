@@ -138,3 +138,13 @@ History
 * NEW: support for creating your own app loader
 * FIX: Make user roles optional
 * FIX: `#49 <https://github.com/zemfrog/zemfrog/issues/49>`_
+
+2.0.1 (2020-12-20)
+------------------
+
+* Refactoring app loaders
+* IMPROVE: REST API, models & validators
+* IMPROVE: added template checks
+* IMPROVE: add password validator
+* IMPROVE: Compatible with frontend nuxtjs
+* NEW: add flask-cors extension
