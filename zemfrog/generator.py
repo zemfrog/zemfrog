@@ -15,6 +15,10 @@ def g_project(name: str, import_name: str):
     """
 
     validate_module_name(name)
+    if os.path.isdir(name):
+        print("The %r project already exists" % name)
+        return
+
     print("Creating %r project... " % name, end="")
     copy_template("project", name)
     main_app = True if import_name == "wsgi" else False
@@ -43,6 +47,10 @@ def g_extension(name: str):
     """
 
     validate_module_name(name)
+    if os.path.isfile(name):
+        print("The %r extension already exists" % name)
+        return
+
     print("Creating a %r extension..." % name, end="")
     ext_dir = os.path.join(current_app.root_path, "extensions")
     old_filename = get_template("extension", "name.py")
@@ -64,6 +72,10 @@ def g_task(name: str):
     """
 
     validate_module_name(name)
+    if os.path.isfile(name):
+        print("The %r task already exists" % name)
+        return
+
     print("Creating %r task..." % name, end="")
     import_name = get_import_name(current_app)
     main_app = True
@@ -92,6 +104,10 @@ def g_model(name: str):
     """
 
     validate_module_name(name)
+    if os.path.isfile(name):
+        print("The %r model already exists" % name)
+        return
+
     print("Creating %r model..." % name, end="")
     import_name = get_import_name(current_app)
     main_app = True
@@ -121,6 +137,10 @@ def g_api(name: str):
     """
 
     validate_module_name(name)
+    if os.path.isfile(name):
+        print("The %r API already exists" % name)
+        return
+
     print("Creating API %r... " % name, end="")
     api_dir = os.path.join(current_app.root_path, "api")
     old_filename = get_template("api", "name.py")
@@ -145,6 +165,10 @@ def g_api_crud(name: str):
     """
 
     validate_module_name(name)
+    if os.path.isfile(name):
+        print("The %r REST API already exists" % name)
+        return
+
     src_model = search_model(name)
     import_name = get_import_name(current_app)
     main_app = True
@@ -182,6 +206,10 @@ def g_blueprint(name: str):
     """
 
     validate_module_name(name)
+    if os.path.isdir(name):
+        print("The %r blueprint already exists" % name)
+        return
+
     print("Creating blueprint %r... " % name, end="")
     bp_dir = os.path.join(current_app.root_path, name.lower())
     copy_template("blueprint", bp_dir)
@@ -207,6 +235,10 @@ def g_middleware(name: str):
     """
 
     validate_module_name(name)
+    if os.path.isfile(name):
+        print("The %r middleware already exists" % name)
+        return
+
     print("Creating middleware %r... " % name, end="")
     middleware_dir = os.path.join(current_app.root_path, "middlewares")
     old_filename = get_template("middleware", "name.py")
@@ -229,6 +261,10 @@ def g_command(name: str):
     """
 
     validate_module_name(name)
+    if os.path.isfile(name):
+        print("The %r command already exists" % name)
+        return
+
     print("Creating command %r..." % name, end="")
     cmd_dir = os.path.join(current_app.root_path, "commands")
     old_filename = get_template("command", "name.py")
@@ -253,6 +289,10 @@ def g_error_handler(name):
     """
 
     validate_module_name(name)
+    if os.path.isfile(name):
+        print("The %r error handler already exists" % name)
+        return
+
     print("Creating error handler %r... " % name, end="")
     eh_dir = os.path.join(current_app.root_path, "handlers")
     old_filename = get_template("errorhandler", "name.py")
@@ -267,7 +307,18 @@ def g_error_handler(name):
 
 
 def g_loader(name):
+    """
+    The function to create our loader.
+
+    :param str name: loader name.
+
+    """
+
     validate_module_name(name)
+    if os.path.isfile(name):
+        print("The %r loader already exists" % name)
+        return
+
     print("Creating a loader %r... " % name, end="")
     ld_dir = os.path.join(current_app.root_path, "loaders")
     old_filename = get_template("loader", "name.py")
