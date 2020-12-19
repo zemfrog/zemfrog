@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, validates, ValidationError
-from .validators import validate_username
+from .validators import validate_username, validate_password_length
 
 
 class DefaultResponseSchema(Schema):
@@ -35,7 +35,7 @@ class RegisterSchema(Schema):
 
     @validates("password")
     def validate_password(self, value):
-        if len(value) < 8:
+        if validate_password_length(value, silently=True):
             raise ValidationError("Password length must be greater than or equal to 8")
 
 
@@ -45,3 +45,8 @@ class RequestPasswordResetSchema(Schema):
 
 class PasswordResetSchema(Schema):
     password = fields.String(required=True)
+
+    @validates("password")
+    def validate_password(self, value):
+        if validate_password_length(value, silently=True):
+            raise ValidationError("Password length must be greater than or equal to 8")

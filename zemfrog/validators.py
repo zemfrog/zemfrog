@@ -29,3 +29,11 @@ def validate_username(value: str, silently=False):
             return False
         raise SystemExit("Name must be a character [a-zA-Z]")
     return True
+
+
+def validate_password_length(value: str, silently=False):
+    if len(value) < 8:
+        if silently:
+            return False
+        raise SystemExit("Password length must be greater than or equal to 8")
+    return True

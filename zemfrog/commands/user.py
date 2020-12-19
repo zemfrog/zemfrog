@@ -12,7 +12,7 @@ from ..helper import (
     db_delete,
     db_update,
 )
-from ..validators import validate_email, validate_username
+from ..validators import validate_email, validate_password_length, validate_username
 
 
 @click.group("user")
@@ -41,6 +41,7 @@ def new(email, first_name, last_name, password, roles):
     validate_email(email)
     validate_username(first_name)
     validate_username(last_name)
+    validate_password_length(password)
     roles = input("User roles (separated by ,): ").strip()
     import_name = get_import_name(current_app)
     role_model = import_attr(
@@ -131,6 +132,7 @@ def update(email):
 
         password = input("New password: ").strip()
         if password:
+            validate_password_length(password)
             password = generate_password_hash(password)
         else:
             password = user.password
