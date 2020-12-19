@@ -340,15 +340,6 @@ You can also add sub-applications using a dictionary::
         }
     ]
 
-To manage nested applications you just need to use the ``sub`` command and you will be at a simple ``command prompt``::
+To manage nested applications you just need to use the ``sub`` command::
 
     $ flask sub
-
-
-Finish!
--------
-
-You have read all the documentation and give it a try. Then, give me some feedback to improve this project :)
-
-Thank you!
-
