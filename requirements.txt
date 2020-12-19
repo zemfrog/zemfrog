@@ -2,7 +2,7 @@ flask
 flask-apispec
 flask-sqlalchemy
 flask-jwt-extended
-celery
+celery==5.0.2
 Click>=7.0
 marshmallow
 sqlalchemy-utils
