@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from flask import url_for
 from flask_jwt_extended import create_access_token, decode_token, get_raw_jwt
 from flask_apispec import use_kwargs, marshal_with
 from jwt import DecodeError, ExpiredSignatureError
@@ -111,8 +110,7 @@ def register(**kwds):
                     expires_delta=False,
                     user_claims={"token_registration": True},
                 )
-                link_confirm = url_for(".confirm_account", token=token)
-                msg = get_mail_template("register.html", link_confirm=link_confirm)
+                msg = get_mail_template("register.html", token=token)
                 send_email.delay("Registration", html=msg, recipients=[email])
                 reason = "Successful registration."
                 status_code = 200
@@ -183,9 +181,8 @@ def request_password_reset(**kwds):
                 expires_delta=timedelta(hours=2),
                 user_claims={"token_password_reset": True},
             )
-            link_reset = url_for(".password_reset", token=token)
             msg = get_mail_template(
-                "request_password_reset.html", link_reset=link_reset
+                "request_password_reset.html", token=token
             )
             send_email.delay("Forgot password", html=msg, recipients=[email])
             log = Log(request_password_reset_at=datetime.utcnow())
