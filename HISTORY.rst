@@ -153,3 +153,8 @@ History
 ------------------
 
 * fix: missing flask-cors dependency
+
+2.0.3 (2020-12-20)
+------------------
+
+* IMPROVE: clean up dependencies
