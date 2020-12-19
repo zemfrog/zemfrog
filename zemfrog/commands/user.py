@@ -12,7 +12,7 @@ from ..helper import (
     db_delete,
     db_update,
 )
-from ..validators import validate_email, validate_username
+from ..validators import validate_email, validate_password_length, validate_username
 
 
 @click.group("user")
@@ -41,6 +41,7 @@ def new(email, first_name, last_name, password, roles):
     validate_email(email)
     validate_username(first_name)
     validate_username(last_name)
+    validate_password_length(password)
     roles = input("User roles (separated by ,): ").strip()
     import_name = get_import_name(current_app)
     role_model = import_attr(
@@ -114,12 +115,12 @@ def update(email):
     user = model.query.filter_by(email=email).first()
     if user:
         cols = {}
-        first_name = input("First name: ").strip()
+        first_name = input("New first name: ").strip()
         if not validate_username(first_name, silently=True):
             first_name = user.first_name
         cols["first_name"] = first_name
 
-        last_name = input("Last name: ").strip()
+        last_name = input("New last name: ").strip()
         if not validate_username(last_name, silently=True):
             last_name = user.last_name
         cols["last_name"] = last_name
@@ -129,8 +130,9 @@ def update(email):
             new_email = user.email
         cols["email"] = new_email
 
-        password = input("Password: ").strip()
+        password = input("New password: ").strip()
         if password:
+            validate_password_length(password)
             password = generate_password_hash(password)
         else:
             password = user.password

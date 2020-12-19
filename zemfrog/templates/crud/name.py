@@ -1,5 +1,5 @@
 from zemfrog.decorators import auto_status_code, authenticate
-from zemfrog.helper import db_add, db_delete, db_update
+from zemfrog.helper import db_add, db_delete, db_update, get_column_names
 from zemfrog.models import DefaultResponseSchema
 from flask_apispec import marshal_with, use_kwargs
 from marshmallow import fields
@@ -9,6 +9,7 @@ from {{ "" if main_app else ".." }}{{src_model}} import {{name}}
 class Create{{name}}Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = {{name}}
+        exclude = ("id",)
 
 class Read{{name}}Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -17,16 +18,17 @@ class Read{{name}}Schema(ma.SQLAlchemyAutoSchema):
 class Update{{name}}Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = {{name}}
+        exclude = ("id",)
 
-    __update__ = ma.Nested(Read{{name}}Schema())
-
-class Delete{{name}}Schema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = {{name}}
+# class Delete{{name}}Schema(ma.SQLAlchemyAutoSchema):
+#     class Meta:
+#         model = {{name}}
 
 class Limit{{name}}Schema(ma.Schema):
     start = fields.Integer()
     stop = fields.Integer()
+    q = fields.String()
+    filters = fields.List(fields.String())
 
 
 @authenticate()
@@ -49,22 +51,38 @@ def list(**kwds):
 
     start = kwds.get("start")
     stop = kwds.get("stop")
+    q = kwds.get("q")
     data = {{name}}.query[start:stop]
-    return data
+    if not q:
+        return data
+
+    columns = get_column_names({{name}})
+    filters = filter(lambda value: value in columns, kwds.get("filters"))
+    if not filters:
+        filters = columns
+
+    new_data = []
+    for d in data:
+        for f in filters:
+            v = str(getattr(d, f))
+            if q in v:
+                new_data.append(d)
+
+    return new_data
 
 @authenticate()
 @use_kwargs(Create{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
 @auto_status_code
-def add(**json):
+def add(**kwds):
     """
     Add data.
     """
 
-    found = {{name}}.query.filter_by(**json).first()
+    found = {{name}}.query.filter_by(**kwds).first()
     if not found:
-        model = {{name}}(**json)
+        model = {{name}}(**kwds)
         db_add(model)
         status_code = 200
         reason = "Successfully added data."
@@ -82,28 +100,21 @@ def add(**json):
 @use_kwargs(Update{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
-@marshal_with(DefaultResponseSchema, 403)
 @auto_status_code
-def update(**json):
+def update(id, **kwds):
     """
     Update data.
     """
 
-    new_data = json.pop("__update__", None)
-    if new_data and isinstance(new_data, dict):
-        model = {{name}}.query.filter_by(**json).first()
-        if not model:
-            status_code = 404
-            reason = "Data not found."
-
-        else:
-            db_update(model, **new_data)
-            status_code = 200
-            reason = "Successfully updating data."
+    model = {{name}}.query.get(id)
+    if model:
+        db_update(model, **kwds)
+        status_code = 200
+        reason = "Successfully updating data."
 
     else:
-        status_code = 403
-        reason = "New data not found."
+        status_code = 404
+        reason = "Data not found."
 
     return {
         "status_code": status_code,
@@ -111,16 +122,16 @@ def update(**json):
     }
 
 @authenticate()
-@use_kwargs(Delete{{name}}Schema())
+# @use_kwargs(Delete{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
 @auto_status_code
-def delete(**json):
+def delete(id):
     """
     Delete data.
     """
 
-    model = {{name}}.query.filter_by(**json).first()
+    model = {{name}}.query.get(id)
     if model:
         db_delete(model)
         status_code = 200
@@ -143,6 +154,6 @@ routes = [
     ("/get/<id>", get, ["GET"]),
     ("/list", list, ["GET"]),
     ("/add", add, ["POST"]),
-    ("/update", update, ["PUT"]),
-    ("/delete", delete, ["DELETE"])
+    ("/update/<id>", update, ["PUT"]),
+    ("/delete/<id>", delete, ["DELETE"])
 ]

@@ -2,7 +2,7 @@ from . import views
 
 docs = {"tags": ["auth"]}
 routes = [
-    ("/check/<token>", views.test_token, ["GET"]),
+    ("/user", views.user_detail, ["GET"]),
     ("/login", views.login, ["POST"]),
     ("/register", views.register, ["POST"]),
     ("/confirm/<token>", views.confirm_account, ["GET"]),

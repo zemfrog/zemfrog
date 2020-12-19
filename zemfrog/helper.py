@@ -117,8 +117,10 @@ def db_update(model, **kwds):
     Function to update data in database.
     """
 
+    columns = get_column_names(model)
     for k, v in kwds.items():
-        setattr(model, k, v)
+        if k in columns:
+            setattr(model, k, v)
     db_commit()
 
 
@@ -158,3 +160,15 @@ def get_user_roles(user):
         permissions = [perm.name for perm in role.permissions]
         roles[role.name] = permissions
     return roles
+
+
+def get_column_names(model):
+    """
+    Reference:
+    * https://stackoverflow.com/questions/32927071/get-column-names-dynamically-with-sqlalchemy/33033067
+    """
+
+    columns = model.__table__.columns.keys()
+    rels = model.__mapper__.relationships.keys()
+    columns.extend(rels)
+    return columns
