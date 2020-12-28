@@ -133,7 +133,7 @@ def db_commit():
 
 
 def get_mail_template(name, **context):
-    """
+    r"""
     Functions to get email templates.
 
     :param name: email template name.

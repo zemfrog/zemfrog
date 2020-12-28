@@ -14,9 +14,11 @@ with open("HISTORY.rst") as history_file:
 with open("requirements.txt") as req:
     requirements = req.read().splitlines()
 
+with open("requirements-dev.txt") as req:
+    test_requirements = req.read().splitlines()
+
 setup_requirements = []
 
-test_requirements = []
 
 project_urls = {
     "Github": "https://github.com/zemfrog/zemfrog",
@@ -27,14 +29,13 @@ project_urls = {
 setup(
     author=__author__,
     author_email=__email__,
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",

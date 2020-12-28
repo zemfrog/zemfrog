@@ -158,3 +158,11 @@ History
 ------------------
 
 * IMPROVE: clean up dependencies
+
+3.0.1 (2020-12-20)
+------------------
+
+* add command secretkey
+* Fix: varchar length
+* Added db migration based on environment
+* Stable release 
