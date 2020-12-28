@@ -148,3 +148,9 @@ History
 * IMPROVE: add password validator
 * IMPROVE: Compatible with frontend nuxtjs
 * NEW: add flask-cors extension
+
+
+3.0.1 (2020-12-20)
+------------------
+
+
