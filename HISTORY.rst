@@ -149,8 +149,20 @@ History
 * IMPROVE: Compatible with frontend nuxtjs
 * NEW: add flask-cors extension
 
+2.0.2 (2020-12-20)
+------------------
+
+* fix: missing flask-cors dependency
+
+2.0.3 (2020-12-20)
+------------------
+
+* IMPROVE: clean up dependencies
 
 3.0.1 (2020-12-20)
 ------------------
 
-
+* add command secretkey
+* Fix: varchar length
+* Added db migration based on environment
+* Stable release 

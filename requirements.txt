@@ -1,8 +1,8 @@
-flask
-flask-apispec
-flask-sqlalchemy
-flask-jwt-extended
-celery
+flask==1.1.2
+flask-apispec==0.11.0
+flask-sqlalchemy==2.4.4
+flask-jwt-extended==3.25.0
+celery==5.0.2
 Click>=7.0
 marshmallow
 sqlalchemy-utils
