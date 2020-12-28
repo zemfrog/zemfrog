@@ -7,7 +7,6 @@ Reference:
 
 import datetime
 import os
-import sys
 
 from flask import Flask
 from click import Group
