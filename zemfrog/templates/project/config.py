@@ -48,6 +48,7 @@ class Development(object):
         "zemfrog.commands.role",
         "zemfrog.commands.permission",
         "zemfrog.commands.loader",
+        "zemfrog.commands.secretkey",
         {% if main_app -%}
             "zemfrog.commands.app"
         {%- endif %}
