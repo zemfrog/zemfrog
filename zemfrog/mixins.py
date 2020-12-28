@@ -13,11 +13,11 @@ class UserMixin:
     """
 
     id = Column(Integer, primary_key=True)
-    first_name = Column(String, nullable=False)
-    last_name = Column(String, nullable=False)
-    name = Column(String, nullable=False)
+    first_name = Column(String(255), nullable=False)
+    last_name = Column(String(255), nullable=False)
+    name = Column(String(255), nullable=False)
     email = Column(EmailType, nullable=False, unique=True)
-    password = Column(String, nullable=False)
+    password = Column(String(255), nullable=False)
     register_at = Column(DateTime)
     confirmed = Column(Boolean)
     confirmed_at = Column(DateTime)
@@ -83,8 +83,8 @@ class RoleMixin:
     def user_id(cls):
         return Column(ForeignKey("user.id"))
 
-    name = Column(String, nullable=False, unique=True)
-    description = Column(String, nullable=False)
+    name = Column(String(255), nullable=False, unique=True)
+    description = Column(String(255), nullable=False)
 
     @declared_attr
     def permissions(cls):
@@ -143,8 +143,8 @@ class PermissionMixin:
     def role_id(cls):
         return Column(ForeignKey("role.id"))
 
-    name = Column(String, nullable=False, unique=True)
-    description = Column(String, nullable=False)
+    name = Column(String(255), nullable=False, unique=True)
+    description = Column(String(255), nullable=False)
 
 
 class LogMixin:
