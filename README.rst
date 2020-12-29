@@ -62,20 +62,16 @@ It takes a lot of time and energy. If this project is useful, please give me any
 
 You can donate to me via:
 
-.. raw:: html
+.. image:: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
+    :target: https://www.buymeacoffee.com/aprilahijriyan
 
-    <a href="https://www.buymeacoffee.com/aprilahijriyan" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 35px" ></a>
+.. image:: https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif
+    :target: https://www.paypal.me/aprilahijriyan
 
 
-.. raw:: html
+.. image:: https://c5.patreon.com/external/logo/become_a_patron_button.png
+    :target: https://www.patreon.com/bePatron?u=20603237
 
-    <a href="https://www.paypal.me/aprilahijriyan" target="_blank">
-    <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="Donate with PayPal" style="height: 45px" />
-    </a>
-
-.. raw:: html
-
-    <a href="https://www.patreon.com/bePatron?u=20603237" target="_blank" data-patreon-widget-type="become-patron-button"><img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" style='height: 41px'></a>
 
 Links
 -----
