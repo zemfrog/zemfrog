@@ -69,13 +69,13 @@ You can donate to me via:
 
 .. raw:: html
 
-    <a href="https://www.paypal.me/aprilahijriyan">
-    <img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" alt="Donate with PayPal" style="height: 45px" />
+    <a href="https://www.paypal.me/aprilahijriyan" target="_blank">
+    <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="Donate with PayPal" style="height: 45px" />
     </a>
 
 .. raw:: html
 
-    <a href="https://www.patreon.com/bePatron?u=20603237" data-patreon-widget-type="become-patron-button"><img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" style='height: 41px'></a>
+    <a href="https://www.patreon.com/bePatron?u=20603237" target="_blank" data-patreon-widget-type="become-patron-button"><img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" style='height: 41px'></a>
 
 Links
 -----
