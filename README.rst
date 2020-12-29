@@ -64,13 +64,13 @@ You can donate to me via:
 
 .. raw:: html
 
-    <a href="https://www.buymeacoffee.com/aprilahijriyan" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 35px !important;width: 174px" ></a>
+    <a href="https://www.buymeacoffee.com/aprilahijriyan" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 35px" ></a>
 
 
 .. raw:: html
 
     <a href="https://www.paypal.me/aprilahijriyan">
-    <img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" alt="Donate with PayPal" style="height: 45px !important;width: 174px" />
+    <img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" alt="Donate with PayPal" style="height: 45px" />
     </a>
 
 .. raw:: html
