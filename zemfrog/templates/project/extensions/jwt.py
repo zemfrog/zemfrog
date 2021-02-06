@@ -8,6 +8,9 @@ jwt = JWTManager()
 @jwt.user_loader_callback_loader
 def user_loader_callback(identity):
     user = User.query.filter_by(email=identity).first()
+    if user and not user.confirmed:
+        user = None
+
     return user
 
 
