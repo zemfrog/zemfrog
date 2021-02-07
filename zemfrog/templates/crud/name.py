@@ -25,57 +25,29 @@ class Update{{name}}Schema(ma.SQLAlchemyAutoSchema):
 #         model = {{name}}
 
 class Limit{{name}}Schema(ma.Schema):
-    start = fields.Integer()
-    stop = fields.Integer()
-    q = fields.String()
-    filters = fields.List(fields.String())
+    offset = fields.Integer()
+    limit = fields.Integer()
 
-
-@authenticate()
-@marshal_with(Read{{name}}Schema(), 200)
-def get(id):
-    """
-    Get one data based on the model's primary key.
-    """
-
-    data = {{name}}.query.get(id)
-    return data
 
 @authenticate()
 @use_kwargs(Limit{{name}}Schema(), location="query")
 @marshal_with(Read{{name}}Schema(many=True), 200)
-def list(**kwds):
+def read(**kwds):
     """
     Read all data.
     """
 
-    start = kwds.get("start")
-    stop = kwds.get("stop")
-    q = kwds.get("q")
-    data = {{name}}.query[start:stop]
-    if not q:
-        return data
-
-    columns = get_column_names({{name}})
-    filters = filter(lambda value: value in columns, kwds.get("filters"))
-    if not filters:
-        filters = columns
-
-    new_data = []
-    for d in data:
-        for f in filters:
-            v = str(getattr(d, f))
-            if q in v:
-                new_data.append(d)
-
-    return new_data
+    offset = kwds.get("offset")
+    limit = kwds.get("limit")
+    data = {{name}}.query.offset(offset).limit(limit).all()
+    return data
 
 @authenticate()
 @use_kwargs(Create{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
 @auto_status_code
-def add(**kwds):
+def create(**kwds):
     """
     Add data.
     """
@@ -148,12 +120,11 @@ def delete(id):
 
 
 docs = {"tags": ["{{name}}"]}
-endpoint = "{{url_prefix}}"
-url_prefix = "/{{url_prefix}}"
+endpoint = "{{url_prefix | lower}}"
+url_prefix = "/{{url_prefix | lower}}"
 routes = [
-    ("/get/<id>", get, ["GET"]),
-    ("/list", list, ["GET"]),
-    ("/add", add, ["POST"]),
+    ("/create", create, ["POST"]),
+    ("/read", read, ["GET"]),
     ("/update/<id>", update, ["PUT"]),
     ("/delete/<id>", delete, ["DELETE"])
 ]
