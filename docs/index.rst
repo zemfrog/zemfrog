@@ -8,6 +8,7 @@ Welcome to zemfrog's documentation!
    readme
    installation
    usage
+   fileupload
    user_management
    rbac
    contributing
