@@ -50,6 +50,7 @@ class Development(object):
         "zemfrog.commands.loader",
         "zemfrog.commands.secretkey",
         "zemfrog.commands.context",
+        "zemfrog.commands.filter",
         {% if main_app -%}
             "zemfrog.commands.app"
         {%- endif %}
@@ -61,6 +62,7 @@ class Development(object):
     ERROR_HANDLERS = {422: "api_errors", 400: "api_errors"}
     TASKS = []
     CONTEXT_PROCESSORS = []
+    JINJA_FILTERS = []
     API_DOCS = True
     CREATE_DB = True
     USER_MODEL = "models.user.User"
@@ -79,6 +81,7 @@ class Development(object):
         "zemfrog.loaders.task",
         "zemfrog.loaders.openapi",
         "zemfrog.loaders.context_processor",
+        "zemfrog.loaders.jinja_filter",
         "zemfrog.loaders.multiapp",
     ]
     CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"

@@ -349,3 +349,22 @@ def g_context(name):
         fp.write(data)
 
     print("(done)")
+
+
+def g_filter(name):
+    validate_module_name(name)
+    filter_dir = os.path.join(current_app.root_path, "filters")
+    old_filename = get_template("filter", "name.py")
+    with open(old_filename) as fp:
+        data = fp.read()
+
+    new_filename = os.path.join(filter_dir, name + ".py")
+    if os.path.isfile(new_filename):
+        print("The %r filter already exists" % name)
+        return
+
+    print("Creating a jinja filter %r... " % name, end="")
+    with open(new_filename, "w") as fp:
+        fp.write(data)
+
+    print("(done)")
