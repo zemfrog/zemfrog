@@ -330,3 +330,22 @@ def g_loader(name):
         fp.write(data)
 
     print("(done)")
+
+
+def g_context(name):
+    validate_module_name(name)
+    ct_dir = os.path.join(current_app.root_path, "contexts")
+    old_filename = get_template("context", "name.py")
+    with open(old_filename) as fp:
+        data = fp.read()
+
+    new_filename = os.path.join(ct_dir, name + ".py")
+    if os.path.isfile(new_filename):
+        print("The %r context already exists" % name)
+        return
+
+    print("Creating a context %r... " % name, end="")
+    with open(new_filename, "w") as fp:
+        fp.write(data)
+
+    print("(done)")
