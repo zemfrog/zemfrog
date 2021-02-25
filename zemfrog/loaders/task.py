@@ -14,11 +14,10 @@ def loader(app: Flask):
     import_name = get_import_name(app)
     prefix = dirname + "."
     for name in tasks:
-        sv = name
         if not name.startswith(prefix):
-            sv = prefix + sv
+            name = prefix + name
 
         try:
-            import_module(import_name + sv)
+            import_module(import_name + name)
         except ImportError:
-            import_module(sv)
+            import_module(name.lstrip(prefix))
