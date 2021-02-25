@@ -13,15 +13,13 @@ def loader(app: Flask):
     import_name = get_import_name(app)
     prefix = dirname + "."
     for name in middlewares:
-        mdl = name
         if not name.startswith(prefix):
-            mdl = prefix + mdl
+            name = prefix + name
 
+        name += ".init_middleware"
         try:
-            name = import_name + mdl + ".init_middleware"
-            middleware = import_attr(name)
+            middleware = import_attr(import_name + name)
         except (ImportError, AttributeError):
-            name = mdl + ".init_middleware"
-            middleware = import_attr(name)
+            middleware = import_attr(name.lstrip(prefix))
 
         app.wsgi_app = middleware(app.wsgi_app)

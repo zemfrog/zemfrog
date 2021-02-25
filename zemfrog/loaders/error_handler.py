@@ -12,13 +12,12 @@ def loader(app: Flask):
     handlers = app.config.get("ERROR_HANDLERS", {})
     prefix = "handlers."
     for code, func in handlers.items():
-        view = func
         if not func.startswith(prefix):
-            view = prefix + view
-
+            func = prefix + func
+        func += ".handler"
         try:
-            view = import_attr(import_name + view + ".handler")
+            view = import_attr(import_name + func)
         except (ImportError, AttributeError):
-            view = import_attr(view + ".handler")
+            view = import_attr(func.lstrip(prefix))
 
         app.register_error_handler(code, view)

@@ -16,16 +16,14 @@ def loader(app: Flask):
     import_name = get_import_name(app)
     prefix = dirname + "."
     for name in commands:
-        cmd = name
         if not name.startswith(prefix):
-            cmd = prefix + cmd
+            name = prefix + name
 
+        name += ".command"
         try:
-            n = import_name + cmd + ".command"
-            cmd = import_attr(n)
+            cmd = import_attr(import_name + name)
         except ImportError:
-            n = name + ".command"
-            cmd = import_attr(n)
+            cmd = import_attr(name.lstrip(prefix))
 
         app.cli.add_command(cmd)
 
