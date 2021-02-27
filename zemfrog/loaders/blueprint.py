@@ -14,10 +14,8 @@ def loader(app: Flask):
         bp = name + ".routes.blueprint"
         routes = name + ".urls.routes"
         try:
-            bp = import_name + bp
-            bp: Blueprint = import_attr(bp)
-            routes = import_name + routes
-            routes = import_attr(routes)
+            bp: Blueprint = import_attr(import_name + bp)
+            routes = import_attr(import_name + routes)
         except (ImportError, AttributeError):
             bp: Blueprint = import_attr(bp)
             routes = import_attr(routes)
