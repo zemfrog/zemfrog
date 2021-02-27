@@ -18,6 +18,6 @@ def loader(app: Flask):
         try:
             func = import_attr(import_name + name)
         except (ImportError, AttributeError):
-            func = import_attr(name)
+            func = import_attr(name.lstrip(prefix))
 
         app.context_processor(func)

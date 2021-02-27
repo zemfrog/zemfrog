@@ -27,14 +27,13 @@ def loader(app: Flask):
     apis = app.config.get("APIS", [])
     api_prefix = "api."
     for name in apis:
-        res = name
         if not name.startswith(api_prefix):
-            res = api_prefix + res
+            name = api_prefix + name
 
         try:
-            res = import_module(import_name + res)
+            res = import_module(import_name + name)
         except ImportError:
-            res = import_module(name)
+            res = import_module(name.lstrip(api_prefix))
 
         docs_params = res.docs
         routes = res.routes
@@ -48,20 +47,15 @@ def loader(app: Flask):
 
     blueprints = app.config.get("BLUEPRINTS", [])
     for name in blueprints:
+        urls = name + ".urls"
         try:
-            bp = import_name + name + ".routes.blueprint"
-            bp: Blueprint = import_attr(bp)
-            urls = import_name + name + ".urls"
+            urls = import_name + urls
             urls = import_module(urls)
-            docs_params = urls.docs
-            routes = urls.routes
         except (ImportError, AttributeError):
-            bp = name + ".routes.blueprint"
-            bp: Blueprint = import_attr(bp)
-            urls = name + ".urls"
             urls = import_module(urls)
-            docs_params = urls.docs
-            routes = urls.routes
+
+        docs_params = urls.docs
+        routes = urls.routes
 
         for _, view, _ in routes:
             if docs_params:

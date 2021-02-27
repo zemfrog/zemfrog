@@ -21,7 +21,7 @@ def loader(app: Flask):
         try:
             res = import_module(import_name + res)
         except ImportError:
-            res = import_module(name)
+            res = import_module(name.lstrip(prefix))
 
         endpoint = res.endpoint
         url_prefix = res.url_prefix

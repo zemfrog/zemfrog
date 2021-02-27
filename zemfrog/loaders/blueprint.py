@@ -11,15 +11,13 @@ def loader(app: Flask):
     blueprints = app.config.get("BLUEPRINTS", [])
     import_name = get_import_name(app)
     for name in blueprints:
+        bp = name + ".routes.blueprint"
+        routes = name + ".urls.routes"
         try:
-            bp = import_name + name + ".routes.blueprint"
-            bp: Blueprint = import_attr(bp)
-            routes = import_name + name + ".urls.routes"
-            routes = import_attr(routes)
+            bp: Blueprint = import_attr(import_name + bp)
+            routes = import_attr(import_name + routes)
         except (ImportError, AttributeError):
-            bp = name + ".routes.blueprint"
             bp: Blueprint = import_attr(bp)
-            routes = name + ".urls.routes"
             routes = import_attr(routes)
 
         for url, view, methods in routes:

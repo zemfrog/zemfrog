@@ -1,7 +1,6 @@
 from flask import Flask
-from importlib import import_module
 
-from ..helper import get_import_name
+from ..helper import get_import_name, import_attr
 
 
 def loader(app: Flask):
@@ -14,15 +13,13 @@ def loader(app: Flask):
     import_name = get_import_name(app)
     prefix = dirname + "."
     for name in extensions:
-        ext = name
         if not name.startswith(prefix):
-            ext = prefix + ext
+            name = prefix + name
 
+        name += ".init_app"
         try:
-            ext = import_module(import_name + ext)
-            init_func = getattr(ext, "init_app")
+            init_func = import_attr(import_name + name)
         except (ImportError, AttributeError):
-            ext = import_module(ext)
-            init_func = getattr(ext, "init_app")
+            init_func = import_attr(name.lstrip(prefix))
 
         init_func(app)
