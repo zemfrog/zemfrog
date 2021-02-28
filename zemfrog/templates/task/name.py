@@ -1,4 +1,4 @@
-from {{ "" if main_app else ".." }}extensions.celery import celery
+from zemfrog.globals import celery
 
 @celery.task
 def {{task_name}}():

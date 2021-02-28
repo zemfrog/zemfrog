@@ -15,9 +15,9 @@ from zemfrog.models import (
     RequestPasswordResetSchema,
 )
 
-from {{ "" if main_app else ".." }}extensions.marshmallow import ma
+from zemfrog.globals import ma
 from {{ "" if main_app else ".." }}models.user import User, Log, Role, Permission
-from {{ "" if main_app else ".." }}tasks.email import send_email
+from zemfrog.tasks import send_email
 
 
 class PermissionSchema(ma.SQLAlchemyAutoSchema):

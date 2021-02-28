@@ -1,4 +1,4 @@
-from {{ "" if main_app else ".." }}extensions.sqlalchemy import db
+from zemfrog.globals import db
 from sqlalchemy import Column, Integer
 
 class {{model_name}}(db.Model):
