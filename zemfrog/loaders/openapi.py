@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint
 from flask_apispec import FlaskApiSpec
 from importlib import import_module
+from zemfrog.globals import apispec as docs
 
 from ..decorators import api_doc
 from ..helper import get_import_name, import_attr
@@ -15,7 +16,6 @@ def loader(app: Flask):
         return
 
     import_name = get_import_name(app)
-    docs: FlaskApiSpec = import_attr(import_name + "extensions.apispec.docs")
     urls = import_module(import_name + "urls")
     docs_params = urls.docs
     routes = urls.routes

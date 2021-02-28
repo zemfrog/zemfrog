@@ -26,14 +26,14 @@ class Development(object):
         APPS = []
     {%- endif %}
     EXTENSIONS = [
-        "sqlalchemy",
-        "marshmallow",
-        "migrate",
-        "jwt",
-        "mail",
-        "celery",
-        "apispec",
-        "cors"
+        "zemfrog.extensions.sqlalchemy",
+        "zemfrog.extensions.marshmallow",
+        "zemfrog.extensions.migrate",
+        "zemfrog.extensions.jwt",
+        "zemfrog.extensions.mail",
+        "zemfrog.extensions.celery",
+        "zemfrog.extensions.apispec",
+        "zemfrog.extensions.cors"
     ]
     COMMANDS = [
         "zemfrog.commands.api",

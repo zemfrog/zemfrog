@@ -3,7 +3,7 @@ from zemfrog.helper import db_add, db_delete, db_update, get_column_names
 from zemfrog.models import DefaultResponseSchema
 from flask_apispec import marshal_with, use_kwargs
 from marshmallow import fields
-from {{ "" if main_app else ".." }}extensions.marshmallow import ma
+from zemfrog.globals import ma
 from {{ "" if main_app else ".." }}{{src_model}} import {{name}}
 
 class Create{{name}}Schema(ma.SQLAlchemyAutoSchema):

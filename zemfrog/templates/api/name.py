@@ -6,6 +6,6 @@ def get():
 
 
 docs = {"tags": ["{{name}}"]}
-endpoint = "{{url_prefix}}"
-url_prefix = "/{{url_prefix}}"
+endpoint = "{{url_prefix | lower}}"
+url_prefix = "/{{url_prefix | lower}}"
 routes = [("/get", get, ["GET"])]
