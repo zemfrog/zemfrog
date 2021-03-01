@@ -13,5 +13,3 @@ celery==5.0.2
 Click>=7.0
 marshmallow
 sqlalchemy-utils
-sphinx-autoapi
-sphinx-rtd-theme
