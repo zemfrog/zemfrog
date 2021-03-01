@@ -20,9 +20,6 @@ with open("requirements.txt") as req:
 with open("requirements-dev.txt") as req:
     test_requirements = req.read().splitlines()
 
-if os.getenv("READTHEDOCS", False):
-    requirements.extend(test_requirements)
-
 setup_requirements = []
 
 
