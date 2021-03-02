@@ -1,10 +1,11 @@
-from marshmallow import Schema, fields, validates, ValidationError
-from .validators import validate_username, validate_password_length
+from marshmallow import Schema, ValidationError, fields, validates
+
+from .validators import validate_password_length, validate_username
 
 
 class DefaultResponseSchema(Schema):
-    reason = fields.String()
-    status_code = fields.Integer()
+    message = fields.String()
+    code = fields.Integer()
 
 
 class LoginSuccessSchema(Schema):

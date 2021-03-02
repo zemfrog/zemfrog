@@ -1,15 +1,16 @@
 from functools import wraps
 from typing import Callable
+
 from flask import current_app, jsonify
 from flask_apispec import doc
 from flask_jwt_extended import verify_jwt_in_request
 from flask_jwt_extended.utils import get_jwt_claims
 
 
-def auto_status_code(func: Callable) -> Callable:
+def http_code(func: Callable) -> Callable:
     """
     Decorator to generate HTTP status response code automatically
-    according to the key ``status_code`` in json.
+    according to the key ``code`` in json.
 
     :param func: Your view function.
 
@@ -18,12 +19,12 @@ def auto_status_code(func: Callable) -> Callable:
     @wraps(func)
     def wrapper(*args, **kwds):
         result = func(*args, **kwds)
-        status_code = 200
+        code = 200
         if isinstance(result, dict):
-            status_code = result.get("status_code", 200)
+            code = result.get("code", 200)
 
         if not isinstance(result, (tuple, list)):
-            result = result, status_code
+            result = result, code
 
         return result
 
@@ -64,16 +65,11 @@ def jwt_required(roles={}) -> Callable:
                     for perm in permissions:
                         if perm not in valid_perms:
                             return (
-                                jsonify(
-                                    reason="You don't have permission!", status_code=403
-                                ),
+                                jsonify(message="You don't have permission!", code=403),
                                 403,
                             )
                 else:
-                    return (
-                        jsonify(reason="Role not allowed!", status_code=403),
-                        403,
-                    )
+                    return (jsonify(message="Role not allowed!", code=403), 403)
 
             return func(*args, **kwds)
 
