@@ -17,7 +17,7 @@ from zemfrog.models import (
 
 from zemfrog.globals import ma
 from {{ "" if main_app else ".." }}models.user import User, Log, Role, Permission
-from zemfrog.tasks import send_email
+from {{ "" if main_app else ".." }}tasks import send_email
 
 
 class PermissionSchema(ma.SQLAlchemyAutoSchema):
