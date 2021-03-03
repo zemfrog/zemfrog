@@ -19,3 +19,10 @@ repos:
     -   id: isort
         exclude: ^zemfrog/templates/
         args: ["-v", "--df"]
+
+-   repo: https://github.com/myint/autoflake
+    rev: v1.4
+    hooks:
+    -   id: autoflake
+        exclude: ^zemfrog/templates/
+        args: ["--in-place", "--remove-unused-variables", "--remove-all-unused-imports"]
