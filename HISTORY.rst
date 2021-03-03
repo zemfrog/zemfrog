@@ -166,3 +166,13 @@ History
 * Fix: varchar length
 * Added db migration based on environment
 * Stable release
+
+4.0.1 (2020-12-20)
+------------------
+
+* IMPROVE: Move extensions to global
+* NEW: add pre-commit tool
+* IMPROVE: refactor json response
+* Refactor Code: run pre-commit
+* IMPROVE: Change 'SystemExit' to 'ValidationError'
+* IMPROVE: Rename the api directory to apis

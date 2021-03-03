@@ -34,7 +34,7 @@ setup(
     author_email=__email__,
     python_requires=">=3.6",
     classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
