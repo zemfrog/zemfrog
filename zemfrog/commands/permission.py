@@ -1,15 +1,7 @@
 import click
-from flask import current_app
 from flask.cli import with_appcontext
 
-from ..helper import (
-    db_add,
-    db_commit,
-    db_delete,
-    db_update,
-    get_import_name,
-    import_attr,
-)
+from ..helper import db_add, db_commit, db_delete, db_update, get_object_model
 
 
 @click.group("permission")
@@ -28,11 +20,7 @@ def new(name, description):
     Create permission.
     """
 
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name
-        + current_app.config.get("PERMISSION_MODEL", "models.user.Permission")
-    )
+    model = get_object_model("permission")
     perm = model.query.filter_by(name=name).first()
     if not perm:
         perm = model(name=name, description=description)
@@ -50,11 +38,7 @@ def remove(name):
     Remove permission.
     """
 
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name
-        + current_app.config.get("PERMISSION_MODEL", "models.user.Permission")
-    )
+    model = get_object_model("permission")
     perm = model.query.filter_by(name=name).first()
     if perm:
         db_delete(perm)
@@ -71,11 +55,7 @@ def update(name):
     Update permission.
     """
 
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name
-        + current_app.config.get("PERMISSION_MODEL", "models.user.Permission")
-    )
+    model = get_object_model("permission")
     perm = model.query.filter_by(name=name).first()
     if perm:
         cols = {}
@@ -102,11 +82,7 @@ def list():
     Show permissions.
     """
 
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name
-        + current_app.config.get("PERMISSION_MODEL", "models.user.Permission")
-    )
+    model = get_object_model("permission")
     perms = model.query.all()
     print("Total permissions: %d" % len(perms))
     for perm in perms:
@@ -121,11 +97,7 @@ def drop():
     """
 
     print("Dropping all permissions... ", end="")
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name
-        + current_app.config.get("PERMISSION_MODEL", "models.user.Permission")
-    )
+    model = get_object_model("permission")
     model.query.delete()
     db_commit()
     print("(done)")
