@@ -1,18 +1,10 @@
 from datetime import datetime
 
 import click
-from flask import current_app
 from flask.cli import with_appcontext
 from werkzeug.security import generate_password_hash
 
-from ..helper import (
-    db_add,
-    db_commit,
-    db_delete,
-    db_update,
-    get_import_name,
-    import_attr,
-)
+from ..helper import db_add, db_commit, db_delete, db_update, get_object_model
 from ..validators import validate_email, validate_password_length, validate_username
 
 
@@ -28,7 +20,15 @@ def group():
 @click.argument("email")
 @click.option("-f", "--first-name", required=True, help="First name.", prompt=True)
 @click.option("-l", "--last-name", required=True, help="Last name.", prompt=True)
-@click.option("-p", "--password", required=True, help="Password.", prompt=True)
+@click.option(
+    "-p",
+    "--password",
+    required=True,
+    help="Password.",
+    prompt=True,
+    hide_input=True,
+    confirmation_prompt=True,
+)
 @click.option("-r", "--roles", help="User roles (separated by ,).")
 def new(email, first_name, last_name, password, roles):
     """
@@ -39,20 +39,17 @@ def new(email, first_name, last_name, password, roles):
     validate_username(first_name)
     validate_username(last_name)
     validate_password_length(password)
-    roles = input("User roles (separated by ,): ").strip()
-    import_name = get_import_name(current_app)
-    role_model = import_attr(
-        import_name + current_app.config.get("ROLE_MODEL", "models.user.Role")
-    )
+    if not roles:
+        roles = input("User roles (separated by ,): ").strip()
+
+    role_model = get_object_model("role")
     user_roles = []
     for role in roles.split(","):
         role = role_model.query.filter_by(name=role.strip()).first()
         if role:
             user_roles.append(role)
 
-    model = import_attr(
-        import_name + current_app.config.get("USER_MODEL", "models.user.User")
-    )
+    model = get_object_model("user")
     user = model.query.filter_by(email=email).first()
     if not user:
         username = first_name + " " + last_name
@@ -82,10 +79,7 @@ def remove(email):
     Remove user.
     """
 
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name + current_app.config.get("USER_MODEL", "models.user.User")
-    )
+    model = get_object_model("user")
     user = model.query.filter_by(email=email).first()
     if user:
         db_delete(user)
@@ -102,13 +96,8 @@ def update(email):
     Update user.
     """
 
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name + current_app.config.get("USER_MODEL", "models.user.User")
-    )
-    role_model = import_attr(
-        import_name + current_app.config.get("ROLE_MODEL", "models.user.Role")
-    )
+    model = get_object_model("user")
+    role_model = get_object_model("role")
     user = model.query.filter_by(email=email).first()
     if user:
         cols = {}
@@ -159,10 +148,7 @@ def list():
     Show users.
     """
 
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name + current_app.config.get("USER_MODEL", "models.user.User")
-    )
+    model = get_object_model("user")
     users = model.query.all()
     print("Total users: %d" % len(users))
     for user in users:
@@ -181,10 +167,7 @@ def drop():
     """
 
     print("Dropping all users... ", end="")
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name + current_app.config.get("USER_MODEL", "models.user.User")
-    )
+    model = get_object_model("user")
     model.query.delete()
     db_commit()
     print("(done)")
