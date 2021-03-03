@@ -1,15 +1,7 @@
 import click
-from flask import current_app
 from flask.cli import with_appcontext
 
-from ..helper import (
-    db_add,
-    db_commit,
-    db_delete,
-    db_update,
-    get_import_name,
-    import_attr,
-)
+from ..helper import db_add, db_commit, db_delete, db_update, get_object_model
 
 
 @click.group("role")
@@ -29,14 +21,8 @@ def new(name, description, permissions):
     Create role.
     """
 
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name + current_app.config.get("ROLE_MODEL", "models.user.Role")
-    )
-    perm_model = import_attr(
-        import_name
-        + current_app.config.get("PERMISSION_MODEL", "models.user.Permission")
-    )
+    model = get_object_model("role")
+    perm_model = get_object_model("permission")
     role = model.query.filter_by(name=name).first()
     if not role:
         role = model(name=name, description=description)
@@ -68,10 +54,7 @@ def remove(name):
     Remove role.
     """
 
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name + current_app.config.get("ROLE_MODEL", "models.user.Role")
-    )
+    model = get_object_model("role")
     role = model.query.filter_by(name=name).first()
     if role:
         db_delete(role)
@@ -88,10 +71,7 @@ def update(name):
     Update role.
     """
 
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name + current_app.config.get("ROLE_MODEL", "models.user.Role")
-    )
+    model = get_object_model("role")
     role = model.query.filter_by(name=name).first()
     if role:
         cols = {}
@@ -107,10 +87,7 @@ def update(name):
         cols["description"] = description
 
         if permissions:
-            perm_model = import_attr(
-                import_name
-                + current_app.config.get("PERMISSION_MODEL", "models.user.Permission")
-            )
+            perm_model = get_object_model("permission")
             for perm_name in permissions.split(","):
                 perm = perm_model.query.filter_by(name=perm_name).first()
                 if perm:
@@ -137,10 +114,7 @@ def list():
     Show roles.
     """
 
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name + current_app.config.get("ROLE_MODEL", "models.user.Role")
-    )
+    model = get_object_model("role")
     roles = model.query.all()
     print("Total roles: %d" % len(roles))
     for role in roles:
@@ -156,10 +130,7 @@ def drop():
     """
 
     print("Dropping all roles... ", end="")
-    import_name = get_import_name(current_app)
-    model = import_attr(
-        import_name + current_app.config.get("ROLE_MODEL", "models.user.Role")
-    )
+    model = get_object_model("role")
     model.query.delete()
     db_commit()
     print("(done)")
