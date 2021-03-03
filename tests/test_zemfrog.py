@@ -4,6 +4,7 @@
 
 
 import unittest
+
 from click.testing import CliRunner
 
 from zemfrog import cli

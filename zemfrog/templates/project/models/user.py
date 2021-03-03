@@ -1,6 +1,7 @@
 from zemfrog.globals import db
 from zemfrog.mixins import UserMixin, RoleMixin, PermissionMixin, LogMixin
 
+
 class User(UserMixin, db.Model):
     pass
 

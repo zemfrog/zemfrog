@@ -1,5 +1,5 @@
 """
-Reference: 
+Reference:
 * https://github.com/prompt-toolkit/python-prompt-toolkit/blob/master/examples/prompts/fancy-zsh-prompt.py
 * https://github.com/prompt-toolkit/python-prompt-toolkit/blob/master/examples/prompts/auto-completion/nested-autocompletion.py
 
@@ -8,17 +8,17 @@ Reference:
 import datetime
 import os
 
-from flask import Flask
 from click import Group
+from flask import Flask
 from prompt_toolkit import prompt
 from prompt_toolkit.application import get_app
+from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.formatted_text import (
     HTML,
     fragment_list_width,
     merge_formatted_text,
     to_formatted_text,
 )
-from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 
 style = Style.from_dict(
@@ -39,10 +39,7 @@ def get_info_app(app: Flask):
     ) % (app.import_name, app.root_path)
     right_part = HTML(
         "<right-part> " " <env>%s</env> " " <time>%s</time> " "</right-part>"
-    ) % (
-        os.environ["ZEMFROG_ENV"],
-        datetime.datetime.now().isoformat(),
-    )
+    ) % (os.environ["ZEMFROG_ENV"], datetime.datetime.now().isoformat())
 
     used_width = sum(
         [

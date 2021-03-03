@@ -1,5 +1,6 @@
-from flask import Flask, Blueprint
 from importlib import import_module
+
+from flask import Blueprint, Flask
 
 from ..helper import get_import_name, import_attr
 

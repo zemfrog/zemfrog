@@ -11,9 +11,11 @@ repos:
     hooks:
     -   id: black
         exclude: ^zemfrog/templates/
+        args: ["-v"]
 
 -   repo: https://github.com/pycqa/isort
     rev: 5.6.3
     hooks:
     -   id: isort
         exclude: ^zemfrog/templates/
+        args: ["-v", "--df"]

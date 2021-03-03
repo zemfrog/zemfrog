@@ -1,4 +1,5 @@
 import os
+
 from flask.globals import current_app
 from jinja2 import Template
 
@@ -179,10 +180,7 @@ def g_api_crud(name: str):
         old_data = fp.read()
         py_t = Template(old_data)
         new_data = py_t.render(
-            name=name,
-            url_prefix=name,
-            src_model=src_model,
-            main_app=main_app,
+            name=name, url_prefix=name, src_model=src_model, main_app=main_app
         )
 
     new_filename = os.path.join(api_dir, name + ".py")

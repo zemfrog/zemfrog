@@ -1,16 +1,17 @@
+from datetime import datetime
+
 import click
 from flask import current_app
 from flask.cli import with_appcontext
 from werkzeug.security import generate_password_hash
-from datetime import datetime
 
 from ..helper import (
-    db_commit,
-    import_attr,
-    get_import_name,
     db_add,
+    db_commit,
     db_delete,
     db_update,
+    get_import_name,
+    import_attr,
 )
 from ..validators import validate_email, validate_password_length, validate_username
 
@@ -28,11 +29,7 @@ def group():
 @click.option("-f", "--first-name", required=True, help="First name.", prompt=True)
 @click.option("-l", "--last-name", required=True, help="Last name.", prompt=True)
 @click.option("-p", "--password", required=True, help="Password.", prompt=True)
-@click.option(
-    "-r",
-    "--roles",
-    help="User roles (separated by ,).",
-)
+@click.option("-r", "--roles", help="User roles (separated by ,).")
 def new(email, first_name, last_name, password, roles):
     """
     Create user.

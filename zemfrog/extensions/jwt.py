@@ -1,5 +1,6 @@
-from flask import jsonify, Flask
+from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
+
 from ..helper import get_object_model
 
 
@@ -15,11 +16,9 @@ def init_app(app: Flask):
 
         return user
 
-
     @jwt.user_loader_error_loader
     def custom_user_loader_error(identity):
         ret = {"reason": "User {} not found".format(identity), "status_code": 404}
         return jsonify(ret), 404
-
 
     jwt.init_app(app)

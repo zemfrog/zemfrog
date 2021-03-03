@@ -1,12 +1,12 @@
-from importlib import import_module
 import os
+from importlib import import_module
 
+from celery import Celery
 from flask import Flask
 from flask.cli import load_dotenv
 
 from .exception import ZemfrogEnvironment
 from .helper import get_import_name
-from celery import Celery
 
 
 def make_celery(app: Flask) -> Celery:

@@ -1,5 +1,6 @@
-from zemfrog.app import make_celery
 from flask import Flask
+
+from zemfrog.app import make_celery
 
 
 def init_app(app: Flask):
