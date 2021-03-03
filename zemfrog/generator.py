@@ -138,7 +138,7 @@ def g_api(name: str):
     """
 
     validate_module_name(name)
-    api_dir = os.path.join(current_app.root_path, "api")
+    api_dir = os.path.join(current_app.root_path, "apis")
     old_filename = get_template("api", "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()
@@ -174,7 +174,7 @@ def g_api_crud(name: str):
         idx = len(import_name)
         src_model = src_model[idx:]
 
-    api_dir = os.path.join(current_app.root_path, "api")
+    api_dir = os.path.join(current_app.root_path, "apis")
     old_filename = get_template("crud", "name.py")
     with open(old_filename) as fp:
         old_data = fp.read()

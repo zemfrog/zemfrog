@@ -1,5 +1,5 @@
-from zemfrog.decorators import auto_status_code, authenticate
-from zemfrog.helper import db_add, db_delete, db_update, get_column_names
+from zemfrog.decorators import http_code, authenticate
+from zemfrog.helper import db_add, db_delete, db_update
 from zemfrog.models import DefaultResponseSchema
 from flask_apispec import marshal_with, use_kwargs
 from marshmallow import fields
@@ -46,7 +46,7 @@ def read(**kwds):
 @use_kwargs(Create{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
-@auto_status_code
+@http_code
 def create(**kwds):
     """
     Add data.
@@ -72,7 +72,7 @@ def create(**kwds):
 @use_kwargs(Update{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
-@auto_status_code
+@http_code
 def update(id, **kwds):
     """
     Update data.
@@ -97,7 +97,7 @@ def update(id, **kwds):
 # @use_kwargs(Delete{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
-@auto_status_code
+@http_code
 def delete(id):
     """
     Delete data.

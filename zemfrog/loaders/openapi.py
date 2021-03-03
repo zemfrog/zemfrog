@@ -27,7 +27,7 @@ def loader(app: Flask):
         docs.register(view)
 
     apis = app.config.get("APIS", [])
-    api_prefix = "api."
+    api_prefix = "apis."
     for name in apis:
         if not name.startswith(api_prefix):
             name = api_prefix + name
