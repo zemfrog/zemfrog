@@ -1,7 +1,7 @@
 import re
 
-from marshmallow.validate import Email
 from marshmallow.exceptions import ValidationError
+from marshmallow.validate import Email
 
 
 def validate_module_name(value: str, silently=False):

@@ -1,6 +1,8 @@
-from flask import Flask, Blueprint
-from flask_apispec import FlaskApiSpec
 from importlib import import_module
+
+from flask import Blueprint, Flask
+from flask_apispec import FlaskApiSpec
+
 from zemfrog.globals import apispec as docs
 
 from ..decorators import api_doc

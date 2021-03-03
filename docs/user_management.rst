@@ -100,7 +100,7 @@ You can also add permissions to roles::
 
 .. note::
 
-    Keep in mind, you must first create permissions on the database. 
+    Keep in mind, you must first create permissions on the database.
     Before you reference permissions to the role.
 
 

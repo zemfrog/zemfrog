@@ -100,14 +100,14 @@ Example::
 Commands
 --------
 
-In the flask application there is a feature to add "own commands" to flask commands. However, these are not automatically added by flask. 
+In the flask application there is a feature to add "own commands" to flask commands. However, these are not automatically added by flask.
 Don't worry, this behavior will be handled by zemfrog automatically.
 
 Let's create a boilerplate command::
 
     $ flask command new foo
 
-Now you have ``foo.py`` in the commands directory and you will see the ``command`` variable in the file ``foo.py``. 
+Now you have ``foo.py`` in the commands directory and you will see the ``command`` variable in the file ``foo.py``.
 This variable will be imported and added to the flask command by zemfrog automatically.
 
 Then add a command to the ``COMMANDS`` configuration in config.py::

@@ -165,4 +165,4 @@ History
 * add command secretkey
 * Fix: varchar length
 * Added db migration based on environment
-* Stable release 
+* Stable release

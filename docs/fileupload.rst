@@ -14,4 +14,3 @@ All you need is to import ``FileField`` from ``extensions.apispec``. For example
     def view_function(**kwds):
         image = kwds.get("image")
         print("Image:", image)
-

@@ -1,5 +1,4 @@
 import pkg_resources
-
 from flask import Flask
 from flask.cli import routes_command, run_command, shell_command
 

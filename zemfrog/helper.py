@@ -1,13 +1,13 @@
 import os
-
-from importlib import import_module
 from distutils.dir_util import copy_tree
+from importlib import import_module
 from types import ModuleType
-from flask import current_app, Flask, render_template
+
+from flask import Flask, current_app, render_template
 from flask_sqlalchemy import Model
 
+from .exception import ZemfrogModelNotFound, ZemfrogTemplateNotFound
 from .globals import db
-from .exception import ZemfrogTemplateNotFound, ZemfrogModelNotFound
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "templates")
 

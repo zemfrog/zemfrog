@@ -1,6 +1,6 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Boolean
-from sqlalchemy.orm import relationship
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.orm import relationship
 from sqlalchemy_utils import EmailType
 
 from .exception import ZemfrogRoleNotFound, ZemfrogRolePermissionNotFound

@@ -1,8 +1,8 @@
 import os
+from glob import glob
+from importlib import import_module
 
 from flask import Flask
-from importlib import import_module
-from glob import glob
 
 from ..helper import get_import_name, get_models
 

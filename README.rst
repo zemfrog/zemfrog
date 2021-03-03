@@ -32,7 +32,7 @@ Motivation
 ----------
 
 Since 2019 I have studied backend development. And I know exactly, development on the backend is very difficult and complex.
-For example when a user requests a password reset, the user has to wait for the process on the backend to finish to send an email. That's because the process isn't asynchronous. 
+For example when a user requests a password reset, the user has to wait for the process on the backend to finish to send an email. That's because the process isn't asynchronous.
 And also we have to test the REST API with tools like `Postman <https://www.postman.com/>`_, `Insomnia <https://insomnia.rest/>`_, etc. If we use that tool it will take a long time, because we have to set up endpoints, etc.
 
 Zemfrog came up with simplifying this behavior by adding background jobs with `celery <https://docs.celeryproject.org/en/stable/>`_ and also integrating with swagger-ui using `flask-apispec <https://github.com/jmcarp/flask-apispec>`_ to test the REST API.
