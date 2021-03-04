@@ -3,4 +3,5 @@ from werkzeug.exceptions import HTTPException
 
 
 def handler(error: HTTPException):
-    return jsonify(message="error occurred %r" % error.description), error.code
+    code = error.code
+    return jsonify(message="error occurred %r" % error.description, code=code), code

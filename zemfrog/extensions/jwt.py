@@ -18,7 +18,7 @@ def init_app(app: Flask):
 
     @jwt.user_loader_error_loader
     def custom_user_loader_error(identity):
-        ret = {"reason": "User {} not found".format(identity), "status_code": 404}
+        ret = {"message": "User {} not found".format(identity), "code": 404}
         return jsonify(ret), 404
 
     jwt.init_app(app)
