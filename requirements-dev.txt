@@ -8,3 +8,5 @@ coverage==4.5.4
 Sphinx
 twine==1.14.0
 Click==7.0
+sphinx-autoapi
+sphinx-rtd-theme

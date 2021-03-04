@@ -2,8 +2,10 @@
 
 """The setup script."""
 
-from setuptools import setup, find_packages
-from zemfrog import __version__, __author__, __email__
+
+from setuptools import find_packages, setup
+
+from zemfrog import __author__, __email__, __version__
 
 with open("README.rst") as readme_file:
     readme = readme_file.read()
@@ -31,7 +33,7 @@ setup(
     author_email=__email__,
     python_requires=">=3.6",
     classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
@@ -44,11 +46,7 @@ setup(
         # "Framework :: Zemfrog :: " + __version__,
     ],
     description="Zemfrog is a simple framework based on flask for building a REST API quickly.",
-    entry_points={
-        "console_scripts": [
-            "zemfrog=zemfrog.cli:main",
-        ],
-    },
+    entry_points={"console_scripts": ["zemfrog=zemfrog.cli:main"]},
     install_requires=requirements,
     license="MIT license",
     long_description=readme + "\n\n" + history,

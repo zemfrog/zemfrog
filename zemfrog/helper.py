@@ -1,13 +1,13 @@
 import os
-
-from importlib import import_module
 from distutils.dir_util import copy_tree
+from importlib import import_module
 from types import ModuleType
-from flask import current_app, Flask, render_template
+
+from flask import Flask, current_app, render_template
 from flask_sqlalchemy import Model
 
-from .globals import current_db
-from .exception import ZemfrogTemplateNotFound, ZemfrogModelNotFound
+from .exception import ZemfrogModelNotFound, ZemfrogTemplateNotFound
+from .globals import db
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "templates")
 
@@ -99,7 +99,7 @@ def db_add(model):
     Functions for adding data to the database.
     """
 
-    current_db.session.add(model)
+    db.session.add(model)
     db_commit()
 
 
@@ -108,7 +108,7 @@ def db_delete(model):
     Functions to delete data in the database.
     """
 
-    current_db.session.delete(model)
+    db.session.delete(model)
     db_commit()
 
 
@@ -129,7 +129,7 @@ def db_commit():
     Functions for saving data to a database.
     """
 
-    current_db.session.commit()
+    db.session.commit()
 
 
 def get_mail_template(name, **context):
@@ -172,3 +172,10 @@ def get_column_names(model):
     rels = model.__mapper__.relationships.keys()
     columns.extend(rels)
     return columns
+
+
+def get_object_model(name):
+    import_name = get_import_name(current_app)
+    src = current_app.config[name.upper() + "_MODEL"]
+    model = import_attr(import_name + src)
+    return model

@@ -1,5 +1,7 @@
 from flask import Flask
+
 from ..helper import get_import_name, import_attr
+
 
 def loader(app: Flask):
     """

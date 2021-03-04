@@ -1,0 +1,28 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+
+-   repo: https://github.com/psf/black
+    rev: 19.3b0
+    hooks:
+    -   id: black
+        exclude: ^zemfrog/templates/
+        args: ["-v"]
+
+-   repo: https://github.com/pycqa/isort
+    rev: 5.6.3
+    hooks:
+    -   id: isort
+        exclude: ^zemfrog/templates/
+        args: ["-v", "--df"]
+
+-   repo: https://github.com/myint/autoflake
+    rev: v1.4
+    hooks:
+    -   id: autoflake
+        exclude: ^zemfrog/templates/
+        args: ["--in-place", "--remove-unused-variables", "--remove-all-unused-imports"]

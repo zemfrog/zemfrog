@@ -165,4 +165,16 @@ History
 * add command secretkey
 * Fix: varchar length
 * Added db migration based on environment
-* Stable release 
+* Stable release
+
+4.0.1 (2021-03-04)
+------------------
+
+* IMPROVE: Move extensions to global
+* NEW: add pre-commit tool
+* IMPROVE: refactor json response
+* Refactor Code: run pre-commit
+* IMPROVE: Change 'SystemExit' to 'ValidationError'
+* IMPROVE: Rename the api directory to apis
+* NEW: add autoflake hook
+* Changed the stable version status to BETA

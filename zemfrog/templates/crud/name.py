@@ -1,9 +1,9 @@
-from zemfrog.decorators import auto_status_code, authenticate
-from zemfrog.helper import db_add, db_delete, db_update, get_column_names
+from zemfrog.decorators import http_code, authenticate
+from zemfrog.helper import db_add, db_delete, db_update
 from zemfrog.models import DefaultResponseSchema
 from flask_apispec import marshal_with, use_kwargs
 from marshmallow import fields
-from {{ "" if main_app else ".." }}extensions.marshmallow import ma
+from zemfrog.globals import ma
 from {{ "" if main_app else ".." }}{{src_model}} import {{name}}
 
 class Create{{name}}Schema(ma.SQLAlchemyAutoSchema):
@@ -46,7 +46,7 @@ def read(**kwds):
 @use_kwargs(Create{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 403)
-@auto_status_code
+@http_code
 def create(**kwds):
     """
     Add data.
@@ -57,22 +57,22 @@ def create(**kwds):
         model = {{name}}(**kwds)
         db_add(model)
         status_code = 200
-        reason = "Successfully added data."
+        message = "Successfully added data."
 
     else:
         status_code = 403
-        reason = "Data already exists."
+        message = "Data already exists."
 
     return {
-        "status_code": status_code,
-        "reason": reason
+        "code": status_code,
+        "message": message
     }
 
 @authenticate()
 @use_kwargs(Update{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
-@auto_status_code
+@http_code
 def update(id, **kwds):
     """
     Update data.
@@ -82,22 +82,22 @@ def update(id, **kwds):
     if model:
         db_update(model, **kwds)
         status_code = 200
-        reason = "Successfully updating data."
+        message = "Successfully updating data."
 
     else:
         status_code = 404
-        reason = "Data not found."
+        message = "Data not found."
 
     return {
-        "status_code": status_code,
-        "reason": reason
+        "code": status_code,
+        "message": message
     }
 
 @authenticate()
 # @use_kwargs(Delete{{name}}Schema())
 @marshal_with(DefaultResponseSchema, 200)
 @marshal_with(DefaultResponseSchema, 404)
-@auto_status_code
+@http_code
 def delete(id):
     """
     Delete data.
@@ -107,15 +107,15 @@ def delete(id):
     if model:
         db_delete(model)
         status_code = 200
-        reason = "Data deleted successfully."
+        message = "Data deleted successfully."
 
     else:
         status_code = 404
-        reason = "Data not found."
+        message = "Data not found."
 
     return {
-        "status_code": status_code,
-        "reason": reason
+        "code": status_code,
+        "message": message
     }
 
 

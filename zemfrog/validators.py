@@ -1,7 +1,7 @@
 import re
 
-from marshmallow.validate import Email
 from marshmallow.exceptions import ValidationError
+from marshmallow.validate import Email
 
 
 def validate_module_name(value: str, silently=False):
@@ -9,7 +9,7 @@ def validate_module_name(value: str, silently=False):
     if not re_var.search(value):
         if silently:
             return False
-        raise SystemExit("Error: invalid name %r" % value)
+        raise ValidationError("Error: invalid name %r" % value)
     return True
 
 
@@ -19,7 +19,7 @@ def validate_email(value: str, silently=False):
     except ValidationError as e:
         if silently:
             return False
-        raise SystemExit(e.messages[0])
+        raise ValidationError(e.messages[0])
     return True
 
 
@@ -27,7 +27,7 @@ def validate_username(value: str, silently=False):
     if not re.search(r"^([a-zA-Z]+)$", value):
         if silently:
             return False
-        raise SystemExit("Name must be a character [a-zA-Z]")
+        raise ValidationError("Name must be a character [a-zA-Z]")
     return True
 
 
@@ -35,5 +35,5 @@ def validate_password_length(value: str, silently=False):
     if len(value) < 8:
         if silently:
             return False
-        raise SystemExit("Password length must be greater than or equal to 8")
+        raise ValidationError("Password length must be greater than or equal to 8")
     return True

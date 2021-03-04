@@ -1,8 +1,8 @@
 import os
-import click
-
-from flask import Flask
 from typing import Dict, List
+
+import click
+from flask import Flask
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from ..helper import import_attr
@@ -25,12 +25,7 @@ def loader(app: Flask):
         help = a.get("help", "")
         yourapp: Flask = import_attr(name + ".wsgi.app")
 
-        @click.command(
-            name,
-            context_settings=dict(
-                ignore_unknown_options=True,
-            ),
-        )
+        @click.command(name, context_settings=dict(ignore_unknown_options=True))
         @click.option("-r", "--repl", is_flag=True, help="Activates REPL mode.")
         @click.argument("args", nargs=-1, type=click.UNPROCESSED)
         def cli(repl, args):

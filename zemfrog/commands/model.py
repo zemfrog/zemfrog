@@ -1,5 +1,6 @@
 import click
 from flask.cli import with_appcontext
+
 from ..generator import g_model
 
 

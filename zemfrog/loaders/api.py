@@ -1,5 +1,6 @@
-from flask import Flask, Blueprint
 from importlib import import_module
+
+from flask import Blueprint, Flask
 
 from ..helper import get_import_name, import_attr
 
@@ -11,8 +12,8 @@ def loader(app: Flask):
 
     apis = app.config.get("APIS", [])
     import_name = get_import_name(app)
-    api: Blueprint = import_attr(import_name + "api.api")
-    prefix = "api."
+    api: Blueprint = import_attr(import_name + "apis.api")
+    prefix = "apis."
     for name in apis:
         res = name
         if not name.startswith(prefix):

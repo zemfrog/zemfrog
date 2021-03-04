@@ -8,13 +8,13 @@ from flask.app import Flask
 from flask_apispec import FlaskApiSpec
 from marshmallow import fields
 
-docs = FlaskApiSpec(document_options=False)
 FileField = fields.Raw
 
 
 def init_app(app: Flask):
     global FileField
 
+    docs = FlaskApiSpec(document_options=False)
     ma = MarshmallowPlugin()
     spec = APISpec(
         title=app.config.get("APISPEC_TITLE", "API Docs"),
@@ -23,13 +23,11 @@ def init_app(app: Flask):
         plugins=[ma],
         securityDefinitions=app.config.get("APISPEC_SECURITY_DEFINITIONS", {}),
     )
-    @ma.map_to_openapi_type('file', None)
+
+    @ma.map_to_openapi_type("file", None)
     class FileField(fields.Raw):
         pass
 
-    app.config.update(
-        {
-            "APISPEC_SPEC": spec,
-        }
-    )
+    app.config.update({"APISPEC_SPEC": spec})
     docs.init_app(app)
+    app.extensions["apispec"] = docs
