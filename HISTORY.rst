@@ -167,7 +167,7 @@ History
 * Added db migration based on environment
 * Stable release
 
-4.0.1 (2021-03-03)
+4.0.1 (2021-03-04)
 ------------------
 
 * IMPROVE: Move extensions to global
