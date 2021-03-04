@@ -176,3 +176,4 @@ History
 * Refactor Code: run pre-commit
 * IMPROVE: Change 'SystemExit' to 'ValidationError'
 * IMPROVE: Rename the api directory to apis
+* NEW: add autoflake hook
