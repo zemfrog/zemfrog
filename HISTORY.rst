@@ -178,3 +178,9 @@ History
 * IMPROVE: Rename the api directory to apis
 * NEW: add autoflake hook
 * Changed the stable version status to BETA
+
+4.0.2 (2021-03-05)
+------------------
+
+* FIX: response message in jwt & error handler boilerplate
+* FIX: update zemfrog version in requirements.txt
