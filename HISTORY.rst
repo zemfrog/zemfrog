@@ -184,3 +184,9 @@ History
 
 * FIX: response message in jwt & error handler boilerplate
 * FIX: update zemfrog version in requirements.txt
+
+4.0.3 (2021-03-17)
+------------------
+
+* Fix https://github.com/zemfrog/zemfrog/issues/87
+* Add pre-commit to requirements-dev.txt
