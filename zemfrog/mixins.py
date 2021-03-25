@@ -18,9 +18,9 @@ class UserMixin:
     name = Column(String(255), nullable=False)
     email = Column(EmailType, nullable=False, unique=True)
     password = Column(String(255), nullable=False)
-    register_at = Column(DateTime)
+    registration_date = Column(DateTime)
     confirmed = Column(Boolean)
-    confirmed_at = Column(DateTime)
+    date_confirmed = Column(DateTime)
 
     @declared_attr
     def logs(cls):
@@ -158,9 +158,9 @@ class LogMixin:
     def user_id(cls):
         return Column(ForeignKey("user.id"))
 
-    login_at = Column(DateTime)
-    request_password_reset_at = Column(DateTime)
-    updated_at = Column(DateTime)
+    login_date = Column(DateTime)
+    date_requested_password_reset = Column(DateTime)
+    date_set_new_password = Column(DateTime)
 
 
 class RoleLinksMixin:

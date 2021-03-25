@@ -63,10 +63,9 @@ def login(**kwds):
     email = kwds.get("username")
     passw = kwds.get("password")
     user = User.query.filter_by(email=email).first()
-
     if user and user.confirmed and check_password_hash(user.password, passw):
-        login_at = datetime.utcnow()
-        log = Log(login_at=login_at)
+        login_date = datetime.utcnow()
+        log = Log(login_date=login_date)
         user.logs.append(log)
         db_commit()
         roles = get_user_roles(user)
@@ -102,7 +101,7 @@ def register(**kwds):
                     name=username,
                     email=email,
                     password=passw,
-                    register_at=datetime.utcnow(),
+                    registration_date=datetime.utcnow(),
                 )
                 db_add(user)
                 token = create_access_token(
@@ -145,7 +144,7 @@ def confirm_account(token):
         if user and not user.confirmed:
             message = "Confirmed."
             status_code = 200
-            db_update(user, confirmed=True, confirmed_at=datetime.utcnow())
+            db_update(user, confirmed=True, date_confirmed=datetime.utcnow())
 
         else:
             raise DecodeError
@@ -185,7 +184,7 @@ def request_password_reset(**kwds):
                 "request_password_reset.html", token=token
             )
             send_email.delay("Forgot password", html=msg, recipients=[email])
-            log = Log(request_password_reset_at=datetime.utcnow())
+            log = Log(date_requested_password_reset=datetime.utcnow())
             user.logs.append(log)
             db_commit()
     else:
@@ -249,7 +248,7 @@ def password_reset(token, **kwds):
         passw = kwds.get("password")
         if user and passw:
             passw = generate_password_hash(passw)
-            log = Log(updated_at=datetime.utcnow())
+            log = Log(date_set_new_password=datetime.utcnow())
             user.logs.append(log)
             db_update(user, password=passw)
             message = "Successfully change password."
