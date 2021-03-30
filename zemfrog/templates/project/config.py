@@ -17,7 +17,7 @@ class Development(object):
         "Bearer": {
             "type": "oauth2",
             "flow": "password",
-            "tokenUrl": "/auth/jwt/login",
+            "tokenUrl": "/jwt/login",
         }
     }
     APISPEC_SECURITY_PARAMS = [{"Bearer": []}]
@@ -55,12 +55,12 @@ class Development(object):
             "zemfrog.commands.app"
         {%- endif %}
     ]
-    BLUEPRINTS = ["auth"]
+    BLUEPRINTS = ["zemfrog_auth.jwt"]
     STATICFILES = []
     MIDDLEWARES = []
     APIS = []
     ERROR_HANDLERS = {422: "api_errors", 400: "api_errors"}
-    TASKS = []
+    TASKS = ["zemfrog.tasks"]
     CONTEXT_PROCESSORS = []
     JINJA_FILTERS = []
     API_DOCS = True
@@ -68,6 +68,7 @@ class Development(object):
     USER_MODEL = "models.user.User"
     ROLE_MODEL = "models.user.Role"
     PERMISSION_MODEL = "models.user.Permission"
+    LOG_MODEL = "models.user.Log"
     LOADERS = [
         "zemfrog.loaders.extension",
         "zemfrog.loaders.staticfile",
