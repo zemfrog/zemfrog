@@ -55,7 +55,7 @@ class Development(object):
             "zemfrog.commands.app"
         {%- endif %}
     ]
-    BLUEPRINTS = ["zemfrog_auth.jwt"]
+    BLUEPRINTS = []
     STATICFILES = []
     MIDDLEWARES = []
     APIS = []
