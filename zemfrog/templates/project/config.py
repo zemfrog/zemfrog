@@ -59,7 +59,10 @@ class Development(object):
     STATICFILES = []
     MIDDLEWARES = []
     APIS = []
-    ERROR_HANDLERS = {422: "api_errors", 400: "api_errors"}
+    ERROR_HANDLERS = {
+        422: "zemfrog.handlers.api_errors",
+        400: "zemfrog.handlers.api_errors"
+    }
     TASKS = ["zemfrog.tasks"]
     CONTEXT_PROCESSORS = []
     JINJA_FILTERS = []
