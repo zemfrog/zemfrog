@@ -2,29 +2,29 @@ from zemfrog.decorators import http_code, authenticate
 from zemfrog.helper import db_add, db_delete, db_update
 from zemfrog.models import DefaultResponseSchema
 from flask_apispec import marshal_with, use_kwargs
-from marshmallow import fields
-from zemfrog.globals import ma
+from marshmallow import fields, Schema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from {{ "" if main_app else ".." }}{{src_model}} import {{name}}
 
-class Create{{name}}Schema(ma.SQLAlchemyAutoSchema):
+class Create{{name}}Schema(SQLAlchemyAutoSchema):
     class Meta:
         model = {{name}}
         exclude = ("id",)
 
-class Read{{name}}Schema(ma.SQLAlchemyAutoSchema):
+class Read{{name}}Schema(SQLAlchemyAutoSchema):
     class Meta:
         model = {{name}}
 
-class Update{{name}}Schema(ma.SQLAlchemyAutoSchema):
+class Update{{name}}Schema(SQLAlchemyAutoSchema):
     class Meta:
         model = {{name}}
         exclude = ("id",)
 
-# class Delete{{name}}Schema(ma.SQLAlchemyAutoSchema):
+# class Delete{{name}}Schema(SQLAlchemyAutoSchema):
 #     class Meta:
 #         model = {{name}}
 
-class Limit{{name}}Schema(ma.Schema):
+class Limit{{name}}Schema(Schema):
     offset = fields.Integer()
     limit = fields.Integer()
 
