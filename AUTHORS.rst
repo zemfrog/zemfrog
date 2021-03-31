@@ -10,4 +10,4 @@ Development Lead
 Contributors
 ------------
 
-* Untuk logo - M Julius <mjulius.dev(at)gmail(dot)com>
+* for the logo - M Julius <mjulius.dev(at)gmail(dot)com>
