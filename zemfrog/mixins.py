@@ -18,9 +18,9 @@ class UserMixin:
     name = Column(String(255), nullable=False)
     email = Column(EmailType, nullable=False, unique=True)
     password = Column(String(255), nullable=False)
-    register_at = Column(DateTime)
+    registration_date = Column(DateTime)
     confirmed = Column(Boolean)
-    confirmed_at = Column(DateTime)
+    date_confirmed = Column(DateTime)
 
     @declared_attr
     def logs(cls):
@@ -28,7 +28,7 @@ class UserMixin:
 
     @declared_attr
     def roles(cls):
-        return relationship("Role")
+        return relationship("Role", secondary="role_links", lazy="dynamic")
 
     def get_role(self, name, silently=False):
         for role in self.roles:
@@ -88,7 +88,7 @@ class RoleMixin:
 
     @declared_attr
     def permissions(cls):
-        return relationship("Permission")
+        return relationship("Permission", secondary="permission_links", lazy="dynamic")
 
     def get_perm(self, name, silently=False):
         for perm in self.permissions:
@@ -158,6 +158,30 @@ class LogMixin:
     def user_id(cls):
         return Column(ForeignKey("user.id"))
 
-    login_at = Column(DateTime)
-    request_password_reset_at = Column(DateTime)
-    updated_at = Column(DateTime)
+    login_date = Column(DateTime)
+    date_requested_password_reset = Column(DateTime)
+    date_set_new_password = Column(DateTime)
+
+
+class RoleLinksMixin:
+    id = Column(Integer, primary_key=True)
+
+    @declared_attr
+    def user_id(cls):
+        return Column(ForeignKey("user.id"))
+
+    @declared_attr
+    def role_id(cls):
+        return Column(ForeignKey("role.id"))
+
+
+class PermissionLinksMixin:
+    id = Column(Integer, primary_key=True)
+
+    @declared_attr
+    def role_id(cls):
+        return Column(ForeignKey("role.id"))
+
+    @declared_attr
+    def permission_id(cls):
+        return Column(ForeignKey("permission.id"))

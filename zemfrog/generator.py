@@ -115,7 +115,7 @@ def g_model(name: str):
     with open(old_filename) as fp:
         old_data = fp.read()
         py_t = Template(old_data)
-        new_data = py_t.render(main_app=main_app, model_name=name.capitalize())
+        new_data = py_t.render(main_app=main_app, model_name=name)
 
     new_filename = os.path.join(model_dir, name + ".py")
     if os.path.isfile(new_filename):
