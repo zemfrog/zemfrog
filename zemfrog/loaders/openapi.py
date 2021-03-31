@@ -1,11 +1,12 @@
 from importlib import import_module
 
 from flask import Flask
+from flask.blueprints import Blueprint
 
 from zemfrog.globals import apispec as docs
 
 from ..decorators import api_doc
-from ..helper import get_import_name
+from ..helper import get_import_name, import_attr
 
 
 def loader(app: Flask):
@@ -48,13 +49,16 @@ def loader(app: Flask):
 
     blueprints = app.config.get("BLUEPRINTS", [])
     for name in blueprints:
+        bp = name + ".routes.init_blueprint"
         urls = name + ".urls"
         try:
-            urls = import_name + urls
-            urls = import_module(urls)
+            urls = import_module(import_name + urls)
+            bp: Blueprint = import_attr(import_name + bp)()
         except (ImportError, AttributeError):
             urls = import_module(urls)
+            bp: Blueprint = import_attr(bp)()
 
+        name = bp.name
         docs_params = urls.docs
         routes = urls.routes
 
