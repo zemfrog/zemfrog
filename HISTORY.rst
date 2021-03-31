@@ -190,3 +190,14 @@ History
 
 * Fix https://github.com/zemfrog/zemfrog/issues/87
 * Add pre-commit to requirements-dev.txt
+
+4.0.4 (2021-03-31)
+------------------
+
+* FIX: role & permission relation
+* FIX: typo column name
+* IMPROVE: split blueprint and task to global
+* IMPROVE: split error handlers to global
+* IMPROVE: set default blueprint to blank
+* IMPROVE: Use schema from source rather than local proxy
+* IMPROVE: Using the model name corresponding user input
