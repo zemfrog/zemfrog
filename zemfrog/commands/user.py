@@ -60,9 +60,9 @@ def new(email, first_name, last_name, password, roles):
             name=username,
             email=email,
             password=passw,
-            register_at=datetime.utcnow(),
+            registration_date=datetime.utcnow(),
             confirmed=True,
-            confirmed_at=datetime.utcnow(),
+            date_confirmed=datetime.utcnow(),
             roles=user_roles,
         )
         db_add(user)
