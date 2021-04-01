@@ -19,7 +19,7 @@ class UserMixin:
     email = Column(EmailType, nullable=False, unique=True)
     password = Column(String(255), nullable=False)
     registration_date = Column(DateTime)
-    confirmed = Column(Boolean)
+    confirmed = Column(Boolean, default=False)
     date_confirmed = Column(DateTime)
 
     @declared_attr
