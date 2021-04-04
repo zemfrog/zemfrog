@@ -16,6 +16,7 @@ Welcome to zemfrog's documentation!
    readme
    installation
    usage
+   auth
    fileupload
    user_management
    rbac

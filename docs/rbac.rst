@@ -40,11 +40,11 @@ All you need is to add an authenticate decorator with a roles to the view, like 
     @authenticate(roles={"admin": []})
     # your view here...
 
-For example, edit the ``get`` view decorator in the ``api/user.py`` file, as follows::
+For example, edit the ``read`` view decorator in the ``apis/user.py`` file, as follows::
 
     @authenticate(roles={"admin": []})
     @marshal_with(ReadUserSchema(many=True), 200)
-    def get():
+    def read():
         """
         Read all data.
         """
@@ -52,7 +52,7 @@ For example, edit the ``get`` view decorator in the ``api/user.py`` file, as fol
         data = User.query.all()
         return data
 
-Now the ``/api/user/get`` endpoint can be accessed by admin only!
+Now the ``/api/user/read`` endpoint can be accessed by admin only!
 
 
 Protect Endpoint With Role Permissions
@@ -66,7 +66,7 @@ And add permission to the ``authenticate`` decorator, for example::
 
     @authenticate(roles={"admin": ["can_all"]})
     @marshal_with(ReadUserSchema(many=True), 200)
-    def get():
+    def read():
         """
         Read all data.
         """
@@ -75,4 +75,4 @@ And add permission to the ``authenticate`` decorator, for example::
         return data
 
 
-Now the ``/api/user/get`` endpoint can only be accessed by admins who have the permission ``can_all``!
+Now the ``/api/user/read`` endpoint can only be accessed by admins who have the permission ``can_all``!
