@@ -1,3 +1,3 @@
-zemfrog>=4.0.1
+zemfrog>=4.0.5
 redis
 gunicorn

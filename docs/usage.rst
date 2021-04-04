@@ -13,8 +13,7 @@ Project Layouts
 The application structure is as follows::
 
     frog (root directory)
-    ├── api
-    ├── auth
+    ├── apis
     ├── commands
     ├── extensions
     ├── middlewares
@@ -31,8 +30,7 @@ The application structure is as follows::
     ├── views.py
     └── wsgi.py
 
-* ``api`` - This directory is for all REST API resources.
-* ``auth`` - This directory is the default JWT authentication.
+* ``apis`` - This directory is for all REST API resources.
 * ``commands`` - This directory is for the commands that will be registered in the flask command.
 * ``extensions`` - This directory is for a list of flask extensions.
 * ``handlers`` - This directory is for error handlers.
@@ -168,8 +166,8 @@ And in the ``tasks`` directory, a sample background task is also available.
 
 .. code-block:: python
 
-    from extensions.celery import celery
-    from extensions.mail import mail
+    from zemfrog.globals import celery
+    from zemfrog.globals import mail
 
 
     @celery.task
@@ -178,7 +176,7 @@ And in the ``tasks`` directory, a sample background task is also available.
 
 
 .. note::
-    If you want to create a background task, you have to use the ``celery`` app from the ``extensions`` directory.
+    If you want to create a background task, you have to use the ``celery`` app from the ``zemfrog.globals``.
     Like the sample above.
 
 
@@ -206,10 +204,10 @@ Let's create 2 view functions::
     # account/views.py
 
     def login():
-        return "login cuk"
+        return "login"
 
     def logout():
-        return "logout cuk"
+        return "logout"
 
 Register the view function to the blueprint, otherwise your view function will not be in the blueprint.
 
@@ -240,7 +238,7 @@ Let's start by creating the boilerplate middleware::
 
     $ flask middleware new auth
 
-The above command will create an auth.py file to the ``middlewares`` directory and in the auth.py file there is a function ``init_middleware``.
+The above command will create an ``auth.py`` file to the ``middlewares`` directory and in the ``auth.py`` file there is a function ``init_middleware``.
 This function is to register your middleware in the flask application.
 
 And register your middleware to config file::
@@ -253,7 +251,7 @@ API
 zemfrog is specially designed for building REST APIs quickly.
 In zemfrog you can create a basic CRUD or just boilerplate API.
 
-All API resources are located in the ``api`` directory.
+All API resources are located in the ``apis`` directory.
 
 Let's start by creating an API resource::
 
@@ -283,7 +281,7 @@ Let's create a ``Product`` model.
 
 Change the file ``models/__init__.py`` to be like this::
 
-    from extensions.sqlalchemy import db
+    from zemfrog.globals import db
     from sqlalchemy import Column, String, Integer
 
     class Product(db.Model):
@@ -302,19 +300,7 @@ And we can create a REST API::
 This REST API will not work if you haven't added it to the ``APIS`` config.
 Let's add it to the config::
 
-    APIS = ['product']
-
-
-JWT Authentication
-------------------
-
-One of my favorite features is this.
-
-Why? with this you are very easy and clear how you interact with the REST API which is protected with JWT authentication.
-
-This feature is inspired by the `FastAPI framework <https://github.com/tiangolo/fastapi>`_ and adopted from the project https://github.com/tiangolo/full-stack-flask-couchdb.
-
-All REST APIs are protected with JWT authentication by default. However, if you wish to disable it, you only need to commenting ``authenticate`` decorators.
+    APIS = ['Product']
 
 
 Multiple Application
