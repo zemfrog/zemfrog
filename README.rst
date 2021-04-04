@@ -70,6 +70,8 @@ And also you can donate your money via:
 .. image:: https://c5.patreon.com/external/logo/become_a_patron_button.png
     :target: https://www.patreon.com/bePatron?u=20603237
 
+.. image:: https://ko-fi.com/img/githubbutton_sm.svg
+    :target: https://ko-fi.com/E1E746746
 
 Links
 -----
