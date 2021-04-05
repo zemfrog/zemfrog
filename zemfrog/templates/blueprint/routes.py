@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask_smorest import Blueprint
 
 def init_blueprint():
     blueprint = Blueprint(

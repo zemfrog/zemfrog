@@ -2,7 +2,9 @@ from functools import wraps
 from typing import Callable
 
 from flask import current_app, jsonify
-from flask_apispec import doc
+from flask_smorest import Blueprint
+from flask_smorest.arguments import ArgumentsMixin
+from flask_smorest.response import ResponseMixin
 from flask_jwt_extended import verify_jwt_in_request
 from flask_jwt_extended.utils import get_jwt_claims
 
@@ -31,19 +33,30 @@ def http_code(func: Callable) -> Callable:
     return wrapper
 
 
-def api_doc(**kwds) -> Callable:
+def api_doc(*args, **kwds) -> Callable:
     """
     Decorator for adding API documentation through the documentation in the view function.
     """
 
-    def wrapper(func: Callable):
-        d = kwds.pop("description", func.__doc__ or "")
-        kwds["description"] = d
-        func = doc(**kwds)(func)
-        return func
-
+    wrapper = Blueprint.doc(*args, **kwds)
     return wrapper
 
+def use_kwargs(*args, **kwds):
+    """
+    Decorator for defining schema on swagger ui
+    """
+
+    wrapper = ArgumentsMixin().arguments(*args, **kwds)
+    return wrapper
+
+
+def marshal_with(*args, **kwds):
+    """
+    Decorator to generate response to swagger ui
+    """
+
+    wrapper = ResponseMixin().response(*args, **kwds)
+    return wrapper
 
 def jwt_required(roles={}) -> Callable:
     """
@@ -85,7 +98,7 @@ def authenticate(roles={}) -> Callable:
     """
 
     def decorated(func: Callable) -> Callable:
-        func = api_doc(security=current_app.config.get("APISPEC_SECURITY_PARAMS", []))(
+        func = api_doc(security=current_app.config.get("API_SECURITY_PARAMS", []))(
             jwt_required(roles)(func)
         )
         return func
