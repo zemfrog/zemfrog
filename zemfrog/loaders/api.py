@@ -1,8 +1,9 @@
 from importlib import import_module
 
-from flask import Blueprint, Flask
-
-from ..helper import get_import_name, import_attr
+from flask import Flask
+from flask_smorest import Blueprint
+from ..globals import smorest
+from ..helper import get_import_name
 
 
 def loader(app: Flask):
@@ -12,7 +13,7 @@ def loader(app: Flask):
 
     apis = app.config.get("APIS", [])
     import_name = get_import_name(app)
-    api: Blueprint = import_attr(import_name + "apis.api")
+    api_prefix = app.config.get("API_PREFIX", "/api")
     prefix = "apis."
     for name in apis:
         res = name
@@ -24,13 +25,15 @@ def loader(app: Flask):
         except ImportError:
             res = import_module(name.lstrip(prefix))
 
-        endpoint = res.endpoint
+        tag = res.tag
+        description = res.description
         url_prefix = res.url_prefix
+        bp = Blueprint(
+            tag, __name__, url_prefix=api_prefix + url_prefix, description=description
+        )
         routes = res.routes
         for detail in routes:
-            route, view, methods = detail
-            url = url_prefix + route
-            e = endpoint + "_" + view.__name__
-            api.add_url_rule(url, e, view_func=view, methods=methods)
+            url, view, methods = detail
+            bp.route(url, methods=methods)(view)
 
-    app.register_blueprint(api)
+        smorest.register_blueprint(bp)

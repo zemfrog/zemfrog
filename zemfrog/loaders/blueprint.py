@@ -1,5 +1,7 @@
-from flask import Blueprint, Flask
+from flask import Flask
+from flask_smorest import Blueprint
 
+from ..globals import smorest
 from ..helper import get_import_name, import_attr
 
 
@@ -21,6 +23,6 @@ def loader(app: Flask):
             routes = import_attr(routes)
 
         for url, view, methods in routes:
-            bp.add_url_rule(url, view_func=view, methods=methods)
+            bp.route(url, methods=methods)(view)
 
-        app.register_blueprint(bp)
+        smorest.register_blueprint(bp)
