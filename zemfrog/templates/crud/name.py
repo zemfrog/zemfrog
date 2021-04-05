@@ -7,23 +7,30 @@ from {{ "" if main_app else ".." }}{{src_model}} import {{name}}
 
 class Create{{name}}Schema(SQLAlchemyAutoSchema):
     class Meta:
+        ordered = True
         model = {{name}}
         exclude = ("id",)
 
 class Read{{name}}Schema(SQLAlchemyAutoSchema):
     class Meta:
+        ordered = True
         model = {{name}}
 
 class Update{{name}}Schema(SQLAlchemyAutoSchema):
     class Meta:
+        ordered = True
         model = {{name}}
         exclude = ("id",)
 
 # class Delete{{name}}Schema(SQLAlchemyAutoSchema):
 #     class Meta:
+#         ordered = True
 #         model = {{name}}
 
 class Limit{{name}}Schema(Schema):
+    class Meta:
+        ordered = True
+
     offset = fields.Integer()
     limit = fields.Integer()
 
