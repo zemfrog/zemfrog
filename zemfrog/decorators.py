@@ -43,6 +43,7 @@ def api_doc(*args, **kwds) -> Callable:
     wrapper = Blueprint.doc(*args, **kwds)
     return wrapper
 
+
 def use_kwargs(*args, **kwds) -> Callable:
     """
     See here https://flask-smorest.readthedocs.io/en/latest/arguments.html

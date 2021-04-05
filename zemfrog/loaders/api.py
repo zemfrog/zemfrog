@@ -3,7 +3,7 @@ from importlib import import_module
 from flask import Flask
 from flask_smorest import Blueprint
 from ..globals import smorest
-from ..helper import get_import_name, import_attr
+from ..helper import get_import_name
 
 
 def loader(app: Flask):
@@ -28,7 +28,9 @@ def loader(app: Flask):
         tag = res.tag
         description = res.description
         url_prefix = res.url_prefix
-        bp = Blueprint(tag, __name__, url_prefix=api_prefix + url_prefix, description=description)
+        bp = Blueprint(
+            tag, __name__, url_prefix=api_prefix + url_prefix, description=description
+        )
         routes = res.routes
         for detail in routes:
             url, view, methods = detail
