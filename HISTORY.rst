@@ -209,3 +209,9 @@ History
 * FIX: unknown column
 * NEW: added codecov workflow (testing)
 * NEW: add default value to 'confirmed' column
+
+
+5.0.1 (unreleased)
+------------------
+
+* Flask-smorest integration. Based on `#63 <https://github.com/zemfrog/zemfrog/issues/63>`_
