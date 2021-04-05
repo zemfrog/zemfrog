@@ -5,4 +5,4 @@ Which focuses on building a customizable, flexible and manageable REST API!
 
 __author__ = "Aprila Hijriyan"
 __email__ = "hijriyan23@gmail.com"
-__version__ = "4.0.4"
+__version__ = "4.0.5"
