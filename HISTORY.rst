@@ -201,3 +201,11 @@ History
 * IMPROVE: set default blueprint to blank
 * IMPROVE: Use schema from source rather than local proxy
 * IMPROVE: Using the model name corresponding user input
+
+4.0.5 (2021-04-01)
+------------------
+
+* FIX: Load the blueprint name
+* FIX: unknown column
+* NEW: added codecov workflow (testing)
+* NEW: add default value to 'confirmed' column
