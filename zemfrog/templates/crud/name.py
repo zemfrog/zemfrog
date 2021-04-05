@@ -31,7 +31,7 @@ class Limit{{name}}Schema(Schema):
 @authenticate()
 @use_kwargs(Limit{{name}}Schema(), location="query")
 @marshal_with(200, Read{{name}}Schema(many=True))
-def read(**kwds):
+def read(kwds):
     """
     Read all data.
     """
@@ -46,7 +46,7 @@ def read(**kwds):
 @marshal_with(200, DefaultResponseSchema)
 @marshal_with(403, DefaultResponseSchema)
 @http_code
-def create(**kwds):
+def create(kwds):
     """
     Add data.
     """
@@ -72,7 +72,7 @@ def create(**kwds):
 @marshal_with(200, DefaultResponseSchema)
 @marshal_with(404, DefaultResponseSchema)
 @http_code
-def update(id, **kwds):
+def update(kwds, id):
     """
     Update data.
     """
