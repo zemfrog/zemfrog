@@ -11,16 +11,39 @@ class Development(object):
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
     MAIL_PORT = 8025
     MAIL_DEFAULT_SENDER = "admin@localhost.com"
-    APISPEC_TITLE = "API Docs"
-    APISPEC_SWAGGER_UI_URL = "/docs"
-    APISPEC_SECURITY_DEFINITIONS = {
-        "Bearer": {
-            "type": "oauth2",
-            "flow": "password",
-            "tokenUrl": "/jwt/login",
+    API_TITLE = "API Docs"
+    API_VERSION = "v1"
+    API_PREFIX = "/api"
+    OPENAPI_VERSION = "3.0.2"
+    OPENAPI_JSON_PATH = "openapi.json"
+    OPENAPI_URL_PREFIX = "/"
+    OPENAPI_REDOC_PATH = "/redoc"
+    OPENAPI_REDOC_URL = "https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"
+    OPENAPI_SWAGGER_UI_PATH = "/docs"
+    OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+    API_SPEC_OPTIONS = {
+        'info': {
+            'description': 'Powered by [zemfrog](https://github.com/zemfrog/zemfrog) + [flask-smorest](https://flask-smorest.readthedocs.io/en/latest/).',
+            'contact' : {
+                'email': 'hijriyan23@gmail.com'
+            },
+            'license': {
+                'name': 'MIT License',
+                'url': 'https://wikipedia.org/wiki/Licence_MIT'
+            }
         }
     }
-    APISPEC_SECURITY_PARAMS = [{"Bearer": []}]
+    API_SECURITY_DEFINITIONS = {
+        "Bearer": {
+            "type": "oauth2",
+            "flows": {
+                "password": {
+                    "tokenUrl": "/jwt/login"
+                }
+            }
+        }
+    }
+    API_SECURITY_PARAMS = [{"Bearer": []}]
     DEBUG = True
     {% if main_app -%}
         APPS = []
@@ -32,7 +55,7 @@ class Development(object):
         "zemfrog.extensions.jwt",
         "zemfrog.extensions.mail",
         "zemfrog.extensions.celery",
-        "zemfrog.extensions.apispec",
+        "zemfrog.extensions.smorest",
         "zemfrog.extensions.cors"
     ]
     COMMANDS = [
@@ -59,10 +82,7 @@ class Development(object):
     STATICFILES = []
     MIDDLEWARES = []
     APIS = []
-    ERROR_HANDLERS = {
-        422: "zemfrog.handlers.api_errors",
-        400: "zemfrog.handlers.api_errors"
-    }
+    ERROR_HANDLERS = {}
     TASKS = ["zemfrog.tasks"]
     CONTEXT_PROCESSORS = []
     JINJA_FILTERS = []
@@ -76,14 +96,12 @@ class Development(object):
         "zemfrog.loaders.extension",
         "zemfrog.loaders.staticfile",
         "zemfrog.loaders.model",
-        "zemfrog.loaders.url",
         "zemfrog.loaders.blueprint",
         "zemfrog.loaders.middleware",
         "zemfrog.loaders.api",
         "zemfrog.loaders.error_handler",
         "zemfrog.loaders.command",
         "zemfrog.loaders.task",
-        "zemfrog.loaders.openapi",
         "zemfrog.loaders.context_processor",
         "zemfrog.loaders.jinja_filter",
         "zemfrog.loaders.multiapp",

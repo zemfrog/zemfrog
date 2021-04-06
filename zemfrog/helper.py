@@ -5,6 +5,7 @@ from types import ModuleType
 
 from flask import Flask, current_app, render_template
 from flask_sqlalchemy import Model
+from flask_smorest.etag import EtagMixin
 
 from .exception import ZemfrogModelNotFound, ZemfrogTemplateNotFound
 from .globals import db
@@ -179,3 +180,11 @@ def get_object_model(name):
     src = current_app.config[name.upper() + "_MODEL"]
     model = import_attr(import_name + src)
     return model
+
+
+def check_etag(data, schema=None):
+    """
+    See here https://flask-smorest.readthedocs.io/en/latest/api_reference.html#flask_smorest.Blueprint.set_etag
+    """
+
+    EtagMixin().check_etag(data, schema)

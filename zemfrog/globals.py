@@ -8,9 +8,9 @@ def _get_db():
     return db
 
 
-def _get_apispec():
-    spec = current_app.extensions["apispec"]
-    return spec
+def _get_smorest():
+    api = current_app.extensions["flask-smorest"]["ext_obj"]
+    return api
 
 
 def _get_celery():
@@ -34,7 +34,7 @@ def _get_migrate():
 
 
 db = LocalProxy(_get_db)
-apispec = LocalProxy(_get_apispec)
+smorest = LocalProxy(_get_smorest)
 celery = LocalProxy(_get_celery)
 mail = LocalProxy(_get_mail)
 ma = LocalProxy(_get_marshmallow)
