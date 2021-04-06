@@ -26,8 +26,6 @@ The application structure is as follows::
     ├── Procfile
     ├── README.rst
     ├── requirements.txt
-    ├── urls.py
-    ├── views.py
     └── wsgi.py
 
 * ``apis`` - This directory is for all REST API resources.
