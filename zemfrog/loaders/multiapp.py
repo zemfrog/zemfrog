@@ -22,7 +22,7 @@ def loader(app: Flask):
 
         name = a["name"]
         path = a.get("path", "/" + name)
-        help = a.get("help", "")
+        help = a.get("help", f"{name.title()} App")
         yourapp: Flask = import_attr(name + ".wsgi.app")
 
         @click.command(name, context_settings=dict(ignore_unknown_options=True))
