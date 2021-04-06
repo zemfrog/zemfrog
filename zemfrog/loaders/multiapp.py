@@ -1,4 +1,5 @@
 import os
+import subprocess
 from typing import Dict, List
 
 import click
@@ -33,7 +34,7 @@ def loader(app: Flask):
             if repl:
                 build_repl(yourapp)
             else:
-                os.system("flask " + " ".join(args))
+                subprocess.call(["flask"] + list(args))
 
         cli.help = help
         app.cli.add_command(cli)
