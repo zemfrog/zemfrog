@@ -2,14 +2,14 @@ import os
 from importlib import import_module
 
 from celery import Celery
-from flask import Flask
 from flask.cli import load_dotenv
 
+from .scaffold import Scaffold
 from .exception import ZemfrogEnvironment
 from .helper import get_import_name
 
 
-def make_celery(app: Flask) -> Celery:
+def make_celery(app: Scaffold) -> Celery:
     """
     Creating a celery application for flask applications.
     Source: https://flask.palletsprojects.com/en/1.1.x/patterns/celery/#configure
@@ -31,7 +31,7 @@ def make_celery(app: Flask) -> Celery:
     return celery
 
 
-def load_config(app: Flask):
+def load_config(app: Scaffold):
     """
     Loads the configuration for your zemfrog application based on the environment
     ``ZEMFROG_ENV``, change your application environment in the file ``.flaskenv``.
@@ -47,15 +47,16 @@ def load_config(app: Flask):
     app.config.from_object(import_name + "config." + env.capitalize())
 
 
-def create_app(name: str) -> Flask:
+def create_app(*args, **kwds) -> Scaffold:
     """
     Functions to build your flask application and load all configurations.
 
-    :param name: import name.
+    All parameters will be passed to :py:class:`flask.Flask`.
+
 
     """
 
-    app = Flask(name)
+    app = Scaffold(*args, **kwds)
     import_name = get_import_name(app)
     dirname = "loaders"
     prefix = dirname + "."
