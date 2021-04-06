@@ -69,6 +69,7 @@ There are several configurations in the zemfrog application, including:
 * ``API_PREFIX`` - URL prefix for all endpoints in the ``apis`` directory.
 * ``API_SECURITY_DEFINITIONS`` - Follow this https://swagger.io/docs/specification/authentication/.
 * ``API_SECURITY_PARAMS`` - Follow this https://swagger.io/docs/specification/authentication/
+* ``API_SPEC_OPTIONS`` - See here https://flask-smorest.readthedocs.io/en/latest/openapi.html#populate-the-root-document-object
 * ``APPS`` - List of sub applications.
 * ``TASKS`` - Celery task list.
 * ``STATICFILES`` - List of static files to serve.
