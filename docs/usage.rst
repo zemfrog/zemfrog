@@ -26,8 +26,6 @@ The application structure is as follows::
     ├── Procfile
     ├── README.rst
     ├── requirements.txt
-    ├── urls.py
-    ├── views.py
     └── wsgi.py
 
 * ``apis`` - This directory is for all REST API resources.
@@ -44,8 +42,6 @@ The application structure is as follows::
 * ``Procfile`` - Configuration file for deploying on heroku.
 * ``README.rst`` - A short description of how to run zemfrog applications.
 * ``requirements.txt`` - List of application dependencies.
-* ``urls.py`` - List your application endpoints.
-* ``views.py`` - List of your app view functions.
 * ``wsgi.py`` - Flask application here.
 
 Assume if you already installed virtualenv and go run the application::
@@ -68,10 +64,11 @@ There are several configurations in the zemfrog application, including:
 * ``ERROR_HANDLERS`` - List of error handlers.
 * ``MIDDLEWARES`` - List of middleware here.
 * ``APIS`` - List your REST API resources here.
-* ``API_DOCS`` - Configuration for automation creates REST API documentation using ``flask-apispec``. Default value is ``True``.
+* ``API_DOCS`` - Configuration for automation creates REST API documentation using ``flask-smorest``. Default value is ``True``.
 * ``CREATE_DB`` - Configuration for automation creates tables of all models. Default value is ``True``, but I will remove this configuration in the future.
-* ``APISPEC_SECURITY_DEFINITIONS`` - Follow this https://swagger.io/docs/specification/authentication/.
-* ``APISPEC_SECURITY_PARAMS`` - Follow this https://swagger.io/docs/specification/authentication/
+* ``API_PREFIX`` - URL prefix for all endpoints in the ``apis`` directory.
+* ``API_SECURITY_DEFINITIONS`` - Follow this https://swagger.io/docs/specification/authentication/.
+* ``API_SECURITY_PARAMS`` - Follow this https://swagger.io/docs/specification/authentication/
 * ``APPS`` - List of sub applications.
 * ``TASKS`` - Celery task list.
 * ``STATICFILES`` - List of static files to serve.
@@ -259,15 +256,14 @@ Let's start by creating an API resource::
 
 Now you have the article API resource::
 
-    api
+    apis
     ├── article.py
     ├── __init__.py
 
-In the article API resource there are variables ``docs``, ``endpoint``, ``url_prefix`` and ``routes``.
+The following are the variables in the API article (on the last line):
 
-
-* ``docs`` - For your REST API documentation, see `here <https://flask-apispec.readthedocs.io/en/latest/api_reference.html#flask_apispec.annotations.doc>`_.
-* ``endpoint`` - For naming your view function. So if the view name is ``add`` then it will become ``article_add``.
+* ``tag`` - API name (which is the name of the blueprint).
+* ``description`` - API description.
 * ``url_prefix`` - URL prefix for the API resource.
 * ``routes`` - All of your API endpoints.
 
