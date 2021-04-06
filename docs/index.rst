@@ -13,7 +13,6 @@ Welcome to zemfrog's documentation!
    installation
    usage
    auth
-   fileupload
    user_management
    rbac
    contributing
