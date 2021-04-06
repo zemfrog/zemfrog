@@ -215,3 +215,4 @@ History
 ------------------
 
 * Flask-smorest integration. Based on `#63 <https://github.com/zemfrog/zemfrog/issues/63>`_
+* Refactor Code: added scaffolding
