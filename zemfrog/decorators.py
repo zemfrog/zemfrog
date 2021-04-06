@@ -58,7 +58,7 @@ def marshal_with(*args, **kwds) -> Callable:
     See here https://flask-smorest.readthedocs.io/en/latest/response.html#
     """
 
-    wrapper = ResponseMixin().response(*args, **kwds)
+    wrapper = ResponseMixin().alt_response(*args, **kwds)
     return wrapper
 
 
