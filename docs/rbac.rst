@@ -40,10 +40,10 @@ All you need is to add an authenticate decorator with a roles to the view, like 
     @authenticate(roles={"admin": []})
     # your view here...
 
-For example, edit the ``read`` view decorator in the ``apis/user.py`` file, as follows::
+For example, edit the ``read`` view in the ``apis/user.py`` file and add the ``authenticate`` decorator, as follows::
 
     @authenticate(roles={"admin": []})
-    @marshal_with(ReadUserSchema(many=True), 200)
+    @marshal_with(200, ReadUserSchema(many=True))
     def read():
         """
         Read all data.
@@ -65,7 +65,7 @@ First you have to create role permissions first::
 And add permission to the ``authenticate`` decorator, for example::
 
     @authenticate(roles={"admin": ["can_all"]})
-    @marshal_with(ReadUserSchema(many=True), 200)
+    @marshal_with(200, ReadUserSchema(many=True))
     def read():
         """
         Read all data.
