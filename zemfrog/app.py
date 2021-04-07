@@ -52,8 +52,6 @@ def create_app(*args, **kwds) -> Scaffold:
     Functions to build your flask application and load all configurations.
 
     All parameters will be passed to :py:class:`flask.Flask`.
-
-
     """
 
     app = Scaffold(*args, **kwds)
