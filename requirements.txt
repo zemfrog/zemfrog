@@ -9,6 +9,7 @@ flask-mail
 flask-shell-ipython
 marshmallow-sqlalchemy
 python-dotenv
+click
 celery==5.0.2
 marshmallow
 sqlalchemy-utils
