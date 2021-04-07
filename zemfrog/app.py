@@ -62,6 +62,10 @@ def create_app(*args, **kwds) -> Scaffold:
     prefix = dirname + "."
     with app.app_context():
         load_config(app)
+        api_docs = app.config.get("API_DOCS", True)
+        if not api_docs:
+            app.config["OPENAPI_URL_PREFIX"] = None
+
         for name in app.config.get(dirname.upper(), []):
             yourloader = name
             if not name.startswith(prefix):

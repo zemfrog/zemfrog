@@ -1,4 +1,5 @@
 import os
+import subprocess
 from typing import Dict, List
 
 import click
@@ -22,7 +23,7 @@ def loader(app: Flask):
 
         name = a["name"]
         path = a.get("path", "/" + name)
-        help = a.get("help", "")
+        help = a.get("help", f"{name.title()} App")
         yourapp: Flask = import_attr(name + ".wsgi.app")
 
         @click.command(name, context_settings=dict(ignore_unknown_options=True))
@@ -33,7 +34,7 @@ def loader(app: Flask):
             if repl:
                 build_repl(yourapp)
             else:
-                os.system("flask " + " ".join(args))
+                subprocess.call(["flask"] + list(args))
 
         cli.help = help
         app.cli.add_command(cli)
