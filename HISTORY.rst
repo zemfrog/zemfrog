@@ -211,8 +211,15 @@ History
 * NEW: add default value to 'confirmed' column
 
 
-5.0.1 (unreleased)
+5.0.1 (2021-04-10)
 ------------------
 
 * Flask-smorest integration. Based on `#63 <https://github.com/zemfrog/zemfrog/issues/63>`_
 * Refactor Code: added scaffolding
+* FIX: use 'alt_response' instead of 'response' to wrap multiple responses.
+* FIX: configuration to enable / disable OpenAPI
+* IMPROVE: no longer supports to load main urls
+* IMPROVE: Add a command description to the sub application
+* IMPROVE: use 'subprocess.call' instead of 'os.system'
+* Change the name of the password reset request template
+* create pyup.io config file
