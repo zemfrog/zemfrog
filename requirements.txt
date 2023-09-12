@@ -13,4 +13,4 @@ click
 celery==5.3.4
 marshmallow
 sqlalchemy-utils
-sqlalchemy<1.4.0
+sqlalchemy==2.0.20
