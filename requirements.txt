@@ -10,7 +10,7 @@ flask-shell-ipython
 marshmallow-sqlalchemy
 python-dotenv
 click
-celery==5.0.2
+celery==5.3.5
 marshmallow
 sqlalchemy-utils
 sqlalchemy<1.4.0
